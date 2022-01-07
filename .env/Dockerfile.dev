@@ -1,0 +1,39 @@
+ARG FROM
+
+FROM $FROM
+
+USER root
+
+RUN apt-get update \
+ && apt-get install -y vim firefox php-xdebug default-jre \
+ && rm -rf /var/lib/apt/lists/*
+
+ARG FIREFOX=/usr/lib/firefox/firefox
+RUN mv ${FIREFOX} ${FIREFOX}_no_flags \
+ && echo "#! /bin/bash" > ${FIREFOX} \
+ && echo "${FIREFOX}_no_flags --no-remote \"\$@\"" >> ${FIREFOX} \
+ && chmod +x ${FIREFOX}
+
+RUN wget https://addons.mozilla.org/firefox/downloads/file/3566703/xdebug_helper_for_firefox-1.0.6-an+fx.xpi \
+ && mkdir xdebug \
+ && mv xdebug_helper_for_firefox-1.0.6-an+fx.xpi xdebug
+
+RUN echo "xdebug.remote_enable = 1" >> /etc/php/8.0/mods-available/xdebug.ini \
+ && echo "xdebug.remote_host = 127.0.0.1" >> /etc/php/8.0/mods-available/xdebug.ini \
+ && echo "xdebug.remote_port = 9000" >> /etc/php/8.0/mods-available/xdebug.ini \
+ && echo "xdebug.mode=develop,debug,trace " >> /etc/php/8.0/mods-available/xdebug.ini \
+ && service php8.0-fpm restart
+
+RUN wget https://github.com/SeleniumHQ/selenium/releases/download/selenium-3.141.59/selenium-server-standalone-3.141.59.jar \
+ && mkdir /opt/selenium \
+ && mv selenium-server-standalone-3.141.59.jar /opt/selenium
+
+RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.29.1/geckodriver-v0.29.1-linux64.tar.gz \
+ && tar xzf geckodriver-v0.29.1-linux64.tar.gz \
+ && mv geckodriver /opt/selenium \
+ && rm geckodriver-v0.29.1-linux64.tar.gz
+
+USER ${IMAGE_USER}
+WORKDIR /home/${IMAGE_USER}
+
+CMD ["bash"]

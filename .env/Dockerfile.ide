@@ -1,0 +1,22 @@
+ARG FROM
+
+FROM $FROM
+
+USER root
+
+RUN apt-get update \ 
+ && apt-get install -y wget \
+ && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /opt
+
+RUN wget https://download.jetbrains.com/webide/PhpStorm-2021.2.1.tar.gz \
+ && tar xzf PhpStorm-2021.2.1.tar.gz \
+ && rm PhpStorm-2021.2.1.tar.gz 
+
+RUN ln -s /opt/PhpStorm-*/bin/phpstorm.sh /usr/bin/phpstorm
+
+USER ${IMAGE_USER}
+WORKDIR /home/${IMAGE_USER}
+
+CMD ["phpstorm"]
