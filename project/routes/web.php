@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\GroupController;
+use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +18,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('home');
 });
+
+
+//Route::middleware('auth')->group(function(){
+    Route::resource('groups/', GroupController::class)->except('show');
+    Route::get('groups/{group:slug}', 'App\Http\Controllers\GroupController@show');
+//});
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -2,85 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreGroupRequest;
-use App\Http\Requests\UpdateGroupRequest;
 use App\Models\Group;
+use Illuminate\Validation\Rule;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class GroupController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        return view('groups.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
-        //
+        return view('groups.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreGroupRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreGroupRequest $request)
+    public function store()
     {
-        //
-    }
+        $attributes = request()->validate([
+            'name' => 'required',
+            'user_id' => ['required', Rule::exits('users', 'id')],
+            'avatar' => 'requred|image',
+        ]);
+        $image =  Image::make(request()->file('avatar'));
+        $fileName   = 'avatar/' . time() . '.' . request()->file('avatar')->getClientOriginalExtension();
+        $image->save(storage_path('app/public/' . $fileName));
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Group  $group
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Group $group)
-    {
-        //
-    }
+        $attributes['slug'] = Str::slug($attributes['name']);
+        $attributes['avatar'] = $fileName;
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Group  $group
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Group $group)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateGroupRequest  $request
-     * @param  \App\Models\Group  $group
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateGroupRequest $request, Group $group)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Group  $group
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Group $group)
-    {
-        //
+        Group::create($attributes);
+        return redirect('groups.index');
     }
 }

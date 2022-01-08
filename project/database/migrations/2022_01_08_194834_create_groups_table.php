@@ -17,7 +17,7 @@ class CreateGroupsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('avatar');
-            $table->unsignedBigInteger('admin_id');
+            $table->foreignId('user_id');
             $table->string('slug');
         });
     }

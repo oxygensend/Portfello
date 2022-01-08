@@ -41,18 +41,22 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    public function groups(){
+    public function groups()
+    {
         return $this->belongsToMany(
             Trop::class,
             'group_user',
             'user_id',
-            'group_id');
+            'group_id'
+        );
     }
-    public function expenses(){
+    public function expenses()
+    {
         return $this->belongsToMany(
             Trop::class,
             'expenses_user',
             'user_id',
-            'expenses_id');
+            'expenses_id'
+        );
     }
 }
