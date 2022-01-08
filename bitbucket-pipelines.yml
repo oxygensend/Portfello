@@ -9,7 +9,7 @@ pipelines:
           - mysql
         script:
           - while ! timeout 1 bash -c "echo > /dev/tcp/localhost/3306"; do echo "Waiting for MySQL..."; sleep 1; done
-          - pushd 10_laravel_tdd/project/
+          - pushd ./project/
           -   composer install
           -   cp .env.example .env
           -   php artisan key:generate
