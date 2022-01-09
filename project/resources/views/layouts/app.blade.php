@@ -11,26 +11,48 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
         <!-- Styles -->
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-
+        <link rel="stylesheet" href="{{ 'css/app.css' }}">
+{{--        <link href="https://unpkg.com/tailwindcss@^3.0.12/dist/tailwind.min.css" rel="stylesheet">--}}
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
+            <div class="relative min-h-screen md:flex flex-row">
+               <x-navigation>
+               </x-navigation>
+
+                <div class="w-full">
+                    <div class="w-full bg-white h-20 flex justify-start items-center ">
+                 <h2 class=" margin_main_x text-3xl tracking-wide font-bold text"> Dashboard</h2>
+
+{{--TODO:title--}}
+                    </div>
+
+                    <x-main-content>
+                        <main>
+                            {{ $slot }}
+                        </main>
+                    </x-main-content>
+
+                </div>
+
+
+
+            </div>
+
 
             <!-- Page Heading -->
-            <header class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
-                </div>
-            </header>
+{{--            <header class="bg-white shadow">--}}
+{{--                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">--}}
+{{--                    {{ $header }}--}}
+{{--                </div>--}}
+{{--            </header>--}}
 
             <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+
+
+
         </div>
     </body>
 </html>

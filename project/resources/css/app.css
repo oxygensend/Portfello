@@ -1,3 +1,22 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+@layer components {
+    .padding_main_x {
+        @apply    px-7
+    }
+
+
+    .padding_main_y {
+        @apply  py-10
+    }
+   .padding_main_xy
+   {
+       @apply padding_main_x padding_main_y
+
+   }
+    .margin_main_x {
+        @apply ml-7
+    }
+}
