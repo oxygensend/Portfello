@@ -12,7 +12,7 @@ class GroupController extends Controller
 {
     public function index()
     {
-        return view('groups.index');
+        return view('groups.index', ['groups' => Group::paginate(4)]);
     }
 
 
@@ -25,17 +25,27 @@ class GroupController extends Controller
     {
         $attributes = request()->validate([
             'name' => 'required',
-            'user_id' => ['required', Rule::exits('users', 'id')],
-            'avatar' => 'requred|image',
+            'avatar' => 'image',
+            'smart_billing' => 'boolean'
         ]);
-        $image =  Image::make(request()->file('avatar'));
-        $fileName   = 'avatar/' . time() . '.' . request()->file('avatar')->getClientOriginalExtension();
-        $image->save(storage_path('app/public/' . $fileName));
-
+        if ($attributes['avatar'] ?? false) {
+            $image =  Image::make(request()->file('avatar'));
+            $fileName   = 'group_avatars/' . time() . '.' . request()->file('avatar')->getClientOriginalExtension();
+            $image->save(storage_path('app/public/' . $fileName));
+        } else {
+            $fileName = 'group_avatars/default_group.png';
+        }
+        
         $attributes['slug'] = Str::slug($attributes['name']);
         $attributes['avatar'] = $fileName;
+        $attributes['user_id'] = auth()->user()->id;
 
         Group::create($attributes);
-        return redirect('groups.index');
+        return redirect(route('groups.index'));
+    }
+
+    public function show(Group $group)
+    {
+        return view('groups.show', ['group' => $group]);
     }
 }

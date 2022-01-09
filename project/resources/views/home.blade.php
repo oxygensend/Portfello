@@ -11,8 +11,8 @@
             <div>
                 <div class="mt-10">
                     <x-images-panel />
-                    <a href="/register" class="inline-block text-center bg-indigo-600 border border-transparent rounded-md py-3 px-8 font-medium text-white hover:bg-indigo-700">Sign in</a>
-                    <a href="/login" class="mt-2 inline-block text-center bg-indigo-600 border border-transparent rounded-md py-3 px-8 font-medium text-white hover:bg-indigo-700">Log in </a>
+                    <a href="/register" class="inline-block text-center bg-gray-800  border border-transparent rounded-md py-3 px-8 font-medium text-white hover:bg-gray-700">Sign in</a>
+                    <a href="/login" class="mt-2 inline-block text-center bg-gray-800 border border-transparent rounded-md py-3 px-8 font-medium text-white hover:bg-gray-700">Log in </a>
                 </div>
             </div>
             </div>
