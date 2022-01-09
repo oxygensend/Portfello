@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.27, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.26, for Linux (x86_64)
 --
 -- Host: 127.0.0.1    Database: test
 -- ------------------------------------------------------
@@ -32,7 +32,7 @@ CREATE TABLE `expenses` (
   `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `expenses_group_id_foreign` (`group_id`),
-  CONSTRAINT `expenses_group_id_foreign` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`)
+  CONSTRAINT `expenses_group_id_foreign` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -146,6 +146,9 @@ CREATE TABLE `groups` (
   `avatar` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `user_id` bigint unsigned NOT NULL,
   `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `smart_billing` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -268,7 +271,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Hilario Grant','test@test.com','2022-01-09 15:46:32','$2y$10$6T74QCXLLNg1SJx3uyzhmexzg4mrTrvgOLuXT9M49cZuXeD0XAnfK','k0ail5OmWR','2022-01-09 15:46:32','2022-01-09 15:46:32','test');
+INSERT INTO `users` VALUES (1,'Dr. Devyn Kuphal IV','test@test.com','2022-01-09 19:12:14','$2y$10$sN.jFrGpxU0hzcemKtGaSei9oAYWNFYIVdNyzl05D5X6Z5FU5EkeO','PokpilHdTM','2022-01-09 19:12:14','2022-01-09 19:12:14','test');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -281,4 +284,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-09 16:48:08
+-- Dump completed on 2022-01-09 20:12:15

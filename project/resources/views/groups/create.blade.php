@@ -7,9 +7,9 @@
         <div>
             <x-label for="name" :value="__('Name')" />
 
-            <x-input id="name" class="block mt-1 w-full" 
-                            type="text" 
-                            name="name" 
+            <x-input id="name" class="block mt-1 w-full"
+                            type="text"
+                            name="name"
                             :value="old('name')" required autofocus />
         </div>
 
@@ -26,7 +26,7 @@
         </div>
 
         <x-error name="avatar"/>
-        
+
 
         <div class="mt-4">
             <x-label for="smart_billing" :value="__('Smart billing')" />
@@ -38,10 +38,10 @@
                              />
         </div>
 
-
+        <div class="mt-4">
            <x-button class="mt-4 h-full text-center">
                 Create
-            </x-button>
+           </x-button>
         </div>
     </form>
 
