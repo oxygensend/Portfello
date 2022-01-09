@@ -17,15 +17,13 @@
         <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            <div class="relative min-h-screen md:flex flex-row">
+        <div class="h-screen bg-gray-100">
+            <div class="relative  md:flex flex-row h-screen">
                <x-navigation>
                </x-navigation>
-
-                <div class="w-full">
+                <div class="w-full h-full flex flex-col">
                     <div class="w-full bg-white h-20 flex justify-start items-center ">
                  <h2 class=" margin_main_x text-3xl tracking-wide font-bold text"> Dashboard</h2>
-
 {{--TODO:title--}}
                     </div>
 

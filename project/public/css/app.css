@@ -440,6 +440,9 @@ Ensure the default browser behavior of the `hidden` attribute.
   position: absolute;
 }.relative {
   position: relative;
+}.sticky {
+  position: -webkit-sticky;
+  position: sticky;
 }.inset-y-0 {
   top: 0px;
   bottom: 0px;
@@ -535,6 +538,12 @@ Ensure the default browser behavior of the `hidden` attribute.
   height: 4rem;
 }.h-10 {
   height: 2.5rem;
+}.h-screen {
+  height: 100vh;
+}.h-max {
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
 }.min-h-screen {
   min-height: 100vh;
 }.w-5 {
@@ -1154,6 +1163,8 @@ Ensure the default browser behavior of the `hidden` attribute.
     display: none;
   }.md\:h-full {
     height: 100%;
+  }.md\:min-h-screen {
+    min-height: 100vh;
   }.md\:w-4\/5 {
     width: 80%;
   }.md\:translate-x-0 {

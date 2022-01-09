@@ -1,6 +1,6 @@
 
     <!-- mobile menu bar -->
-    <div class="bg-blue-700 text-gray-100 flex justify-between md:hidden">
+    <div class="bg-sidebar_main_color text-gray-100 flex justify-between md:hidden">
         <!-- logo -->
         <a href="#" class="block p-4 text-white font-bold"> </a>
 
@@ -14,7 +14,7 @@
 
 
 <!-- sidebar -->
-    <div class="sidebar fixed  bg-sidebar_main_color text-blue-100 w-64 space-y-6 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out">
+    <div class="sidebar h-full left-0 top-0 md:min-h-screen	 bg-sidebar_main_color text-blue-100 w-64 space-y-6 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out">
 <div class ="sidebar-content justify-between h-full flex flex-col	" >
         <!-- logo -->
 
