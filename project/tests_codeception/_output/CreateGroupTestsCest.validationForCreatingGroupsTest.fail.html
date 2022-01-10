@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="KwPZzpzm1g2cS55xc0e2mRZ5qOtwYfzzPrfWnysF">
+
+        <title>Portfello</title>
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+
+        <!-- Styles -->
+        <link rel="stylesheet" href="http://localhost:8888/css/app.css">
+
+        <!-- Scripts -->
+        <script src="http://localhost:8888/js/app.js" defer></script>
+    </head>
+    <body class="font-sans antialiased">
+        <div class="h-screen bg-gray-100">
+            <div class="relative  md:flex flex-row h-screen">
+               <!-- mobile menu bar -->
+    <div class="bg-sidebar_main_color text-gray-100 flex justify-between md:hidden">
+        <!-- logo -->
+        <a href="#" class="block p-4 text-white font-bold"> </a>
+
+        <!-- mobile menu button -->
+        <button class="mobile-menu-button p-4 focus:outline-none focus:bg-gray-700">
+            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+    </div>
+
+
+<!-- sidebar -->
+    <div class="sidebar h-full left-0 top-0 md:min-h-screen	 bg-sidebar_main_color text-blue-100 w-64 space-y-6 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out">
+<div class ="sidebar-content justify-between h-full flex flex-col	" >
+        <!-- logo -->
+
+    <div class="py-7 px-2">
+    <div class="sidebar-upper_box">
+            <a href="#" class="text-white flex items-center space-x-2 px-4">
+                <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                </svg>
+                <span class="text-2xl font-extrabold">Portfello</span>
+            </a>
+
+            <!-- nav -->
+            <nav class="mt-7">
+                <a class="block py-2.5 px-4 rounded transition duration-200 hover:text-white  hover:bg-amount_color" href="http://localhost:8888/dashboard">
+    Dashboard
+</a>
+                <a class="block py-2.5 px-4 rounded transition duration-200 hover:text-white  hover:bg-amount_color" href="http://localhost:8888/dashboard">
+    Groups
+</a>
+                <a class="block py-2.5 px-4 rounded transition duration-200 hover:text-white  hover:bg-amount_color" href="http://localhost:8888/dashboard">
+    History
+</a>
+                <a class="block py-2.5 px-4 rounded transition duration-200 hover:text-white  hover:bg-amount_color" href="http://localhost:8888/dashboard">
+    Log out
+</a>
+
+                
+
+            </nav>
+        </div>
+</div>
+
+<div class=" flex  bg-gray-800 h-32 items-center ">
+    <div class="py-7 px-2">
+    <div class="flex items-center " >
+            <div class="w-16 h-16 bg-white box rounded-lg">
+            </div>
+            <div class="flex flex-col ml-4   ">
+                <p class="text">Tomasz Kurcaba</p>
+                <a href="{{}}" class="text-xs	">View profile</a>
+            </div>
+
+        </div>
+</div>
+
+
+
+</div>
+
+    </div>
+
+
+</div>
+                <div class="w-full h-full flex flex-col">
+                    <div class="w-full bg-white h-20 flex justify-start items-center ">
+                 <h2 class=" margin_main_x text-3xl tracking-wide font-bold text"> Dashboard</h2>
+
+                    </div>
+
+                    <div class="overflow-auto  padding_main_xy	flex w-full h-full">
+  <main class="h-full w-full">
+                            <div class="flex justify-center items-center w-full h-full">
+<div class="border border-gray-200 p-6 rounded-xl  h-11/12  w-full  md:w-7/12 min-w-[350px]">
+    <form method="POST" action="http://localhost:8888/groups" enctype="multipart/form-data" class="w-full">
+        <input type="hidden" name="_token" value="KwPZzpzm1g2cS55xc0e2mRZ5qOtwYfzzPrfWnysF">
+        <div>
+            <label class="block font-medium text-sm text-gray-700" for="name">
+    Name
+</label>
+
+            <input  class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="name" type="text" name="name" required="required" autofocus="autofocus">
+        </div>
+
+        <p class="text-red-500 text-xs mt-1"> The name field is required.</p>
+
+        <div class="mt-4 w-full md:w-5/12">
+            <label class="block font-medium text-sm text-gray-700" for="avatar">
+    Avatar
+</label>
+
+            <input  class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-2 border border-gray-400 rounded w-full bg-white" id="avatar" type="file" name="avatar">
+        </div>
+
+        
+
+        <div class="mt-4">
+            <label class="block font-medium text-sm text-gray-700" for="smart_billing">
+    Smart billing
+</label>
+
+            <input  class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-2 border border-gray-400 rounded" id="smart_billing" type="checkbox" name="smart_billing" value="1">
+        </div>
+
+        <div class="mt-4">
+           <button type="submit"
+       class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 mt-4 h-full text-center">
+         Create
+</button>
+        </div>
+    </form>
+
+</div>
+</div>
+                        </main>
+</div>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+            <!-- Page Heading -->
+
+
+
+
+
+
+            <!-- Page Content -->
+
+
+
+        </div>
+    </body>
+</html>

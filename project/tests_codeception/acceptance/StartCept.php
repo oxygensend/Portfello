@@ -5,7 +5,7 @@ $I->wantTo('see the application turning on');
 $I->amOnPage('/');
 
 // TODO, pamiętać żeby to zmienić
-$I->seeInTitle("Laravel");
+$I->seeInTitle("Portfello");
 
 $I->seeLink('Sign in');
 $I->seeLink('Log in');

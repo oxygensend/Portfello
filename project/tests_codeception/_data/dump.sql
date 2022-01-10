@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.26, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.27, for Linux (x86_64)
 --
 -- Host: 127.0.0.1    Database: test
 -- ------------------------------------------------------
@@ -271,7 +271,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Dr. Devyn Kuphal IV','test@test.com','2022-01-09 19:12:14','$2y$10$sN.jFrGpxU0hzcemKtGaSei9oAYWNFYIVdNyzl05D5X6Z5FU5EkeO','PokpilHdTM','2022-01-09 19:12:14','2022-01-09 19:12:14','test');
+INSERT INTO `users` VALUES (1,'Reyna Hahn','test@test.com','2022-01-10 16:18:18','$2y$10$IONkfWnVHuFwS4slalx8luiWHfj0Uek6.I8lx2200S6uR1jRetVqi','mMGyBGzP1i','2022-01-10 16:18:19','2022-01-10 16:18:19','test');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -284,4 +284,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-09 20:12:15
+-- Dump completed on 2022-01-10 17:18:19

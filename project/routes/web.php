@@ -20,11 +20,9 @@ Route::get('/', function () {
 });
 
 
-//Route::middleware('auth')->group(function(){
-    Route::resource('groups', GroupController::class)->except('show');
-    Route::get('groups/{group:slug}', 'App\Http\Controllers\GroupController@show')->name('groups.show');
-    Route::get('groups/{group:slug}/edit', 'App\Http\Controllers\GroupController@edit')->name('groups.edit');
-//});
+Route::middleware('auth')->group(function () {
+    Route::resource('groups', GroupController::class)->parameters(['groups'=>'group:slug']);
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
