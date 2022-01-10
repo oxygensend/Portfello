@@ -31,7 +31,7 @@
                 <x-side-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                     {{ __('Dashboard') }}
                 </x-side-link>
-                <x-side-link :href="route('dashboard')" :active="request()->routeIs('groups')">
+                <x-side-link :href="route('groups.index')" :active="request()->routeIs('groups')">
                     {{ __('Groups') }}
                 </x-side-link>
                 <x-side-link :href="route('dashboard')" :active="request()->routeIs('history')">

@@ -1,18 +1,37 @@
 <x-app-layout>
 
+<div class=" overflow-auto  h-full w-full">
+    <div class="overflow-auto flex flex-col space-y-10  items-start" >
 
-<div class=" flex flex-col space-y-10  items-start" >
-
-    @forelse ($groups as $group)
-        <x-group-box name="{{$group->name}}"
-             avatar="{{asset('/storage/' . $group->avatar)}}"
-             href="{{route('groups.show', $group)}}"/>
+        @forelse ($groups as $group)
+            <x-group-box name="{{$group->name}}"
+                         avatar="{{asset('/storage/' . $group->avatar)}}"
+                         href="{{route('groups.show', $group)}}"/>
         @empty
             <h2 class="text-xl font-semibold">Nie należysz jeszcze do żadnej grupy. </h2>
-    @endforelse
+        @endforelse
 
-    <a href="{{ route('groups.create')}}" class="mt-2 inline-block text-center bg-gray-800 border border-transparent rounded-md py-3 px-8 font-medium text-white hover:bg-gray-700">Create</a>
-    {{$groups->links()  }}
+
+{{--        For testing  purposes--}}
+        <x-group-box name="Nazwa"></x-group-box>
+        <x-group-box name="Nazwa"></x-group-box>
+        <x-group-box name="Nazwa"></x-group-box>
+        <x-group-box name="Nazwa"></x-group-box>
+        <x-group-box name="Nazwa"></x-group-box>
+        <x-group-box name="Nazwa"></x-group-box>
+        <x-group-box name="Nazwa"></x-group-box>
+        <x-group-box name="Nazwa"></x-group-box>
+    </div>
+
+    <x-floating-button>
+
+        <x-slot name="button" class="opacity-80 sm:opacity-100"></x-slot>
+        <x-slot name="link" class="font-bold"  href="{{ route('groups.create')}}">
+            Create
+        </x-slot>
+
+    </x-floating-button>
 
 </div>
+
 </x-app-layout>
