@@ -28,7 +28,7 @@
                     </div>
 
                     <x-main-content>
-                        <main>
+                        <main class="h-full w-full">
                             {{ $slot }}
                         </main>
                     </x-main-content>

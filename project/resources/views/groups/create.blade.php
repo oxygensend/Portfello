@@ -1,7 +1,7 @@
 <x-app-layout>
-
-<div class="border border-gray-200 p-6 rounded-xl">
-    <form method="POST" action="{{ route('groups.store') }}" enctype="multipart/form-data">
+<div class="flex justify-center items-center w-full h-full">
+<div class="border border-gray-200 p-6 rounded-xl  h-11/12  w-full  md:w-7/12 min-w-[350px]">
+    <form method="POST" action="{{ route('groups.store') }}" enctype="multipart/form-data" class="w-full">
         @csrf
 
         <div>
@@ -15,7 +15,7 @@
 
         <x-error name="name"/>
 
-        <div class="mt-4">
+        <div class="mt-4 w-full md:w-5/12">
             <x-label for="avatar" :value="__('Avatar')" />
 
             <x-input id="avatar" class="p-2 border border-gray-400 rounded w-full bg-white"
@@ -45,5 +45,6 @@
         </div>
     </form>
 
+</div>
 </div>
 </x-app-layout>
