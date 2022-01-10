@@ -11,7 +11,7 @@
         <!-- Validation Errors -->
         <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-        <form method="POST" action="{{ route('register') }}">
+        <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
             @csrf
 
             <!-- Name -->
@@ -47,12 +47,22 @@
                                 name="password_confirmation" required />
             </div>
 
+            <div class="mt-4">
+                <x-label for="image" :value="__('Upload Your Avatar (optional)')" />
+
+                <x-input id="image" class="block mt-1 w-full"
+                         type="file"
+                         name="image" />
+            </div>
+
+
+
             <div class="flex items-center justify-end mt-4">
                 <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
                     {{ __('Already registered?') }}
                 </a>
 
-                <x-button class="bg-blue-500 text-white uppercase font-semibold text-xs rounded-2xl py-2 px-10 hover:bg-blue-600">
+                <x-button class="ml-3">
                     {{ __('Register') }}
                 </x-button>
             </div>

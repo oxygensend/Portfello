@@ -33,16 +33,31 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
+
+
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'avatar' => 'image|mimes:jpg,png|svg|max:2048'
         ]);
+
+        //avatar handling
+        if (!empty($request->image)){
+            $fileExtension = $request->file('image')->getClientOriginalExtension();
+            $fileName = pathinfo($request->file('image')->getClientOriginalName(),PATHINFO_FILENAME);
+            $fileNameToStore = $fileName.'_'.time().'.'.$fileExtension;
+            $request->image->move(public_path('images'),$fileNameToStore);
+            $imagePath = '/images/'.$fileNameToStore;
+        }else{
+            $imagePath = '/images/default_avatar.png';
+        }
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'avatar' => $imagePath
         ]);
 
         event(new Registered($user));
