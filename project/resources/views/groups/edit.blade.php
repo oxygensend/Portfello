@@ -10,7 +10,7 @@
                 <div class="p-6 bg-white border-b border-gray-200">
 
 
-                    <form method="post" action="{{ route('groups.update', $group) }}">
+                    <form method="post" action="{{ route('groups.update', $group) }}"  enctype="multipart/form-data">
 
                         @csrf
                         @method("PUT")
@@ -44,7 +44,7 @@
                             <x-input id="smart_billing" class="p-2 border border-gray-400 rounded"
                                      type="checkbox"
                                      name="smart_billing"
-                                     value=""
+                                     value=1
                             />
                         </div>
 

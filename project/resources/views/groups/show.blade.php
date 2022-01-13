@@ -9,18 +9,29 @@
 
         <div class=" pb-2 flex justify-end mt-4">
             <form method="get" action="{{ route('groups.edit', $group) }}">
+
                 <x-button class="ml-4">
                     {{ __('Edit') }}
                 </x-button>
             </form>
-            <form method="post" action="{{ route('groups.destroy', $group) }}">
-                @csrf
-                @method("DELETE")
+            <form method="post" action="{{ route('groups.destroy', $group) }}"> @csrf @method("DELETE")
 
                 <x-button class="ml-4">
                     {{ __('Delete') }}
                 </x-button>
             </form>
+        </div>
+
+        <div class="absolute right-0 w-full" x-data="{ show: false }">
+            <div  class="mt-6" @click="show =! show" >
+                <x-floating-button>
+                    <x-slot name="button" class="opacity-80 sm:opacity-100"></x-slot>
+                    <x-slot name="link" class="font-bold" > Add user
+                    </x-slot>
+                </x-floating-button>
+            </div>
+
+            <x-add-dropdown />
         </div>
 
     </div>
