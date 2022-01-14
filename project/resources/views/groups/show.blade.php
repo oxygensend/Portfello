@@ -21,8 +21,7 @@
                 </x-button>
             </form>
         </div>
-
-        <div class="absolute right-0 w-full" x-data="{ show: false }">
+        <div class="absolute right-0 w-full" x-data="{ show: {{ $show ?? 'false' }} }">
             <div  class="mt-6" @click="show =! show" >
                 <x-floating-button>
                     <x-slot name="button" class="opacity-80 sm:opacity-100"></x-slot>
@@ -30,8 +29,9 @@
                     </x-slot>
                 </x-floating-button>
             </div>
+{{--            <x-add-dropdown group={{ $group }} />--}}
 
-            <x-add-dropdown />
+            <x-add-dropdown group={{ $group }} />
         </div>
 
     </div>

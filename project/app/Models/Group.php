@@ -11,7 +11,7 @@ class Group extends Model
     public function users()
     {
         return $this->belongsToMany(
-            Trop::class,
+            User::class,
             'group_user',
             'group_id',
             'user_id'

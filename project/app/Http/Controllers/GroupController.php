@@ -40,8 +40,8 @@ class GroupController extends Controller {
         $attributes['user_id'] = auth()->user()->id;
         $attributes['slug'] = Str::slug($attributes['name']);
 
-        Group::create($attributes);
-        return redirect(route('groups.index'));
+        $group = Group::create($attributes);
+        return redirect(route('groups.index'))->with('success', 'Group has been created');
     }
 
     public function show(Group $group)
@@ -72,10 +72,9 @@ class GroupController extends Controller {
         $group->slug = Str::slug($attributes['name']);
         $group->name = $attributes['name'];
         //TODO smart_billing trzeba dodac tutaj - NIE TRZEBA
-        //TODO zmiana avataru tez nie dziala
 
         $group->save();
-        return redirect(route('groups.show', $group));
+        return redirect(route('groups.show', $group))->with('success', 'Group has been edited');
 
     }
 
@@ -83,7 +82,7 @@ class GroupController extends Controller {
     {
         $group->delete();
 
-        return redirect()->route('groups.index');
+        return redirect()->route('groups.index')->with('success', 'Group has been deleted');
     }
 
 }

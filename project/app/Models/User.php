@@ -45,7 +45,7 @@ class User extends Authenticatable
     public function groups()
     {
         return $this->belongsToMany(
-            Trop::class,
+            Group::class,
             'group_user',
             'user_id',
             'group_id'
@@ -54,7 +54,7 @@ class User extends Authenticatable
     public function expenses()
     {
         return $this->belongsToMany(
-            Trop::class,
+            Expense::class,
             'expenses_user',
             'user_id',
             'expenses_id'

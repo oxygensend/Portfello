@@ -19,15 +19,9 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::post('/groups/xd', function (){
-    ddd(request());
-});
-
-Route::get('/groups/xd', function (){
-    return('xd');
-});
 Route::middleware('auth')->group(function () {
     Route::resource('groups', GroupController::class)->parameters(['groups'=>'group:slug']);
+    Route::resource('add-user', \App\Http\Controllers\UsersInGroupController::class)->parameters(['add-user' => 'group:id']);
 });
 
 Route::get('/dashboard', function () {

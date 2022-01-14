@@ -15,7 +15,7 @@ class Expense extends Model
 
     public function users(){
         return $this->belongsToMany(
-            Trop::class,
+            User::class,
             'expenses_user',
             'expenses_id',
             'user_id');

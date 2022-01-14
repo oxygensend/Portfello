@@ -37,6 +37,7 @@
                 </div>
 
 
+                <x-flash />
 
             </div>
 
@@ -53,5 +54,6 @@
 
 
         </div>
+
     </body>
 </html>
