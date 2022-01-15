@@ -24,6 +24,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('add-user', \App\Http\Controllers\UsersInGroupController::class)->parameters(['add-user' => 'group:id']);
 });
 
+Route::get('/logout', 'App\Http\Controllers\LogoutController@logout');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');

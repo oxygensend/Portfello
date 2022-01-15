@@ -37,7 +37,7 @@
                 <x-side-link :href="route('dashboard')" :active="request()->routeIs('history')">
                     {{ __('History') }}
                 </x-side-link>
-                <x-side-link :href="route('dashboard')">
+                <x-side-link :href="route('logout')">
                     {{ __('Log out') }}
                 </x-side-link>
 
