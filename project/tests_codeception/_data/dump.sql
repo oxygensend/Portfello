@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.27, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.26, for Linux (x86_64)
 --
 -- Host: 127.0.0.1    Database: test
 -- ------------------------------------------------------
@@ -113,9 +113,11 @@ DROP TABLE IF EXISTS `group_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `group_user` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `user_id` bigint unsigned NOT NULL,
   `group_id` bigint unsigned NOT NULL,
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `group_user_user_id_foreign` (`user_id`),
   KEY `group_user_group_id_foreign` (`group_id`),
@@ -261,6 +263,7 @@ CREATE TABLE `users` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `avatar` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `users_name_unique` (`name`),
   UNIQUE KEY `users_email_unique` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -271,7 +274,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Miss Deja Marvin I','test@test.com','2022-01-13 12:44:37','$2y$10$hRaA7D5b82Bw1z24VqQw7eq2ZDiQfFarZt4mIkMgjsrSXXsozo2Ii','baPFQKhE4U','2022-01-13 12:44:37','2022-01-13 12:44:37','test');
+INSERT INTO `users` VALUES (1,'Mr. Wilton Watsica','test@test.com','2022-01-15 12:15:35','$2y$10$AHJtKvUH7RJILbNLhRZJXuUjzT47rlx6p2vyb6UEznfP20bd2t3sa','NAJ9gbUWSg','2022-01-15 12:15:35','2022-01-15 12:15:35','test');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -284,4 +287,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-13 13:44:37
+-- Dump completed on 2022-01-15 13:15:36

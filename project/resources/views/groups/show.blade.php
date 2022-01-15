@@ -21,7 +21,8 @@
                 </x-button>
             </form>
         </div>
-        <div class="absolute right-0 w-full" x-data="{ show: {{ $show ?? 'false' }} }">
+
+        <div class="absolute right-0 w-full" x-data="{ show: {{ session('show') ?? 'false' }} }">
             <div  class="mt-6" @click="show =! show" >
                 <x-floating-button>
                     <x-slot name="button" class="opacity-80 sm:opacity-100"></x-slot>
@@ -35,4 +36,5 @@
         </div>
 
     </div>
+    <x-error name="username"/>
 </x-app-layout>

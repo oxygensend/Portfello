@@ -7,7 +7,7 @@
             @method('PUT')
             <div>
                 <x-label for="username" :value="__('Insert username')" />
-                <x-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')" required autofocus />
+                <x-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')" autofocus />
             </div>
                 <x-error name="username"/>
             <div class="flex justify-center items-center mt-10">

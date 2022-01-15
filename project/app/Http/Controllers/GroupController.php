@@ -41,6 +41,7 @@ class GroupController extends Controller {
         $attributes['slug'] = Str::slug($attributes['name']);
 
         $group = Group::create($attributes);
+        $group->users()->attach(auth()->user()->id);
         return redirect(route('groups.index'))->with('success', 'Group has been created');
     }
 

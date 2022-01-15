@@ -51,7 +51,7 @@ class CreateGroupTestsCest
         $I->fillField('name', 'test group');
         $I->checkOption('smart_billing');
         $I->click('Create');
-        
+
         $I->seeCurrentUrlEquals('/groups');
         $I->dontSee('Nie należysz jeszcze do żadnej grupy.');
         $I->see('test group');
@@ -61,7 +61,7 @@ class CreateGroupTestsCest
         $I->amOnPage('/groups/create');
         $I->fillField('name', 'test group2');
         $I->click('Create');
-        
+
         $I->seeCurrentUrlEquals('/groups');
         $I->dontSee('Nie należysz jeszcze do żadnej grupy.');
         $I->see('test group');
