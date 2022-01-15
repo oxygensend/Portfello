@@ -30,4 +30,5 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+Route::resource('groups.expenses', App\Http\Controllers\GroupExpenseController::class)->middleware('auth');
 require __DIR__.'/auth.php';

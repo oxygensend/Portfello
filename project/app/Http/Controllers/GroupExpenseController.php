@@ -5,17 +5,23 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreExpenseRequest;
 use App\Http\Requests\UpdateExpenseRequest;
 use App\Models\Expense;
+use App\Models\Group;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
+use Nette\Schema\ValidationException;
 
-class ExpenseController extends Controller
+class GroupExpenseController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Group $group)
     {
-        //
+        $expenses = Group::find($group->id)->expenses;
+
+        return view('expenses.index')->withGroup($group)->withExpenses($expenses);
     }
 
     /**
@@ -23,9 +29,9 @@ class ExpenseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Group $group)
     {
-        //
+        return view('expenses.create')->withGroup($group)->withUsers($group->users);
     }
 
     /**
@@ -34,9 +40,30 @@ class ExpenseController extends Controller
      * @param  \App\Http\Requests\StoreExpenseRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreExpenseRequest $request)
+    public function store(StoreExpenseRequest $request,Group $group)
     {
-        //
+
+        $attributes = request()->validate([
+            'name' => ['required', Rule::exists('users', 'name')],
+            'how_much' => 'required|numeric',
+        ]);
+        $user_2 = DB::table('users')->where('name', request('name'))->first();
+        $user_1= auth()->user();
+        $expense = new Expense();
+        $expense->group_id=$group->id;
+        $expense->amount = $request->how_much;
+        $expense->item = "dsa";
+        $expense->description = "description";
+        $expense->save();
+        DB::table('expenses_user')->insert([
+            [
+            'user_1_id'=>$user_1->id,
+            'user_2_id'=>$user_2->id,
+            'expenses_id'=>$expense->id,
+            ],
+        ]);
+
+        return view('expenses.create')->withGroup($group)->withUsers($group->users);
     }
 
     /**

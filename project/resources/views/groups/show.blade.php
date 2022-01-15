@@ -2,9 +2,9 @@
 
 
     <div class="flex flex-col space-y-10 items-start" >
-            <x-group-box name="{{$group->name}}"
-                         avatar="{{asset('/storage/' . $group->avatar)}}"
-                         href="{{route('groups.show', $group)}}"/>
+        <x-group-box name="{{$group->name}}"
+                     avatar="{{asset('/storage/' . $group->avatar)}}"
+                     href="{{route('groups.show', $group)}}"/>
 
 
         <div class=" pb-2 flex justify-end mt-4">
@@ -15,7 +15,6 @@
                 </x-button>
             </form>
             <form method="post" action="{{ route('groups.destroy', $group) }}"> @csrf @method("DELETE")
-
                 <x-button class="ml-4">
                     {{ __('Delete') }}
                 </x-button>
@@ -30,11 +29,24 @@
                     </x-slot>
                 </x-floating-button>
             </div>
-{{--            <x-add-dropdown group={{ $group }} />--}}
+            {{--            <x-add-dropdown group={{ $group }} />--}}
 
             <x-add-dropdown group={{ $group }} />
         </div>
 
+        <div class="pb-2 flex justify-end mt-4">
+            <form method="get" action="{{ route('groups.expenses.index', $group)}}">
+                <x-button class="ml-4">
+                    {{ __('Check history') }}
+                </x-button>
+            </form>
+            <form method="get" action="{{ route('groups.expenses.create', $group) }}">
+                <x-button class="ml-4">
+                    {{ __('Add a new expense') }}
+                </x-button>
+            </form>
+        </div>
+
     </div>
-    <x-error name="username"/>
+
 </x-app-layout>

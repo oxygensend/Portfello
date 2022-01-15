@@ -20,18 +20,15 @@ class UsersInGroupController extends Controller {
 
             'username' => ['required', Rule::exists('users', 'name')],
         ]);
-}catch( ValidationException $e)
-{
-    return redirect(route('groups.show', $group))->with(['show'=>'true'])->withErrors($e->errors());
-}
+    }catch( ValidationException $e) {
+        return redirect(route('groups.show', $group))->with(['show'=>'true'])->withErrors($e->errors());
+    }
         $user = DB::table('users')->where('name', request('username'))->first();
-        $show = 'true';
         if ($group->users->contains($user->id)) {
            $session='fail';
            $msg= 'User ' . $user->name . ' is already in group';
         } else {
             $session = 'success';
-            $show = 'false';
             $msg =  'Request has been sent to ' . $user->name;
             $group->users()->attach($user->id);
         }
