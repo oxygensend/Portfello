@@ -32,4 +32,12 @@ Route::middleware('auth')->group(function () {
 
 
 
+
+Route::get('/edit-user','App\Http\Controllers\EditUserController@index');
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+
 require __DIR__.'/auth.php';

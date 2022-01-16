@@ -6,7 +6,7 @@
             </div>
             <div class="flex flex-col ml-4   ">
                 <p class="text">Tomasz Kurcaba</p>
-                <a href="{{}}" class="text-xs	">View profile</a>
+                <a href="{{ url('edit-user') }}" class="text-xs	">View profile</a>
             </div>
 
         </div>
