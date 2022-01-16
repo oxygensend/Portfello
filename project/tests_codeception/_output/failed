@@ -1,0 +1,6 @@
+tests_codeception/acceptance/StartCept.php
+tests_codeception/acceptance/AddingUserToGroupCest.php:BasicCheckTest
+tests_codeception/acceptance/CreateGroupTestsCest.php:noGroupsTest
+tests_codeception/acceptance/CreateGroupTestsCest.php:redirectiontest
+tests_codeception/acceptance/CreateGroupTestsCest.php:validationForCreatingGroupsTest
+tests_codeception/acceptance/CreateGroupTestsCest.php:AddGroupTest
