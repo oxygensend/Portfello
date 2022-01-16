@@ -274,11 +274,8 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-<<<<<<< Updated upstream
 INSERT INTO `users` VALUES (1,'Dr. Cedrick Feeney Jr.','test@test.com','2022-01-16 10:22:05','$2y$10$dlYXMtGrjN3y1GrI72jIlOCYZhJcCuRfeGd.CXsW4Bjrd6DUyL2F.','ZqdTxSw5Gj','2022-01-16 10:22:05','2022-01-16 10:22:05','test'),(2,'test2','test2@test.com','2022-01-16 10:22:05','$2y$10$2UCA8Mlab/gtqnM0AQuLFuwuasDFNKN0cVm03X3Zb9ZlxFuEoandG','qx2BFySFdQ','2022-01-16 10:22:05','2022-01-16 10:22:05','test');
-=======
-INSERT INTO `users` VALUES (1,'Dr. Florian Towne','test@test.com','2022-01-16 13:04:04','$2y$10$mC609r6/0U8XYZto77NAz.NhpKLzdAJUa4kAxCsMMPE9qcvPAd712','0hws5QjWFw','2022-01-16 13:04:04','2022-01-16 13:04:04','test');
->>>>>>> Stashed changes
+
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -291,8 +288,6 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-<<<<<<< Updated upstream
 -- Dump completed on 2022-01-16 11:22:05
-=======
+
 -- Dump completed on 2022-01-16 14:04:05
->>>>>>> Stashed changes
