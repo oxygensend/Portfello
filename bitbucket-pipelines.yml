@@ -14,9 +14,8 @@ pipelines:
           -   cp .env.example .env
           -   php artisan key:generate
           -   php artisan migrate:fresh
-          -   php artisan db:seed --class UserSeeder
-          -   mysqldump -h127.0.0.1 -u root --password=root123 test > tests_codeception/_data/dump.sql
           -   php artisan db:seed
+          -   mysqldump -h127.0.0.1 -u root --password=root123 test > tests_codeception/_data/dump.sql
           -   vendor/bin/phpunit --log-junit tests/_output/test_report.xml
           -   php artisan serve --port 8888 &
           -   while ! timeout 1 bash -c "echo > /dev/tcp/localhost/8888"; do echo "Waiting for server..."; sleep 1; done
