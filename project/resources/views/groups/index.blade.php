@@ -12,15 +12,7 @@
         @endforelse
 
 
-{{--        For testing  purposes--}}
-        <x-group-box name="Nazwa"></x-group-box>
-        <x-group-box name="Nazwa"></x-group-box>
-        <x-group-box name="Nazwa"></x-group-box>
-        <x-group-box name="Nazwa"></x-group-box>
-        <x-group-box name="Nazwa"></x-group-box>
-        <x-group-box name="Nazwa"></x-group-box>
-        <x-group-box name="Nazwa"></x-group-box>
-        <x-group-box name="Nazwa"></x-group-box>
+        {{ $groups->links() }}
     </div>
 
     <x-floating-button>

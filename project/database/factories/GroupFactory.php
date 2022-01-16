@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class GroupFactory extends Factory
 {
@@ -14,7 +16,9 @@ class GroupFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->company(),
+            'avatar' => '/group_avatars/default_group.png',
+            'slug'=> $this->faker->slug(),
         ];
     }
 }

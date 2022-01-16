@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="8rrzdx0YNAG8PzBS8tLX0Lu6BpoXD0mC7BK7Ddxp">
+        <meta name="csrf-token" content="TFbK8yQR9yU6njs0jZuXagHog57XFYYd6OQNJELp">
 
         <title>Portfello</title>
 
@@ -98,60 +98,42 @@
 
                     <div class="overflow-auto  padding_main_xy	flex w-full h-full">
   <main class="h-full w-full">
-                            <div class=" overflow-auto  h-full w-full">
-    <div class="overflow-auto flex flex-col space-y-10  items-start" >
+                            <div class="flex flex-col space-y-10 items-start" >
+        <div class="flex justify-center items-center space-x-10">
+<div class="w-40 h-32 rounded-md overflow-hidden ">
+    <img src="http://localhost:8888/storage//group_avatars/default_group.png" class="w-full h-full object-center object-cover" >
+</div>
+<div  class="columns-1">
+    <a  class="text-xl font-bold " href="http://localhost:8888/groups/ut-explicabo-accusantium-quos-maiores-minima">Daugherty PLC</a>
+    
+    
+</div>
+</div>
 
-                    <div class="flex justify-center items-center space-x-10">
-<div class="w-40 h-32 rounded-md overflow-hidden ">
-    <img src="http://localhost:8888/storage//group_avatars/default_group.png" class="w-full h-full object-center object-cover" >
-</div>
-<div  class="columns-1">
-    <a  class="text-xl font-bold " href="http://localhost:8888/groups/natus-doloremque-quia-et-beatae-eveniet">Rolfson-Leuschke</a>
-    
-    
-</div>
-</div>
-                    <div class="flex justify-center items-center space-x-10">
-<div class="w-40 h-32 rounded-md overflow-hidden ">
-    <img src="http://localhost:8888/storage//group_avatars/default_group.png" class="w-full h-full object-center object-cover" >
-</div>
-<div  class="columns-1">
-    <a  class="text-xl font-bold " href="http://localhost:8888/groups/iusto-ab-ad-sint-rerum-inventore-quos-distinctio-quos">Hauck Group</a>
-    
-    
-</div>
-</div>
-                    <div class="flex justify-center items-center space-x-10">
-<div class="w-40 h-32 rounded-md overflow-hidden ">
-    <img src="http://localhost:8888/storage//group_avatars/default_group.png" class="w-full h-full object-center object-cover" >
-</div>
-<div  class="columns-1">
-    <a  class="text-xl font-bold " href="http://localhost:8888/groups/facilis-velit-reiciendis-omnis-fugit-voluptas-ut">Wolff-Swaniawski</a>
-    
-    
-</div>
-</div>
-                    <div class="flex justify-center items-center space-x-10">
-<div class="w-40 h-32 rounded-md overflow-hidden ">
-    <img src="http://localhost:8888/storage//group_avatars/default_group.png" class="w-full h-full object-center object-cover" >
-</div>
-<div  class="columns-1">
-    <a  class="text-xl font-bold " href="http://localhost:8888/groups/ducimus-quod-eligendi-enim-error-totam-qui-odit">Bode-Cassin</a>
-    
-    
-</div>
-</div>
-        
 
-        
-    </div>
+        <div class=" pb-2 flex justify-end mt-4">
+            <form method="get" action="http://localhost:8888/groups/ut-explicabo-accusantium-quos-maiores-minima/edit">
 
-    <div class="absolute right-8 md:right-16 bottom-10" >
+                <button type="submit"
+       class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-amount_color  active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 ml-4">
+         Edit
+</button>
+            </form>
+            <form method="post" action="http://localhost:8888/groups/ut-explicabo-accusantium-quos-maiores-minima"> <input type="hidden" name="_token" value="TFbK8yQR9yU6njs0jZuXagHog57XFYYd6OQNJELp"> <input type="hidden" name="_method" value="DELETE">                <button type="submit"
+       class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-amount_color  active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 ml-4">
+         Delete
+</button>
+            </form>
+        </div>
+
+        <div class="absolute right-0 w-full" x-data="{ show: false }">
+            <div  class="mt-6" @click="show =! show" >
+                <div class="absolute right-8 md:right-16 bottom-10" >
 
     <button type="submit"
        class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-amount_color  active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 opacity-80 sm:opacity-100">
-         <a class="text-xl w-full h-full inline-block text-center    font-medium text-white  font-bold" href="http://localhost:8888/groups/create" >
-            Create</a>
+         <a class="text-xl w-full h-full inline-block text-center    font-medium text-white  font-bold" >
+            Add user</a>
 </button>
 
 </div>
@@ -161,8 +143,46 @@
 
 
 
+            </div>
+            
 
+            <div x-show="show" @click.away="show=false" class="right-8 px-2 py-4  absolute   md:right-16 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                  aria-orientation="vertical"  style="display:none">
+    <div class="py-1" >
+        <form method="POST" action="http://localhost:8888/groups/1/add-user">
+             <input type="hidden" name="_token" value="TFbK8yQR9yU6njs0jZuXagHog57XFYYd6OQNJELp">            <div>
+                <label class="block font-medium text-sm text-gray-700" for="username">
+    Insert username
+</label>
+                <input  class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="username" type="text" name="username" autofocus="autofocus" required="required">
+            </div>
+                            <div class="flex justify-center items-center mt-10">
+                <button type="submit"
+       class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-amount_color  active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150   font-medium font-bold" id="add">
+         Add
+</button>
+            </div>
+        </form>
 </div>
+</div>
+        </div>
+
+        <div class="pb-2 flex justify-end mt-4">
+            <form method="get" action="http://localhost:8888/groups/1/expenses">
+                <button type="submit"
+       class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-amount_color  active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 ml-4">
+         Check history
+</button>
+            </form>
+            <form method="get" action="http://localhost:8888/groups/1/expenses/create">
+                <button type="submit"
+       class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-amount_color  active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 ml-4">
+         Add a new expense
+</button>
+            </form>
+        </div>
+
+    </div>
                         </main>
 </div>
 
@@ -171,7 +191,13 @@
                 </div>
 
 
-                
+                <div class="fixed bg-gray-800 text-white py-2 px-4 rounded-xl bottom-10 right-8"
+             x-data="{show: true}"
+             x-init="setTimeout(() => show = false, 4000)"
+             x-show="show">
+            <p>Request has been sent to test2</p>
+        </div>
+
             </div>
 
 

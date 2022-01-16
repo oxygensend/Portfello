@@ -3,9 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\Group;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
-class GroupSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,9 +15,10 @@ class GroupSeeder extends Seeder
      */
     public function run()
     {
-
-        Group::factory(8)->create([
-          'user_id' => 1
+        User::factory()->create();
+        User::factory()->create([
+            'name' => 'test2',
+            'email' => 'test2@test.com'
         ]);
     }
 }

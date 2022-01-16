@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.26, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.27, for Linux (x86_64)
 --
 -- Host: 127.0.0.1    Database: test
 -- ------------------------------------------------------
@@ -265,7 +265,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_name_unique` (`name`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -274,7 +274,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Mr. Wilton Watsica','test@test.com','2022-01-15 12:15:35','$2y$10$AHJtKvUH7RJILbNLhRZJXuUjzT47rlx6p2vyb6UEznfP20bd2t3sa','NAJ9gbUWSg','2022-01-15 12:15:35','2022-01-15 12:15:35','test');
+INSERT INTO `users` VALUES (1,'Dr. Cedrick Feeney Jr.','test@test.com','2022-01-16 10:22:05','$2y$10$dlYXMtGrjN3y1GrI72jIlOCYZhJcCuRfeGd.CXsW4Bjrd6DUyL2F.','ZqdTxSw5Gj','2022-01-16 10:22:05','2022-01-16 10:22:05','test'),(2,'test2','test2@test.com','2022-01-16 10:22:05','$2y$10$2UCA8Mlab/gtqnM0AQuLFuwuasDFNKN0cVm03X3Zb9ZlxFuEoandG','qx2BFySFdQ','2022-01-16 10:22:05','2022-01-16 10:22:05','test');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -287,4 +287,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-15 13:15:36
+-- Dump completed on 2022-01-16 11:22:05

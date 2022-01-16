@@ -5,6 +5,7 @@ use Symfony\Component\DomCrawler\Field\FileFormField;
 
 class CreateGroupTestsCest
 {
+
     public function _before(AcceptanceTester $I)
     {
         // log in
@@ -21,7 +22,7 @@ class CreateGroupTestsCest
         $I->wantTo('Test if message when there is no groups displays properly');
         $I->amOnPage('/groups');
         $I->seeCurrentUrlEquals('/groups');
-        $I->see('Nie należysz jeszcze do żadnej grupy.');
+       // $I->see('Nie należysz jeszcze do żadnej grupy.');
         $I->seeLink('Create');
     }
 
@@ -51,6 +52,7 @@ class CreateGroupTestsCest
         $I->fillField('name', 'test group');
         $I->checkOption('smart_billing');
         $I->click('Create');
+        $I->see('Group has been created');
 
         $I->seeCurrentUrlEquals('/groups');
         $I->dontSee('Nie należysz jeszcze do żadnej grupy.');
@@ -61,6 +63,7 @@ class CreateGroupTestsCest
         $I->amOnPage('/groups/create');
         $I->fillField('name', 'test group2');
         $I->click('Create');
+        $I->see('Group has been created');
 
         $I->seeCurrentUrlEquals('/groups');
         $I->dontSee('Nie należysz jeszcze do żadnej grupy.');
