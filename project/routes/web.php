@@ -23,21 +23,22 @@ Route::middleware('auth')->group(function () {
     Route::resource('groups', GroupController::class)->parameters(['groups'=>'group:slug']);
     Route::resource('groups.add-user', \App\Http\Controllers\UsersInGroupController::class);
     Route::resource('groups.expenses', App\Http\Controllers\GroupExpenseController::class);
+
+    Route::post('/invites/accept/{invite}','App\Http\Controllers\InvitesController@accept')->name('invites.accept');
+    Route::delete('/invites/delete/{invite}', 'App\Http\Controllers\InvitesController@delete')->name('invites.delete');
+
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
     Route::get('/logout', 'App\Http\Controllers\LogoutController@logout');
+    Route::get('/edit-user','App\Http\Controllers\EditUserController@index');
 });
 
 
 
 
 
-Route::get('/edit-user','App\Http\Controllers\EditUserController@index');
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
 
 
 require __DIR__.'/auth.php';

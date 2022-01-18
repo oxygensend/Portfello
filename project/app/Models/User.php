@@ -60,4 +60,9 @@ class User extends Authenticatable
             'expenses_id'
         );
     }
+
+    public function invites(){
+
+        return $this->hasMany(Invites::class);
+    }
 }

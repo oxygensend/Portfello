@@ -21,6 +21,7 @@ class GroupController extends Controller {
         return view('groups.create');
     }
 
+
     public function store()
     {
         $attributes = request()->validate([
@@ -32,8 +33,9 @@ class GroupController extends Controller {
             $image = Image::make(request()->file('avatar'));
             $fileName = 'group_avatars/' . time() . '.' . request()->file('avatar')->getClientOriginalExtension();
             $image->save(storage_path('app/public/' . $fileName));
+            $fileName = 'storage/' . $fileName;
         } else {
-            $fileName = 'group_avatars/default_group.png';
+            $fileName = '/images/default_group.png';
         }
 
         $attributes['avatar'] = $fileName;
@@ -67,7 +69,7 @@ class GroupController extends Controller {
             $image = Image::make(request()->file('avatar'));
             $fileName = 'group_avatars/' . time() . '.' . request()->file('avatar')->getClientOriginalExtension();
             $image->save(storage_path('app/public/' . $fileName));
-            $group->avatar = $fileName;
+            $group->avatar = 'storage/' . $fileName;
         }
 
         $group->slug = Str::slug($attributes['name']);

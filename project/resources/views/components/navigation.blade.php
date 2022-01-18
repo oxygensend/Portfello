@@ -46,7 +46,7 @@
             </nav>
         </div></x-sidebar-padding-box>
 
-<x-sidebar-userbox></x-sidebar-userbox>
+<x-sidebar-userbox />
 
     </div>
 

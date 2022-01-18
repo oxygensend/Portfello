@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\Invites;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -26,22 +27,38 @@ class UsersInGroupController extends Controller {
 
 
         $user = DB::table('users')->where('name', request('username'))->first();
-        if ($group->users->contains($user->id)) {
-            $session = 'fail';
-            $msg = 'User ' . $user->name . ' is already in group';
-        } else {
-            $session = 'success';
-            $msg = 'Request has been sent to ' . $user->name;
-            $group->users()->attach($user->id);
-        }
+        $msg = '';
+        $session = '';
+        $this->_checkConditions($msg, $session, $group, $user);
+
         return redirect(route('groups.show', $group))->with($session, $msg);
 
     }
 
-    public
-    function destroy(Group $group, User $user)
+    public function destroy(Group $group, User $user)
     {
 
 
+    }
+
+    public function _checkConditions(&$msg, &$session, Group $group, $user)
+    {
+        if ($group->users->contains($user->id)) {
+            $session = 'fail';
+            $msg = 'User ' . $user->name . ' is already in group';
+
+        } else if (DB::table('invites')->where('user_id', $user->id)->where('group_id',$group->id)->count()) {
+            $session = 'fail';
+            $msg = 'Request has been already sent to this user.';
+        } else {
+            $session = 'success';
+            $msg = 'Request has been sent to ' . $user->name;
+            Invites::create([
+                'user_id' => $user->id,
+                'group_id' => $group->id,
+                'text' => 'Do you want to join the ' . $group->name . ' group?',
+            ]);
+
+        }
     }
 }

@@ -17,7 +17,7 @@ class GroupFactory extends Factory
     {
         return [
             'name' => $this->faker->company(),
-            'avatar' => '/group_avatars/default_group.png',
+            'avatar' => '/images/default_group.png',
             'slug'=> $this->faker->slug(),
         ];
     }

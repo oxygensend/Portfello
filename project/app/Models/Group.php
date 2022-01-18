@@ -23,6 +23,9 @@ class Group extends Model
         return $this->hasMany(Expense::class);
     }
 
+    public function invites(){
+        return $this->hasMany(Invites::class);
+    }
     public function admin()
     {
         return $this->belongsTo(User::class, 'user_id');
