@@ -8,17 +8,17 @@
 
 
         <div class=" pb-2 flex justify-end mt-4">
-            <form method="get" action="{{ route('groups.edit', $group) }}">
 
-                <x-button class="ml-4">
-                    {{ __('Edit') }}
-                </x-button>
-            </form>
-            <form method="post" action="{{ route('groups.destroy', $group) }}"> @csrf @method("DELETE")
-                <x-button class="ml-4">
-                    {{ __('Delete') }}
-                </x-button>
-            </form>
+            <x-button class="ml-4">
+                <a href="{{ route('groups.edit', $group) }}">{{ __('Edit') }}</a>
+            </x-button>
+
+            <x-action-button name="Delete"
+                             action="{{  route('groups.destroy', $group) }}"
+                             method='DELETE'
+                             class="ml-4"
+            />
+
         </div>
 
         <div class="absolute right-0 w-full" x-data="{ show: {{ session('show') ?? 'false' }} }">
@@ -31,20 +31,16 @@
             </div>
             {{--            <x-add-dropdown group={{ $group }} />--}}
 
-            <x-add-dropdown group={{ $group }} />
+            <x-add-dropdown :group=$group />
         </div>
 
         <div class="pb-2 flex justify-end mt-4">
-            <form method="get" action="{{ route('groups.expenses.index', $group)}}">
                 <x-button class="ml-4">
-                    {{ __('Check history') }}
+                    <a href="{{route('groups.expenses.index', $group)}}" >{{__('Check history') }}</a>
                 </x-button>
-            </form>
-            <form method="get" action="{{ route('groups.expenses.create', $group) }}">
                 <x-button class="ml-4">
-                    {{ __('Add a new expense') }}
+                    <a href="{{ route('groups.expenses.create', $group) }}" > {{__('Add a new expense') }}</a>
                 </x-button>
-            </form>
         </div>
 
     </div>
