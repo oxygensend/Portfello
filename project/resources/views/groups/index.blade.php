@@ -4,9 +4,9 @@
     <div class="overflow-auto flex flex-col space-y-10  items-start" >
 
         @forelse ($groups as $group)
-            <x-group-box name="{{$group->name}}"
-                         avatar="{{asset('/storage/' . $group->avatar)}}"
-                         href="{{route('groups.show', $group)}}"/>
+                <x-group-box name="{{$group->name}}"
+                            avatar="{{asset($group->avatar)}}"
+                            href="{{route('groups.show', $group)}}"/>
         @empty
             <h2 class="text-xl font-semibold">Nie należysz jeszcze do żadnej grupy. </h2>
         @endforelse

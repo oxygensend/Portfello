@@ -3,7 +3,7 @@
 
     <div class="flex flex-col space-y-10 items-start" >
         <x-group-box name="{{$group->name}}"
-                     avatar="{{asset('/storage/' . $group->avatar)}}"
+                     avatar="{{asset($group->avatar)}}"
                      href="{{route('groups.show', $group)}}"/>
 
 
