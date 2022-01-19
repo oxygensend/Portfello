@@ -13,8 +13,14 @@ class ExpenseFactory extends Factory
      */
     public function definition()
     {
+        if(rand()%2)
+            $item = "obiad";
+        else
+            $item = null;
         return [
-            //
+            'group_id' => 1,
+            'amount' => 12,
+            'item' => $item,
         ];
     }
 }
