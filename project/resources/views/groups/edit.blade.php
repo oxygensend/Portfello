@@ -47,12 +47,36 @@
                                      value=1
                             />
                         </div>
+<div class="mt-4 flex space-x-2">
 
-                        <div class="mt-4">
-                            <x-button class="mt-4 h-full text-center">
-                                Update
-                            </x-button>
-                        </div>
+        <x-button class="text-center">
+            Update
+        </x-button>
+
+        <x-action-button name="Delete"
+                         action="{{  route('groups.destroy', $group) }}"
+                         method='DELETE'
+        />
+
+
+
+
+
+</div>
+
+                            <div  x-data="{ show: {{ session('show') ?? 'false' }} }">
+                                <div  class="mt-6" @click="show =! show" >
+                                    <x-floating-button>
+                                        <x-slot name="button" class="opacity-80 sm:opacity-100"></x-slot>
+                                        <x-slot name="link" class="font-bold" > Add user
+                                        </x-slot>
+                                    </x-floating-button>
+                                </div>
+                                <x-add-dropdown group={{ $group }} />
+
+                                <x-add-dropdown :group=$group />
+
+
                     </form>
                 </div>
             </div>

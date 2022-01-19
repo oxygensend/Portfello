@@ -1,47 +1,45 @@
 <x-app-layout>
 
+<div class="w-full h-full ">
+    <div x-data class="absolute  top-16 md:top-28 right-8 md:right-16 "  @click="window.location.href='{{route('groups.edit', ['group'=>$group ]) }}'" >  <img class="w-10 h-10" src = "{{asset("/images/settings_icon.svg")}}" alt="Settings icon" @click="window.location.href='{{route('groups.edit', ['group'=>$group ]) }}'" > </div>
 
-    <div class="flex flex-col space-y-10 items-start" >
-        <x-group-box name="{{$group->name}}"
+    <div x-data>
+
+    <div class="flex flex-col space-y-10 items-center h-full w-full ">
+
+        <x-group-box          imgsize='w-72 h-52 md:w-96 md:h-72'
+            name="{{$group->name}}"
                      avatar="{{asset($group->avatar)}}"
-                     href="{{route('groups.show', $group)}}"/>
+                     href="{{route('groups.show', $group)}}"
+                     vertical='space-y-10'
+        >
+        </x-group-box>
 
 
-        <div class=" pb-2 flex justify-end mt-4">
 
-            <x-button class="ml-4">
-                <a href="{{ route('groups.edit', $group) }}">{{ __('Edit') }}</a>
-            </x-button>
+        <div class="grow  w-full">
+            <div class="items-center justify-center overflow-auto  h-full w-full flex ">
+                <div class="flex flex-col space-y-6">
 
-            <x-action-button name="Delete"
-                             action="{{  route('groups.destroy', $group) }}"
-                             method='DELETE'
-                             class="ml-4"
-            />
+
+                    @forelse ($expenses as $expense)
+                        <x-expense-box :expense="$expense"  @click="window.location.href='{{route('groups.expenses.show', ['group'=>$group ,'expense'=>$expense] ) }}'" ></x-expense-box>
+                    @empty
+                        <h2 class="text-xl font-semibold"> No expenses have been created yet</h2>
+                    @endforelse
+
+                </div>
+                </div>
+
 
         </div>
 
-        <div class="absolute right-0 w-full" x-data="{ show: {{ session('show') ?? 'false' }} }">
-            <div  class="mt-6" @click="show =! show" >
-                <x-floating-button>
-                    <x-slot name="button" class="opacity-80 sm:opacity-100"></x-slot>
-                    <x-slot name="link" class="font-bold" > Add user
-                    </x-slot>
-                </x-floating-button>
-            </div>
-            {{--            <x-add-dropdown group={{ $group }} />--}}
+        <x-floating-button>
+            <x-slot name="button" class="opacity-80 sm:opacity-100"></x-slot>
+            <x-slot name="link" class="font-bold"  href="{{ route('groups.expenses.create', $group)}}"> Add expense
+            </x-slot>
+        </x-floating-button>
 
-            <x-add-dropdown :group=$group />
-        </div>
-
-        <div class="pb-2 flex justify-end mt-4">
-                <x-button class="ml-4">
-                    <a href="{{route('groups.expenses.index', $group)}}" >{{__('Check history') }}</a>
-                </x-button>
-                <x-button class="ml-4">
-                    <a href="{{ route('groups.expenses.create', $group) }}" > {{__('Add a new expense') }}</a>
-                </x-button>
-        </div>
-
+    </div>
     </div>
 </x-app-layout>
