@@ -15,7 +15,7 @@
                 <x-label for="how_much" :value="__('How much')" />
 
                 <x-input id="how_much" class="block mt-1 w-full"
-                         type="text"
+                         type="number"
                          name="how_much"
                          :value="old('how_much')" autofocus />
             </div>

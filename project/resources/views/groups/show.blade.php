@@ -28,8 +28,10 @@
                         <h2 class="text-xl font-semibold"> No expenses have been created yet</h2>
                     @endforelse
 
+
                 </div>
                 </div>
+
 
 
         </div>

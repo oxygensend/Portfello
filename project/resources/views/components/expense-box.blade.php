@@ -16,7 +16,7 @@
 
 @php
   #if($expense->creator() == Auth::user() )
-if(false){
+if($expense->user ==Auth::user()){
         $right_uppertext="You paid ";
         $right_lowertext=$expense->amount;
         $centertext="You paid ";
@@ -28,10 +28,10 @@ if(false){
         }
 
     }else{
-        if($expense->included(Auth::user())){
+        if(Auth::user()->isIncluded($expense)  ){
 
             $right_uppertext="You borrowed ";
-            $centertext= "Tomek"  ;#$expense->creator()->name;
+            $centertext= $expense->user->name;
 
 
             if( is_null($expense->item )){
