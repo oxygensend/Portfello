@@ -14,7 +14,7 @@
         <div class="bg-white v  overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6  bg-white border-b border-gray-200">
 
-                @if($plus ->isEmpty())
+                @if($result ->isEmpty())
                     <p class="p-6">You don't have any expenses in this group.</p>
                 @else
                     <table class="min-w-full divide-y divide-gray-200">

@@ -34,7 +34,7 @@ class GroupExpenseController extends Controller
         foreach ($minus as $m)
             $m->amount= $m->amount*-1;
         $result=$plus->merge($minus);
-        return view('expenses.index',['plus'=>$plus, 'result'=>$result])->withGroup($group);
+        return view('expenses.index',['result'=>$result])->withGroup($group);
     }
 
     /**
@@ -84,7 +84,24 @@ class GroupExpenseController extends Controller
             ],
         ]);
         $expenses = Group::find($group->id)->expenses;
-        return view('expenses.index')->withGroup($group)->withExpenses($expenses);
+
+        $plus = DB::table('expenses')->where('group_id', $group->id)
+            ->join('expenses_user','expenses.id', '=', 'expenses_user.expenses_id')
+            ->join('users', 'expenses_user.user_2_id', '=', 'users.id')
+            ->where('expenses_user.user_1_id','=',auth()->user()->id)
+            ->orderBy('expenses.updated_at', 'desc')->get();
+        $minus = DB::table('expenses')->where('group_id', $group->id)
+            ->join('expenses_user', 'expenses.id', '=', 'expenses_user.expenses_id')
+            ->join('users', 'expenses_user.user_1_id', '=', 'users.id')
+            ->where('expenses_user.user_2_id','=',auth()->user()->id)
+            ->orderBy('expenses.updated_at', 'desc')
+            ->get();
+        foreach ($minus as $m)
+            $m->amount= $m->amount*-1;
+        $result=$plus->merge($minus);
+
+
+        return view('expenses.index',['result'=>$result])->withGroup($group)->withExpenses($expenses);
     }
 
     /**
