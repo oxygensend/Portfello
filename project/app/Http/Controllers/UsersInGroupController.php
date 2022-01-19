@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\InvitesStatus;
 use App\Models\Group;
 use App\Models\Invites;
 use App\Models\User;
@@ -31,6 +32,7 @@ class UsersInGroupController extends Controller {
         $session = '';
         $this->_checkConditions($msg, $session, $group, $user);
 
+        event(new InvitesStatus($user));
         return redirect(route('groups.show', $group))->with($session, $msg);
 
     }

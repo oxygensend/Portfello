@@ -16,6 +16,18 @@
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+        <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+        <script>
+
+            // Enable pusher logging - don't include this in production
+            Pusher.logToConsole = true;
+//TODO schowac ten klucz
+            var pusher = new Pusher('7245db5073bc3fafcd25', {
+                cluster: 'eu'
+            });
+
+
+        </script>
     </head>
     <body class="font-sans antialiased">
         <div class="h-screen bg-gray-100">
