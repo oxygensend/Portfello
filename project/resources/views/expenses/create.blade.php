@@ -7,18 +7,13 @@
             <div x-data="{ show_item:false}">
                 <div>
                     <x-label for="name" :value="__('Who')" />
-                    <select id="name" name="name" :value="old('name')" autofocus >
+                    <select id="name" name="name" autofocus >
                         @foreach($users as $user)
                         <option value="{{$user->name}}">{{$user->name}}</option>
                         @endforeach
                     </select>
-
-
-
-
                 </div>
                 <x-error name="name"/>
-
 
                     <x-label for="option" :value="__('How')" />
                     <select id="how" name="how" @change='event.target.value == "item" ? show_item = true : show_item = false'  >

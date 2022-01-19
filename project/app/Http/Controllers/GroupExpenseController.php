@@ -19,22 +19,10 @@ class GroupExpenseController extends Controller
      */
     public function index(Group $group)
     {
-
-        $plus = DB::table('expenses')->where('group_id', $group->id)
-            ->join('expenses_user','expenses.id', '=', 'expenses_user.expenses_id')
-            ->join('users', 'expenses_user.user_2_id', '=', 'users.id')
-            ->where('expenses_user.user_1_id','=',auth()->user()->id)
-            ->orderBy('expenses.updated_at', 'desc')->get();
-        $minus = DB::table('expenses')->where('group_id', $group->id)
-            ->join('expenses_user', 'expenses.id', '=', 'expenses_user.expenses_id')
-            ->join('users', 'expenses_user.user_1_id', '=', 'users.id')
-            ->where('expenses_user.user_2_id','=',auth()->user()->id)
-            ->orderBy('expenses.updated_at', 'desc')
-            ->get();
-        foreach ($minus as $m)
-            $m->amount= $m->amount*-1;
-        $result=$plus->merge($minus);
-        return view('expenses.index',['result'=>$result])->withGroup($group);
+        $user_expenses=auth()->user()->expenses;
+        $user_expenses->where('group_id','=',$group->id);
+        ddd($user_expenses);
+        return view('expenses.index',['result'=>$user_expenses])->withGroup($group);
     }
 
     /**
@@ -85,6 +73,12 @@ class GroupExpenseController extends Controller
         ]);
         $expenses = Group::find($group->id)->expenses;
 
+        $result=$this->my_join($group);
+        return view('expenses.index',['result'=>$result])->withGroup($group)->withExpenses($expenses);
+    }
+
+    private function my_join(Group $group){
+
         $plus = DB::table('expenses')->where('group_id', $group->id)
             ->join('expenses_user','expenses.id', '=', 'expenses_user.expenses_id')
             ->join('users', 'expenses_user.user_2_id', '=', 'users.id')
@@ -99,11 +93,9 @@ class GroupExpenseController extends Controller
         foreach ($minus as $m)
             $m->amount= $m->amount*-1;
         $result=$plus->merge($minus);
-
-
-        return view('expenses.index',['result'=>$result])->withGroup($group)->withExpenses($expenses);
+        //TODO nie dziala helpppp
+        return $result->sortBy('updated_at',SORT_REGULAR, TRUE);
     }
-
     /**
      * Display the specified resource.
      *

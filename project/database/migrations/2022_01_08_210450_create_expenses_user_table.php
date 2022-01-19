@@ -15,11 +15,9 @@ class CreateExpensesUserTable extends Migration
     {
         Schema::create('expenses_user', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_1_id');
-            $table->unsignedBigInteger('user_2_id');
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('expenses_id');
-            $table->foreign('user_1_id')->references('id')->on('users')->constrained()->cascadeOnDelete();
-            $table->foreign('user_2_id')->references('id')->on('users')->constrained()->cascadeOnDelete();
+            $table->foreign('user_id')->references('id')->on('users')->constrained()->cascadeOnDelete();
             $table->foreign('expenses_id')->references('id')->on('expenses')->constrained()->cascadeOnDelete();
         });
     }
