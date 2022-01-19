@@ -7,6 +7,7 @@
             <x-group-box name="{{$group->name}}"
                          avatar="{{asset($group->avatar)}}"
                          href="{{route('groups.show', $group)}}"/>
+
         @empty
             <h2 class="text-xl font-semibold">Nie należysz jeszcze do żadnej grupy. </h2>
         @endforelse
