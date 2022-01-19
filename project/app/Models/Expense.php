@@ -20,4 +20,20 @@ class Expense extends Model
             'expenses_id',
             'user_id');
     }
+
+
+    public function getMonth(){
+
+        return $this->created_at->format('M') ;
+        
+    }
+
+    public function getDay(){
+
+        return $this->created_at->format('j') ;
+
+    }
+
+
+
 }
