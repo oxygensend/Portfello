@@ -19,9 +19,22 @@ class GroupExpenseController extends Controller
      */
     public function index(Group $group)
     {
-        $expenses = Group::find($group->id)->expenses;
 
-        return view('expenses.index')->withGroup($group)->withExpenses($expenses);
+        $plus = DB::table('expenses')->where('group_id', $group->id)
+            ->join('expenses_user','expenses.id', '=', 'expenses_user.expenses_id')
+            ->join('users', 'expenses_user.user_2_id', '=', 'users.id')
+            ->where('expenses_user.user_1_id','=',auth()->user()->id)
+            ->orderBy('expenses.updated_at', 'desc')->get();
+        $minus = DB::table('expenses')->where('group_id', $group->id)
+            ->join('expenses_user', 'expenses.id', '=', 'expenses_user.expenses_id')
+            ->join('users', 'expenses_user.user_1_id', '=', 'users.id')
+            ->where('expenses_user.user_2_id','=',auth()->user()->id)
+            ->orderBy('expenses.updated_at', 'desc')
+            ->get();
+        foreach ($minus as $m)
+            $m->amount= $m->amount*-1;
+        $result=$plus->merge($minus);
+        return view('expenses.index',['plus'=>$plus, 'result'=>$result])->withGroup($group);
     }
 
     /**
@@ -31,7 +44,8 @@ class GroupExpenseController extends Controller
      */
     public function create(Group $group)
     {
-        return view('expenses.create')->withGroup($group)->withUsers($group->users);
+        $new_id=auth()->user()->id;
+        return view('expenses.create')->withGroup($group)->withUsers($group->users->where('id', '!=', $new_id));
     }
 
     /**
@@ -45,15 +59,22 @@ class GroupExpenseController extends Controller
 
         $attributes = request()->validate([
             'name' => ['required', Rule::exists('users', 'name')],
+            'item' => 'nullable',
             'how_much' => 'required|numeric',
+            'description'=> 'nullable',
         ]);
+
         $user_2 = DB::table('users')->where('name', request('name'))->first();
         $user_1= auth()->user();
         $expense = new Expense();
         $expense->group_id=$group->id;
-        $expense->amount = $request->how_much;
-        $expense->item = "dsa";
-        $expense->description = "description";
+
+            $expense->amount = $request->how_much;
+            $expense->item = $request ->item;
+
+
+
+        $expense->description = $request->description;
         $expense->save();
         DB::table('expenses_user')->insert([
             [
@@ -62,8 +83,8 @@ class GroupExpenseController extends Controller
             'expenses_id'=>$expense->id,
             ],
         ]);
-
-        return view('expenses.create')->withGroup($group)->withUsers($group->users);
+        $expenses = Group::find($group->id)->expenses;
+        return view('expenses.index')->withGroup($group)->withExpenses($expenses);
     }
 
     /**

@@ -3,7 +3,7 @@
         <div class="border border-gray-200  rounded-xl h-max	pt-6 pb-16 px-6  w-full  sm:w-8/12 md:w-5/12 min-w-[350px]">
 
             <form method="post" action="{{ route('groups.expenses.store', $group) }}">
-@csrf
+            @csrf
             <div x-data="{ show_item:false}">
                 <div>
                     <x-label for="name" :value="__('Who')" />
@@ -29,7 +29,20 @@
                     <x-show-item group={{ $group }} />
 
                 </div>
-                <div class="flex  items-center mt-10">
+                <div x-data="{show_description: false}" x-init="$watch('show_description', value => console.log(value) )" >
+                    <x-label for="click" :value="__('What add some description? ')"/>
+                    <input type="radio" id="click" value="true" x-model="show_description">
+
+                    <div x-show="show_description">
+                        <x-label for="description" :value="__('Add description')" />
+
+                        <x-input id="description" class="block mt-1 w-full"
+                                 type="text"
+                                 name="description"
+                                 :value="old('description')" autofocus />
+                    </div>
+                </div>
+                <div    class="flex  items-center mt-10">
                     <x-button type="submit" class="  font-medium font-bold" >
                         Confirm
                     </x-button>

@@ -19,8 +19,8 @@ class CreateExpensesTable extends Migration
             $table->unsignedBigInteger('group_id');
             $table->foreign('group_id')->references('id')->on('groups')->constrained()->cascadeOnDelete();
             $table->float('amount');
-            $table->string('item');
-            $table->string('description');
+            $table->string('item')->nullable();
+            $table->string('description')->nullable();
         });
     }
 
