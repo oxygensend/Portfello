@@ -36,9 +36,9 @@ class RegisteredUserController extends Controller
 
 
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => ['required', 'confirmed', 'min:8',Rules\Password::defaults()],
             'avatar' => 'image|mimes:jpg,png|svg|max:2048'
         ]);
 
@@ -47,10 +47,10 @@ class RegisteredUserController extends Controller
             $fileExtension = $request->file('image')->getClientOriginalExtension();
             $fileName = pathinfo($request->file('image')->getClientOriginalName(),PATHINFO_FILENAME);
             $fileNameToStore = $fileName.'_'.time().'.'.$fileExtension;
-            $request->image->move(public_path('images'),$fileNameToStore);
-            $imagePath = '/images/'.$fileNameToStore;
+            $request->image->move(storage_path('app/public/user_avatars/'),$fileNameToStore);
+            $imagePath = 'storage/user_avatars/'.$fileNameToStore;
         }else{
-            $imagePath = '/images/default_avatar.png';
+            $imagePath = '/images/default_avatar.jpg';
         }
 
         $user = User::create([

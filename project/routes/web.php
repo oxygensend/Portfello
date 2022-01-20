@@ -32,8 +32,26 @@ Route::middleware('auth')->group(function () {
     })->name('dashboard');
 
     Route::get('/logout', 'App\Http\Controllers\LogoutController@logout');
+
     Route::get('/edit-user','App\Http\Controllers\EditUserController@index');
+    Route::patch('/edit-user/change-email',[App\Http\Controllers\EditUserController::class,'ChangeEmail']);
+    Route::patch('/edit-user/change-password',[App\Http\Controllers\EditUserController::class,'ChangePassword']);
+    Route::patch('/edit-user/change-username',[App\Http\Controllers\EditUserController::class,'ChangeUsername']);
+    Route::patch('/edit-user/change-avatar',[App\Http\Controllers\EditUserController::class,'ChangeAvatar']);
 });
+
+
+    //Route::resource('/edit-user',App\Http\Controllers\EditUserController::class);
+
+
+
+
+
+
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
 
 
