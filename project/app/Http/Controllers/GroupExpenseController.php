@@ -20,8 +20,11 @@ class GroupExpenseController extends Controller
     public function index(Group $group)
     {
         $user_expenses=auth()->user()->expenses;
-        $user_expenses->where('group_id','=',$group->id);
-        ddd($user_expenses);
+        $user_expenses=$user_expenses->where('group_id','=',$group->id)
+            ->join('expenses_user', 'expenses_user.expenses_id','=','expenses.id')
+            ->users;
+        $group_expenses=$group->expenses();
+        ddd($group_expenses);
         return view('expenses.index',['result'=>$user_expenses])->withGroup($group);
     }
 
@@ -56,11 +59,8 @@ class GroupExpenseController extends Controller
         $user_1= auth()->user();
         $expense = new Expense();
         $expense->group_id=$group->id;
-
-            $expense->amount = $request->how_much;
-            $expense->item = $request ->item;
-
-
+        $expense->amount = $request->how_much;
+        $expense->item = $request ->item;
 
         $expense->description = $request->description;
         $expense->save();

@@ -16,7 +16,7 @@ class GroupSeeder extends Seeder
     public function run()
     {
 
-        Group::factory(8)->create([
+        Group::factory(4)->create([
             'user_id' => 1
         ]);
         $user=DB::table('users')->first();

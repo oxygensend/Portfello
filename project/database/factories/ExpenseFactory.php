@@ -21,6 +21,7 @@ class ExpenseFactory extends Factory
             'group_id' => 1,
             'amount' => 12,
             'item' => $item,
+            'title'=>'pIZZA TOPIA',
         ];
     }
 }

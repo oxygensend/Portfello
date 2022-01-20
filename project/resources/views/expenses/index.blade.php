@@ -1,13 +1,4 @@
 <x-app-layout >
-
-        <style>
-            .td-text-red {color: red;}
-        </style>
-
-        <style>
-            .td-text-blue {color: blue;}
-        </style>
-
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
         <div class="flex justify-center items-center w-full h-full text-2xl font-mono"> Your expenses with users in the group {{ $group->name }}</div>
        <br>

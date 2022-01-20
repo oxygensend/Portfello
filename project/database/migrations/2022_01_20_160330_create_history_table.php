@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateExpensesTable extends Migration
+class CreateHistoryTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,14 @@ class CreateExpensesTable extends Migration
      */
     public function up()
     {
-        Schema::create('expenses', function (Blueprint $table) {
+        Schema::create('history', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->unsignedBigInteger('group_id');
-            $table->foreign('group_id')->references('id')->on('groups')->constrained()->cascadeOnDelete();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id'); //owner
             $table->foreign('user_id')->references('id')->on('users')->constrained()->cascadeOnDelete();
-            $table->float('amount');
-            $table->string('item')->nullable();
-            $table->string('title');
+           $table->string('action');
+            $table->string('action_1')->nullable();
+
         });
     }
 
@@ -33,6 +31,6 @@ class CreateExpensesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('expenses');
+        Schema::dropIfExists('history');
     }
 }

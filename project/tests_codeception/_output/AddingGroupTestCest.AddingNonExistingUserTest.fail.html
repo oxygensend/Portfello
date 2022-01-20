@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="wd04dwIGo5XlIeuRZuIsHlZditxEMTlhx5C72e26">
+
+        <title>Portfello</title>
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+
+        <!-- Styles -->
+        <link rel="stylesheet" href="http://localhost:8888/css/app.css">
+
+        <!-- Scripts -->
+        <script src="http://localhost:8888/js/app.js" defer></script>
+        <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+        <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+        <script>
+
+            // Enable pusher logging - don't include this in production
+            Pusher.logToConsole = true;
+//TODO schowac ten klucz
+            var pusher = new Pusher('7245db5073bc3fafcd25', {
+                cluster: 'eu'
+            });
+
+
+        </script>
+    </head>
+    <body class="font-sans antialiased">
+        <div class="h-screen bg-gray-100">
+            <div class="relative  md:flex flex-row h-screen">
+               <!-- mobile menu bar -->
+    <div class="bg-sidebar_main_color text-gray-100 flex justify-between md:hidden">
+        <!-- logo -->
+        <a href="#" class="block p-4 text-white font-bold"> </a>
+
+        <!-- mobile menu button -->
+        <button class="mobile-menu-button p-4 focus:outline-none focus:bg-gray-700">
+            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+    </div>
+
+
+<!-- sidebar -->
+    <div class="sidebar h-full left-0 top-0 md:min-h-screen	 bg-sidebar_main_color text-blue-100 w-64 space-y-6 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out">
+<div class ="sidebar-content justify-between h-full flex flex-col	" >
+        <!-- logo -->
+
+    <div class="py-7 px-2">
+    <div class="sidebar-upper_box">
+            <a href="#" class="text-white flex items-center space-x-2 px-4">
+                <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                </svg>
+                <span class="text-2xl font-extrabold">Portfello</span>
+            </a>
+
+            <!-- nav -->
+            <nav class="mt-7">
+                <a class="block py-2.5 px-4 rounded transition duration-200 hover:text-white  hover:bg-amount_color" href="http://localhost:8888/dashboard">
+    Dashboard
+</a>
+                <a class="block py-2.5 px-4 rounded transition duration-200 hover:text-white  hover:bg-amount_color" href="http://localhost:8888/groups">
+    Groups
+</a>
+                <a class="block py-2.5 px-4 rounded transition duration-200 hover:text-white  hover:bg-amount_color" href="http://localhost:8888/dashboard">
+    History
+</a>
+                <a class="block py-2.5 px-4 rounded transition duration-200 hover:text-white  hover:bg-amount_color" href="http://localhost:8888/logout">
+    Log out
+</a>
+
+                
+
+            </nav>
+        </div>
+</div>
+
+<div class=" flex  bg-gray-800 h-32 items-center ">
+    <div class="py-7 px-2">
+    <div  class="flex items-center " >
+            <div  class=" w-16 h-16 bg-white box rounded-lg relative">
+                
+            </div>
+            <div class="flex flex-col ml-4   ">
+                <p class="text">Tomasz Kurcaba</p>
+                <a   href="http://localhost:8888/edit-user" class="text-xs	">View profile</a>
+            </div>
+
+        </div>
+</div>
+
+    <script
+        src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+        crossorigin="anonymous"></script>
+
+    <script>
+        var channel = pusher.subscribe('invites-sent');
+        channel.bind('invites-status', function(data) {
+
+            var invites_n = data['invites_n'];
+            if(invites_n){
+
+                $('#lovejs').text(invites_n);
+
+            }
+        });
+    </script>
+
+</div>
+
+    </div>
+
+
+</div>
+                <div class="w-full h-full flex flex-col">
+                    <div class="w-full bg-white h-20 flex justify-start items-center ">
+                 <h2 class=" margin_main_x text-3xl tracking-wide font-bold text"> Dashboard</h2>
+
+                    </div>
+
+                    <div class="overflow-auto  padding_main_xy	flex w-full h-full">
+  <main class="h-full w-full">
+                            <div class=" overflow-auto  h-full w-full">
+    <div class="overflow-auto flex flex-col space-y-10  items-start" >
+
+                    <div class="flex justify-center items-center space-x-10">
+<div class="w-40 h-32 rounded-md overflow-hidden ">
+    <img src="http://localhost:8888/images/default_group.png" class="w-full h-full object-center object-cover" >
+</div>
+<div  class="columns-1">
+    <a  class="text-xl font-bold " href="http://localhost:8888/groups/tempore-ipsum-placeat-dolorum-consequatur-explicabo-saepe">Rowe-Wehner</a>
+    
+    
+</div>
+</div>
+
+                    <div class="flex justify-center items-center space-x-10">
+<div class="w-40 h-32 rounded-md overflow-hidden ">
+    <img src="http://localhost:8888/images/default_group.png" class="w-full h-full object-center object-cover" >
+</div>
+<div  class="columns-1">
+    <a  class="text-xl font-bold " href="http://localhost:8888/groups/sed-qui-architecto-voluptatibus-voluptatibus-qui">Donnelly-Prosacco</a>
+    
+    
+</div>
+</div>
+
+                    <div class="flex justify-center items-center space-x-10">
+<div class="w-40 h-32 rounded-md overflow-hidden ">
+    <img src="http://localhost:8888/images/default_group.png" class="w-full h-full object-center object-cover" >
+</div>
+<div  class="columns-1">
+    <a  class="text-xl font-bold " href="http://localhost:8888/groups/nemo-sit-voluptas-et-est-consequatur">Beer, O&amp;#039;Conner and Stracke</a>
+    
+    
+</div>
+</div>
+
+                    <div class="flex justify-center items-center space-x-10">
+<div class="w-40 h-32 rounded-md overflow-hidden ">
+    <img src="http://localhost:8888/images/default_group.png" class="w-full h-full object-center object-cover" >
+</div>
+<div  class="columns-1">
+    <a  class="text-xl font-bold " href="http://localhost:8888/groups/error-ex-animi-nisi-minus-facere-sed">Bayer Inc</a>
+    
+    
+</div>
+</div>
+
+                    <div class="flex justify-center items-center space-x-10">
+<div class="w-40 h-32 rounded-md overflow-hidden ">
+    <img src="http://localhost:8888/images/default_group.png" class="w-full h-full object-center object-cover" >
+</div>
+<div  class="columns-1">
+    <a  class="text-xl font-bold " href="http://localhost:8888/groups/est-similique-sed-dolore-quia-rem-praesentium">Schneider, Schroeder and Harris</a>
+    
+    
+</div>
+</div>
+
+        
+
+        <nav role="navigation" aria-label="Pagination Navigation" class="flex items-center justify-between">
+        <div class="flex justify-between flex-1 sm:hidden">
+                            <span class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 rounded-md">
+                    &laquo; Previous
+                </span>
+            
+                            <a href="http://localhost:8888/groups?page=2" class="relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 rounded-md hover:text-gray-500 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
+                    Next &raquo;
+                </a>
+                    </div>
+
+        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+            <div>
+                <p class="text-sm text-gray-700 leading-5">
+                    Showing
+                                            <span class="font-medium">1</span>
+                        to
+                        <span class="font-medium">5</span>
+                                        of
+                    <span class="font-medium">9</span>
+                    results
+                </p>
+            </div>
+
+            <div>
+                <span class="relative z-0 inline-flex shadow-sm rounded-md">
+                    
+                                            <span aria-disabled="true" aria-label="&amp;laquo; Previous">
+                            <span class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default rounded-l-md leading-5" aria-hidden="true">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                        </span>
+                    
+                    
+                                            
+                        
+                        
+                                                                                                                        <span aria-current="page">
+                                        <span class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5">1</span>
+                                    </span>
+                                                                                                                                <a href="http://localhost:8888/groups?page=2" class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 hover:text-gray-500 focus:z-10 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150" aria-label="Go to page 2">
+                                        2
+                                    </a>
+                                                                                                        
+                    
+                                            <a href="http://localhost:8888/groups?page=2" rel="next" class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md leading-5 hover:text-gray-400 focus:z-10 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150" aria-label="Next &amp;raquo;">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                                    </span>
+            </div>
+        </div>
+    </nav>
+
+    </div>
+
+    <div class="absolute right-8 md:right-16 bottom-10" >
+
+    <button type="submit"
+       class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-amount_color  active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 opacity-80 sm:opacity-100">
+         <a class="text-xl w-full h-full inline-block text-center    font-medium text-white  font-bold" href="http://localhost:8888/groups/create" >
+            Create</a>
+</button>
+
+</div>
+
+
+
+
+
+
+
+</div>
+                        </main>
+</div>
+
+
+
+                </div>
+
+
+                <div class="fixed bg-gray-800 text-white py-2 px-4 rounded-xl bottom-10 right-8"
+             x-data="{show: true}"
+             x-init="setTimeout(() => show = false, 4000)"
+             x-show="show">
+            <p>Group has been created</p>
+        </div>
+
+            </div>
+
+
+            <!-- Page Heading -->
+
+
+
+
+
+
+            <!-- Page Content -->
+
+
+
+        </div>
+
+    </body>
+</html>
