@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use \Illuminate\Validation\ValidationException;
-
+use Illuminate\Support\Facades\File;
 
 
 
@@ -87,6 +87,8 @@ class EditUserController extends Controller{
         $fileNameToStore = $fileName.'_'.time().'.'.$fileExtension;
         request()->image->move(storage_path('app/public/user_avatars/'),$fileNameToStore);
         $imagePath = 'storage/user_avatars/'.$fileNameToStore;
+
+        File::delete($user->avatar);
 
         $user->avatar = $imagePath;
 

@@ -50,7 +50,7 @@ class RegisteredUserController extends Controller
             $request->image->move(storage_path('app/public/user_avatars/'),$fileNameToStore);
             $imagePath = 'storage/user_avatars/'.$fileNameToStore;
         }else{
-            $imagePath = '/images/default_avatar.png';
+            $imagePath = '/images/default_avatar.jpg';
         }
 
         $user = User::create([
