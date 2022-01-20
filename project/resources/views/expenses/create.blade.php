@@ -56,15 +56,23 @@
                                 <div
                                     class="w-full 	 flex-auto overflow-y-auto flex flex-col  justify-center items-center space-y-4 scroll-pt-2 ">
 
-                                    <x-user-checkbox></x-user-checkbox>
-                                    <x-user-checkbox></x-user-checkbox>
-                                    <x-user-checkbox></x-user-checkbox>
-                                    <x-user-checkbox></x-user-checkbox>
-                                    <x-user-checkbox></x-user-checkbox>
-                                    <x-user-checkbox></x-user-checkbox>
-                                    <x-user-checkbox></x-user-checkbox>
-                                    <x-user-checkbox></x-user-checkbox>
+                                    <x-checkbox_wrapper>
+                                        <x-label for="all" class="text-lg font-bold">All users</x-label>
 
+                                        <x-input  id="all" class="block ml-4"
+                                                  type="checkbox"
+                                                  name="all"
+                                                  checked />
+
+                                    </x-checkbox_wrapper>
+
+
+                                    @foreach($group->users as $user)
+                                        <x-checkbox_wrapper>
+                                            <x-user-checkbox :id="$loop->index"  :user="$user" class="user_checkbox"></x-user-checkbox>
+                                        </x-checkbox_wrapper>
+
+                                        @endforeach
 
                                 </div>
 
@@ -91,6 +99,44 @@
                         document.getElementById("button_select_confirm").addEventListener("click", function (event) {
                             event.preventDefault()
                         });
+//TODO
+                        n_of_checkboxes={!! json_encode(sizeof( $group->users)) !!};
+                        n_of_checked=n_of_checkboxes;
+
+
+                        var user_checkboxes=document.getElementsByClassName("user_checkbox");
+
+
+                       all_checkbox= document.getElementById("all");
+                        all_checkbox.addEventListener("click", function (event) {
+
+
+                            for (const checkbox of user_checkboxes) {
+                                checkbox.checked= all_checkbox.checked;
+                            }
+                            n_of_checked=n_of_checkboxes;
+                        });
+
+                        for (const checkbox of user_checkboxes) {
+                            checkbox.addEventListener('click',function (event){
+                                if(checkbox.checked){
+
+                                    if(n_of_checked<n_of_checkboxes)n_of_checked+=1;
+                                }else{
+
+                                    if(n_of_checked>0) n_of_checked-=1;
+                                }
+                                // console.log(n_of_checkboxes);
+                                // console.log(n_of_checked);
+
+                                all_checkbox.checked=(n_of_checked== n_of_checkboxes);
+                            });
+                        }
+
+
+
+
+
 
                     </script>
 

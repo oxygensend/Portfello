@@ -1,7 +1,8 @@
-<div class="flex w-full justify-between items-center  ">
-    <x-label for="user " class="text-lg">Tomasz abacruk </x-label>
-    <x-input  id="user" class="block ml-4"
+@props(['user', 'id'=>0])
+    <x-label for="{{$user->name . $id}}" class="text-lg">{{$user->name}}</x-label>
+
+    <x-input  {{ $attributes->merge(['class' => 'block ml-4']) }} id="{{$user->name . $id}}"
               type="checkbox"
-              name="description"
+              name="users_selected[]"
               checked />
-</div>
+
