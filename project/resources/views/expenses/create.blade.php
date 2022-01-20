@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        {{$group->name . ' - create new expense'}}
+        <a href="{{ route('groups.show', $group) }}">{{$group->name}}</a>
     </x-slot>
     <div class="flex justify-center items-center w-full h-full">
         <div class="border border-gray-200  rounded-xl h-max	pt-6 pb-16 px-6  w-full  sm:w-8/12 md:w-5/12 min-w-[350px]">

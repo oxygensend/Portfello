@@ -17,6 +17,10 @@
         <script src="{{ asset('js/app.js') }}" defer></script>
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
         <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+        <script
+            src="https://code.jquery.com/jquery-3.6.0.js"
+            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+            crossorigin="anonymous"></script>
         <script>
 
             // Enable pusher logging - don't include this in production
@@ -29,9 +33,9 @@
 
         </script>
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-sans antialiased ">
         <div class="h-screen bg-gray-100">
-            <div class="relative  md:flex flex-row h-screen">
+            <div class="relative  md:flex flex-row h-screen ">
                <x-navigation />
                 <div class="w-full h-full flex flex-col">
                     <div class="w-full bg-white h-20 flex justify-start items-center ">

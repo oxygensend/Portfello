@@ -17,6 +17,8 @@ class EditUserController extends Controller{
     public function index(){
 
         $invites = DB::table('invites')->where('user_id',Auth::user()->id)->get();
+        DB::table('invites')->where('user_id', auth()->user()->id)
+            ->where('displayed', False)->update(['displayed'=>True]);
 
         return view('edit-user', ['invites' => $invites,'user' => Auth::user()]);
 
@@ -82,11 +84,9 @@ class EditUserController extends Controller{
             return redirect('/edit-user')->with(['show' => 'true'])->withErrors($e->errors());
         }
 
-        $fileExtension = request()->file('image')->getClientOriginalExtension();
-        $fileName = pathinfo(request()->file('image')->getClientOriginalName(),PATHINFO_FILENAME);
-        $fileNameToStore = $fileName.'_'.time().'.'.$fileExtension;
-        request()->image->move(storage_path('app/public/user_avatars/'),$fileNameToStore);
-        $imagePath = 'storage/user_avatars/'.$fileNameToStore;
+        $fileName =  time() . '.' . request()->file('image')->getClientOriginalExtension();
+        request()->image->move(storage_path('app/public/user_avatars/'),$fileName);
+        $imagePath = '/storage/user_avatars/'.$fileName;
 
         File::delete($user->avatar);
 

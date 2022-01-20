@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        {{$group->name}}
+        <a href="{{ route('groups.show', $group) }}">{{$group->name}}</a>
     </x-slot>
     <div class="w-full h-full ">
         <div x-data class="absolute  top-16 md:top-28 right-8 md:right-16 "
@@ -15,7 +15,7 @@
 
             <div class="flex flex-col space-y-10 items-center h-full w-full ">
 
-                <x-group-box imgsize='w-72 h-52 md:w-96 md:h-72'
+                <x-group-box imgsize=' w-72 h-72 md:w-72 md:h-72'
                              name="{{$group->name}}"
                              avatar="{{asset($group->avatar)}}"
                              href="{{route('groups.show', $group)}}"

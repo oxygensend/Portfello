@@ -1,7 +1,7 @@
 <x-app-layout>
 
     <x-slot name="header">
-        Groups
+        <a href="{{ route('groups.index') }}">Groups</a>
     </x-slot>
 
     <div class=" overflow-auto  h-full w-full">

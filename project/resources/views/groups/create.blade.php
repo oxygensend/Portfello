@@ -18,15 +18,15 @@
 
         <x-error name="name"/>
 
-        <div class="mt-4 w-max">
-            <x-label for="avatar" :value="__('Avatar')" />
 
-            <x-input id="avatar" class="p-2 border border-gray-400 rounded w-full bg-white"
+            <x-label  class="mt-4" for="avatar" :value="__('Avatar')" />
+            <div class="mt-4 flex items-center ">
+            <x-image id="preview_avatar" src="/images/default_group.png" properties="w-32 h-32 box relative" />
+            <x-input id="avatar" class="ml-4 p-2 h-10  border border-gray-400 rounded  bg-white"
                             type="file"
                             name="avatar"
-                            :value="old('avatar')"
                             />
-        </div>
+            </div>
 
         <x-error name="avatar"/>
 
@@ -50,4 +50,15 @@
 
 </div>
 </div>
+     <script type="text/javascript">
+    $('#avatar').change(function(){
+
+    let reader = new FileReader();
+    reader.onload = (e) => {
+      $('#preview_avatar').attr('src', e.target.result);
+    }
+    reader.readAsDataURL(this.files[0]);
+
+   });
+  </script>
 </x-app-layout>

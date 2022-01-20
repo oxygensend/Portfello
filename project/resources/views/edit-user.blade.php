@@ -64,25 +64,25 @@
                             </div>
                             <div>
                                 <x-label class="block text-sm font-medium text-gray-700">
-                                    Avatar
+                                    Update Avatar
                                 </x-label>
 
-                                <div class="mt-1 flex items-center">
-                                        <x-image src="{{ asset($user->avatar) }}" properties="w-16 h-16 box relative" />
+
                                     <form method="POST" action="/edit-user/change-avatar" enctype="multipart/form-data">
                                         @csrf
                                         @method("PATCH")
-                                        <x-label class="p-2" for="image" :value="__('Update Avatar ')" />
-                                        <x-input id="image" class="inline-block mt-1"
+                                        <div class="flex items-center">
+                                            <x-image id="image_preview" src="{{ asset($user->avatar) }}" properties=" mt-1 w-16 h-16 box relative" />
+                                        <x-input id="image" class="ml-2 inline-block mt-1"
                                                  type="file"
                                                  name="image" />
-
-                                        <x-button type="submit">
+                                        </div>
+                                        <x-button class="mt-3" type="submit">
                                             Upload
                                         </x-button>
                                         <x-error name="image"/>
                                     </form>
-                                </div>
+
 
                             </div>
                                 <form method="POST" action="/edit-user/change-password">
@@ -142,5 +142,15 @@
                 </div>
             </div>
         </div>
+    <script type="text/javascript">
+        $('#image').change(function(){
 
+            let reader = new FileReader();
+            reader.onload = (e) => {
+                $('#image_preview').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(this.files[0]);
+
+        });
+    </script>
 </x-app-layout>

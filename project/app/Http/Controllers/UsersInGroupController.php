@@ -23,7 +23,7 @@ class UsersInGroupController extends Controller {
                 'username' => ['required', Rule::exists('users', 'name')],
             ]);
         } catch (ValidationException $e) {
-            return redirect(route('groups.show', $group))->with(['show' => 'true'])->withErrors($e->errors());
+            return redirect(route('groups.edit', $group))->with(['show' => 'true'])->withErrors($e->errors());
         }
 
 
@@ -33,7 +33,7 @@ class UsersInGroupController extends Controller {
         $this->_checkConditions($msg, $session, $group, $user);
 
         event(new InvitesStatus($user));
-        return redirect(route('groups.show', $group))->with($session, $msg);
+        return redirect(route('groups.edit', $group))->with($session, $msg);
 
     }
 

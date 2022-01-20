@@ -49,10 +49,13 @@
 
             <div class="mt-4">
                 <x-label for="image" :value="__('Upload Your Avatar (optional)')" />
+                <div class="flex items-center">
+                    <x-image id="image_preview" src="/images/default_avatar.jpg" properties=" mt-1 w-16 h-16 box relative" />
+                    <x-input id="image" class="ml-2  mt-2 w-40"
+                             type="file"
+                             name="image" />
+                </div>
 
-                <x-input id="image" class="block mt-1 w-full"
-                         type="file"
-                         name="image" />
             </div>
 
 
@@ -67,5 +70,17 @@
                 </x-button>
             </div>
         </form>
+        <script type="text/javascript">
+            $('#image').change(function(){
+
+                let reader = new FileReader();
+                reader.onload = (e) => {
+                    $('#image_preview').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(this.files[0]);
+
+            });
+        </script>
     </x-auth-card>
+
 </x-guest-layout>

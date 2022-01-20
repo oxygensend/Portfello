@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        {{$group->name . ' - settings'}}
+        <a href="{{ route('groups.show', $group) }}">{{$group->name}}</a>
     </x-slot>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -12,7 +12,7 @@
 
                         @csrf
                         @method("PUT")
-                        <div>
+                        <div >
                             <x-label for="name" :value="__('Change name')"/>
 
                             <x-input id="name" class="block mt-1 w-full"
@@ -23,10 +23,10 @@
 
                         <x-error class="mb-4" name="name"/>
 
-                        <div class="mt-4">
-                            <x-label for="avatar" :value="__('Change avatar')"/>
-
-                            <x-input id="avatar" class="p-2 border border-gray-400 rounded w-full bg-white"
+                            <x-label class="mt-4" for="avatar" :value="__('Change avatar')"/>
+                        <div class="mt-4 flex items-center ">
+                            <x-image id="preview_avatar" src="{{ asset($group->avatar) }}" properties="w-32 h-32 box relative" />
+                            <x-input id="avatar" class="ml-4 p-2 h-10  border border-gray-400 rounded  bg-white"
                                      type="file"
                                      name="avatar"
                                      :value="old('avatar')"
@@ -69,7 +69,6 @@
                     </div>
                     <x-add-dropdown group={{ $group }} />
 
-                    <x-add-dropdown :group=$group/>
 
 
                     </form>
@@ -77,4 +76,15 @@
             </div>
         </div>
     </div>
+      <script type="text/javascript">
+    $('#avatar').change(function(){
+
+    let reader = new FileReader();
+    reader.onload = (e) => {
+      $('#preview_avatar').attr('src', e.target.result);
+    }
+    reader.readAsDataURL(this.files[0]);
+
+   });
+  </script>
 </x-app-layout>
