@@ -39,7 +39,7 @@
                <x-navigation />
                 <div class="w-full h-full flex flex-col">
                     <div class="w-full bg-white h-20 flex justify-start items-center ">
-                 <h2 class=" margin_main_x text-3xl tracking-wide font-bold text">{{ $header }}</h2>
+                 <h2 class=" margin_main_x text-3xl tracking-wide font-bold text">{{ $header ??"" }}</h2>
 {{--TODO:title--}}
                     </div>
 

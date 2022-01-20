@@ -46,35 +46,43 @@ class GroupExpenseController extends Controller
     {
 
         $attributes = request()->validate([
-            'name' => ['required', Rule::exists('users', 'name')],
+            'description' => 'required',
+//             Rule::exists('users', 'name')
             'item' => 'nullable',
-            'how_much' => 'required|numeric',
-            'description'=> 'nullable',
-        ]);
+            'how_much' => 'required | numeric',
 
-        $user_2 = DB::table('users')->where('name', request('name'))->first();
+        ]);
+//        ddd('dumping this one', $request);
+
+        $selected_users=$request->selected_users;
+
+
         $user_1= auth()->user();
         $expense = new Expense();
         $expense->group_id=$group->id;
-
-            $expense->amount = $request->how_much;
-            $expense->item = $request ->item;
-
-
-
+        $expense->user_id=$user_1->id;
+        $expense->amount = $request->how_much;
+        $expense->item = $request ->item;
         $expense->description = $request->description;
         $expense->save();
-        DB::table('expenses_user')->insert([
-            [
-            'user_1_id'=>$user_1->id,
-            'user_2_id'=>$user_2->id,
-            'expenses_id'=>$expense->id,
-            ],
-        ]);
-        $expenses = Group::find($group->id)->expenses;
 
-        $result=$this->my_join($group);
-        return view('expenses.index',['result'=>$result])->withGroup($group)->withExpenses($expenses);
+
+        foreach ($selected_users as $user_id){
+
+            DB::table('expenses_user')->insert([
+                [
+
+                    'user_id'=>$user_id,
+                    'expenses_id'=>$expense->id,
+                ],
+            ]);
+
+
+        }
+        $expenses = Group::find($group->id)->expenses;
+//        $result=$this->my_join($group);
+
+        return view('groups.show ')->withGroup($group)->withExpenses($expenses);
     }
 
     private function my_join(Group $group){

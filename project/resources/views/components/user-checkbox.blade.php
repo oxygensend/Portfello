@@ -3,6 +3,7 @@
 
     <x-input  {{ $attributes->merge(['class' => 'block ml-4']) }} id="{{$user->name . $id}}"
               type="checkbox"
-              name="users_selected[]"
+              value="{{$user->id}}"
+              name="selected_users[]"
               checked />
 
