@@ -16,7 +16,7 @@ class ExpenseFactory extends Factory
 
         return [
                 'group_id'=>'1',
-                'creator'=>1,
+                'user_id'=>1,
         ];
     }
 }

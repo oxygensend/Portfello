@@ -18,8 +18,8 @@ class CreateExpensesTable extends Migration
             $table->timestamps();
             $table->unsignedBigInteger('group_id');
             $table->foreign('group_id')->references('id')->on('groups')->constrained()->cascadeOnDelete();
-            $table->unsignedBigInteger('creator');
-            $table->foreign('creator')->references('id')->on('users')->constrained()->cascadeOnDelete();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->constrained()->cascadeOnDelete();
         });
     }
 

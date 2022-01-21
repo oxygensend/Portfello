@@ -19,7 +19,7 @@ class ExpenseSeeder extends Seeder
         $user=DB::table('users')->first();
         $expense=Expense::factory()->create([
             'group_id' => $group->id,
-            'creator'=>$user->id,
+            'user_id'=>$user->id,
         ]);
         $id=1;
         DB::table('expenses_histories')->insert([
@@ -48,7 +48,7 @@ class ExpenseSeeder extends Seeder
         ]);
         $expense=Expense::factory()->create([
             'group_id' => $group->id,
-            'creator'=>$user->id+1,
+            'user_id'=>$user->id+1,
         ]);
         $id=2;
         DB::table('expenses_histories')->insert([
@@ -77,7 +77,7 @@ class ExpenseSeeder extends Seeder
 
         $expense=Expense::factory()->create([
             'group_id' => $group->id,
-            'creator'=>$user->id+2,
+            'user_id'=>$user->id+2,
         ]);
         $id=3;
         DB::table('expenses_histories')->insert([

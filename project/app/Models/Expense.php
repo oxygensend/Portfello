@@ -18,7 +18,7 @@ class Expense extends Model
     }
 
 //last history
-    public function expense_history(){
+    public function latest_history(){
 
         return $this->histories()->orderByDesc('created_at')->where('action','!=', '3');
 
@@ -36,7 +36,7 @@ class Expense extends Model
 
     public function user(){
         return $this->belongsTo(
-            User::class,'creator','id');
+            User::class);
     }
 
     public function getMonth(){

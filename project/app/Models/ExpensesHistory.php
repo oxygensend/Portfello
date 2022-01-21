@@ -45,7 +45,10 @@ return $this->expense->user();
     }
 
     public function group(){
-        return $this->expense->group();
+        return $this->expense->group
+
+
+        ();
 
     }
     public function getDay(){

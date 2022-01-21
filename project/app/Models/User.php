@@ -68,10 +68,44 @@ class User extends Authenticatable
 
     public function isIncluded(ExpensesHistory $expense_history){
 
-//        return $this->getUserContribution == 0;
+    return $expense_history->users()->contains($this);
 //    TODO
-    return true;
+
     }
+
+    public function userContribution(ExpensesHistory $expense_history){
+
+       return 10;
+//    TODO
+
+    }
+
+    public function owes(ExpensesHistory $expense_history){
+
+
+        $amount=$this->userContribution();
+
+                if(!is_null($expense_history->item )){
+                    return   $amount." " . $expense_history->item ;
+                }else{
+
+                    return  $amount;
+                }
+
+    }
+
+    public function getBack(ExpensesHistory $expense_history){
+
+       $amount=$expense_history->amount - $this->userContribution($expense_history);
+        if(!is_null($expense_history->item )){
+            return   $amount." " . $expense_history->item ;
+        }else{
+
+            return  $amount;
+        }
+    }
+
+
 
 
 
