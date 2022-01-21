@@ -155,8 +155,8 @@ class User extends Authenticatable
                 '=','expenses_histories.id')
             ->join('expenses','expenses_histories.expense_id',
                 '=','expenses.id')
-            ->get();
-        return($contribution);
+            ->sum('user_contribution');
+        return($amount-$contribution);
 
     }
 
