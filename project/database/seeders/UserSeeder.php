@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
     {
         $user=User::factory()->create();
         $user=User::factory()->create([
-            'name' => 'test2',
+            'name' => 'Szymon Berdzik',
             'email' => 'test2@test.com'
         ]);
 
@@ -26,6 +26,11 @@ class UserSeeder extends Seeder
             'name' => 'Daniel Definski',
             'email' => 'test3@test.com'
         ]);
+        $user=User::factory()->create([
+            'name' => 'Jakub Machalica',
+            'email' => 'test4@test.com'
+        ]);
+
 
     }
 }
