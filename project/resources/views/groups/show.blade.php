@@ -31,7 +31,7 @@
 
                             @forelse ($expenses_history as $expense_history)
                                 @php
-                                   # ddd($expense_history);
+                                  # ddd($expense_history);
                                 @endphp
                                 <x-expense-box :expense="$expense_history"
                                                @click="window.location.href='{{route('groups.expenses.show', ['group'=>$group ,'expense'=>$expense_history] ) }}'"></x-expense-box>
