@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -14,6 +15,10 @@ class DashboardController extends Controller
      */
     public function __invoke(Request $request)
     {
-        return view('dashboard');
+        $groups=\Auth::user()->active_groups();
+
+        return view('dashboard')->withGroups( $groups);
     }
+
+
 }

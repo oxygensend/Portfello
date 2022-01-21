@@ -4,6 +4,8 @@
     $group= $group  ?? null
 @endphp
 
+<div class="flex justify-start flex-col  border-gray-200 py-2 px-4 rounded-xl">
+    <div class=" mb-2"> <span class="font-semibold" >{{$expense->user->name}}</span> {{$expense->getStringAction()  }} expense</div>
 <div {{ $attributes->merge(['class' => 'flex flex-row space-x-8 items-center bg-sidebar_main_color opacity-90 py-3 px-4 rounded-md text-white' ] ) }} >
 
     <div class="flex flex-col ">
@@ -65,7 +67,7 @@
         <div class="flex justify-start space-x-6 ">
 
             <div class="flex flex-col w-64 ">
-                <h2 class="text-xl truncate">{{Str::limit ("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",40 )}}</h2>
+                <h2 class="text-xl truncate">{{Str::limit ($expense->title ,40 )}}</h2>
                 <h3 class="text-lg ">{{ Str::limit($centertext,40)  }}</h3>
             </div>
 
@@ -80,4 +82,5 @@
             </div>
         </div>
     </div>
+</div>
 </div>

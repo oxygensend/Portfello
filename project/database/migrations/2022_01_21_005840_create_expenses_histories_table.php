@@ -22,6 +22,7 @@ class CreateExpensesHistoriesTable extends Migration
             $table->double('amount');
             $table->string('item')->nullable();
             $table->string('title');
+            $table->boolean('isLatest')->default(true);
 
         });
     }

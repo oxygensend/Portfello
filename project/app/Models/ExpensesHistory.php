@@ -59,6 +59,12 @@ return $this->expense->user();
         ();
 
     }
+    public function getStringAction(){
+
+        $actions= [1=>'added' ,'edited', 'deleted'];
+        return $actions[$this->action];
+
+}
     public function getDay(){
 
         if(empty($this->created_at))return "None";

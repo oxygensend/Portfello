@@ -10,12 +10,17 @@
             @forelse ($groups as $group)
                 <x-group-box name="{{$group->name}}"
                              avatar="{{asset($group->avatar)}}"
-                             href="{{route('groups.show', $group)}}"/>
+                             href="{{route('groups.show', $group)}}"
+                :group="$group"
+                />
 
+
+{{--                <h2> {{Auth::user->balancePaymentInGroup( $group)}}</h2>--}}
             @empty
                 <h2 class="text-xl font-semibold">Nie należysz jeszcze do żadnej grupy. </h2>
             @endforelse
-            {{ $groups->links() }}
+{{--            TODO--}}
+{{--            {{ $groups->links() }}--}}
         </div>
 
         <x-floating-button>

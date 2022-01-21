@@ -20,6 +20,7 @@
                              avatar="{{asset($group->avatar)}}"
                              href="{{route('groups.show', $group)}}"
                              vertical='space-y-10'
+                             :group="$group"
                 >
                 </x-group-box>
 

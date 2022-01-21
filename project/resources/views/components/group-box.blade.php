@@ -1,11 +1,13 @@
 
-@props(['name', 'avatar', 'imgsize'=>'w-40 h-40' , 'vertical'])
+@props(['group', 'avatar', 'imgsize'=>'w-40 h-40' , 'vertical'])
 
-<div class="flex justify-center items-center space-x-10 {{ isset($vertical) ? "flex-col $vertical":'' }}">
+<div class="flex justify-center items-center  {{ isset($vertical) ? "flex-col $vertical items-center justify-center ":'space-x-10' }}">
     <x-image src="{{ $avatar ?? '' }}" properties="{{$imgsize}} rounded-xl overflow-hidden" />
-    <div  class="columns-1">
-        <a  class="text-xl font-bold " {{ $attributes }}>{{ $name ?? '' }}</a>
-        {{-- <p class="text-amount_color font-semibold">Your are owed 400</p> --}}
-        {{-- <p>Kuba owes you </p> --}}
+
+    <div  class="columns-1 flex flex-col space-y-4 {{ isset($vertical) ? " items-center":'' }} ">
+        <a  class="text-2xl font-bold " {{ $attributes }}>{{ $group->name ?? '' }}</a>
+        <p class="text-xl">Your balance:  {{Auth::user()->getGroupBilance( $group) }} </p>
+
+
     </div>
 </div>
