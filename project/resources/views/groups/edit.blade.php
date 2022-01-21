@@ -67,7 +67,7 @@
                             </x-slot>
                         </x-floating-button>
                     </div>
-                    <x-add-dropdown group={{ $group }} />
+                    <x-add-dropdown :group="$group" />
 
 
 

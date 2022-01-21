@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -61,6 +62,12 @@ class User extends Authenticatable
         );
     }
 
+    public function payments_executed(){
+        return $this->hasMany(Payment::class, 'user_1_id');
+    }
+    public function payments_recived(){
+        return $this->hasMany(Payment::class, 'user_2_id');
+    }
     public function invites(){
 
         return $this->hasMany(Invites::class);
@@ -106,8 +113,52 @@ class User extends Authenticatable
     }
 
 
+    public function whomOwe(Group $group){
+         $users_id = DB::table('expenses_user')
+            ->where('expenses_user.user_id', $this->id)
+            ->join('expenses_histories','expenses_user.expenses_history_id',
+                '=','expenses_histories.id')
+            ->join('expenses','expenses_histories.expense_id',
+                '=','expenses.id')
+             ->pluck('expenses.user_id')->toArray();
 
+         return User::whereIn('id',$users_id)->get();
 
+    }
+
+    public function getGroupBilance(Group $group){
+
+        $amount = ExpensesHistory::whereHas('expense', function($q) use ($group) {
+            $q->where('user_id', $this->id);
+            $q->where('group_id', $group->id);
+        })->sum('amount');
+
+        $contribution = DB::table('expenses_user')
+            ->where('expenses_user.user_id', $this->id)
+            ->join('expenses_histories','expenses_user.expenses_history_id',
+                '=','expenses_histories.id')
+            ->join('expenses','expenses_histories.expense_id',
+                '=','expenses.id')
+            ->where('group_id', $group->id)->sum('user_contribution');
+        return($amount - $contribution);
+
+    }
+
+    public  function getBilance(){
+        $amount = ExpensesHistory::whereHas('expense', function($q)  {
+            $q->where('user_id', $this->id);
+        })->sum('amount');
+
+        $contribution = DB::table('expenses_user')
+            ->where('expenses_user.user_id', $this->id)
+            ->join('expenses_histories','expenses_user.expenses_history_id',
+                '=','expenses_histories.id')
+            ->join('expenses','expenses_histories.expense_id',
+                '=','expenses.id')
+            ->sum('user_contribution');
+        return($amount-$contribution);
+
+    }
 
 
 

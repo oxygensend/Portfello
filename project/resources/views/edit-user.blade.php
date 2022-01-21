@@ -125,12 +125,12 @@
                                     <div class="mt-2 flex items-center">
                                         <strong>{{$invite->text}}</strong>
                                         <x-action-button name="Accept"
-                                                         action="{{ route('invites.accept', $invite->id) }}" class="flex-1 mr-2 ml-2"
+                                                         action="{{ route('invites.accept', $invite->id) }}" class="bg-green-500 hover:bg-green-400 flex-1 mr-2 ml-2"
                                         />
 
 
                                         <x-action-button name="Discard"
-                                                         action="{{ route('invites.delete', $invite->id)}}" class="flex-1 mr-2 ml-2"
+                                                         action="{{ route('invites.delete', $invite->id)}}" class="bg-red-500 hover:bg-red-400 flex-1 mr-2 ml-2"
                                                          method='DELETE'
                                         />
                                     </div>
