@@ -86,6 +86,24 @@ class User extends Authenticatable
 
 
     }
+    public function balanceInGroup(){}
+
+//    public function balancePaymentInGroup(Group $group){
+//
+//
+// $plus=$this->expenses()->where('group_id','=',$group->id)->join('expenses_histories','expenses_histories.expense_id','=','expenses.id')->where('expenses_histories.isLatest','=',1)->where('expenses_histories.action','!=',3)->select('amount')->sum('amount');
+//
+//
+//
+//
+//    $minus= $this->expenses()->where('group_id','=',$group->id)->join('expenses_histories','expenses_histories.expense_id','=','expenses.id')->where('expenses_histories.isLatest','=',1)->join('expenses_user','expenses_histories.id','=','expenses_user.expenses_history_id')->where('expenses_user.user_id','=',$this->id)->sum('user_contribution');
+//
+//return $plus-$minus;
+//
+//
+//    }
+
+
 
     public function owes(ExpensesHistory $expense_history){
 
