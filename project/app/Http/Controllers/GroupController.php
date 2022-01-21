@@ -49,9 +49,7 @@ class GroupController extends Controller {
 
     public function show(Group $group)
     {
-
         $expenses = Group::find($group->id)->expenses;
-
         return view('groups.show', ['group' => $group,'expenses' =>$expenses]);
     }
 

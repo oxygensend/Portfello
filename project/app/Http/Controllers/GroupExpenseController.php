@@ -110,9 +110,9 @@ class GroupExpenseController extends Controller
      * @param  \App\Models\Expense  $expense
      * @return \Illuminate\Http\Response
      */
-    public function show(Expense $expense)
+    public function show(Group $group,Expense $expense)
     {
-        //
+        return view('expenses.show ')->withExpense($expense)->withGroup($group);
     }
 
     /**

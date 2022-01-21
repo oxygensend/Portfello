@@ -39,6 +39,20 @@ class Expense extends Model
 
     }
 
+    public function getDate(){
+
+        return $this->created_at->format('j F Y') ;
+
+    }
+
+    public function getAmountString(){
+$str=$this->amount;
+        if(!empty($this->item)  ) $str.=" ".$this->item;
+//        else $str.=" "; TODO: currency
+        return $str;
+
+    }
+
 
 
 }

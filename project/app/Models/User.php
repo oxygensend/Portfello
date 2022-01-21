@@ -71,12 +71,25 @@ class User extends Authenticatable
         return $this->getUserContribution == 0;
     }
 
-    /*public function getUserContribution(Expense $expense){
 
-        $result= DB::table('users')->join('expenses_user', 'expenses_user.user_id', '=','users.id')->where('expenses_user.expenses_id','=',$expense->id)->get();
-        ddd($result);
-        return 0;
-}*/
+
+
+//    public function getUserContribution(Expense $expense){
+////
+////        $result= DB::table('users')->join('expenses_user', 'expenses_user.user_id', '=','users.id')->where('expenses_user.expenses_id','=',$expense->id)->get();
+////        ddd($result);
+//        return 10;
+//}
+
+
+    public function getExpenseString(Expense $expense){
+//
+//        $result= DB::table('users')->join('expenses_user', 'expenses_user.user_id', '=','users.id')->where('expenses_user.expenses_id','=',$expense->id)->get();
+//        ddd($result);
+
+        return 10;
+    }
+
 
 
 
