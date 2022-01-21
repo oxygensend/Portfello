@@ -23,6 +23,16 @@ class Group extends Model
         return $this->hasMany(Expense::class);
     }
 
+    public function expenses_history()
+    {
+        return $this->hasManyThrough(ExpensesHistory::class, Expense::class,
+        '',
+        '',
+        'id',
+        'id',
+        );
+    }
+
     public function invites(){
         return $this->hasMany(Invites::class);
     }

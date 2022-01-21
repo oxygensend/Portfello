@@ -31,7 +31,10 @@
                 <div class="text-3xl font-semibold"> {{$expense->getAmountString()}}
                 </div>
                     <div>
-                    Created by <span class="font-semibold text-lg">{{$expense->user->name}}</span>
+                    Created by <span class="font-semibold     text-lg"
+
+
+                >{{$expense->user->name}}</span>
                 </div>
                 <div >Added on {{$expense->getDate()}}</div>
 
@@ -39,10 +42,12 @@
 
 
 <div>
-                <div class="w-fit mt-8 flex flex-col  justify-center items-end space-y-4 scroll-pt-2 ">
-                    @foreach($expense->users as $user)
-<x-user-list-box :user="$user" :expense="$expense"></x-user-list-box>
+                <div class="w-fit mt-8 flex flex-col  justify-center items-end space-y-4 ">
 
+
+                    @foreach($expense->users() as $user)
+
+<x-user-list-box :user="$user" ></x-user-list-box>
 
 
                     @endforeach

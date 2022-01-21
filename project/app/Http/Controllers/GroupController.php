@@ -49,8 +49,9 @@ class GroupController extends Controller {
 
     public function show(Group $group)
     {
-        $expenses = Group::find($group->id)->expenses;
-        return view('groups.show', ['group' => $group,'expenses' =>$expenses]);
+
+        $expenses_history= Group::find($group->id)->expenses_history;
+        return view('groups.show', ['group' => $group,'expenses_history' =>$expenses_history]);
     }
 
     public function edit(Group $group)
