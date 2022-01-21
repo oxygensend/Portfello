@@ -10,6 +10,14 @@ class ExpensesHistory extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'expense_id',
+        'action',
+        'amount',
+        'item',
+        'title',
+    ];
+
     public function getAmountString(){
         $str=$this->amount;
         if(!empty($this->item)  ) $str.=" ".$this->item;

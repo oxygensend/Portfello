@@ -34,7 +34,7 @@
                 <x-side-link :href="route('groups.index')" :active="request()->routeIs('groups')">
                     {{ __('Groups') }}
                 </x-side-link>
-                <x-side-link :href="route('dashboard')" :active="request()->routeIs('history')">
+                <x-side-link :href="route('history')" :active="request()->routeIs('history')">
                     {{ __('History') }}
                 </x-side-link>
                 <x-side-link :href="route('logout')">

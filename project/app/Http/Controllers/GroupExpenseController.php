@@ -48,42 +48,39 @@ class GroupExpenseController extends Controller
 
         $attributes = request()->validate([
             'description' => 'required',
-//             Rule::exists('users', 'name')
+            'selected_users' => 'required',
             'item' => 'nullable',
             'how_much' => 'required | numeric',
 
         ]);
 //        ddd('dumping this one', $request);
-
+        $user= auth()->user();
         $selected_users=$request->selected_users;
+       $expense = Expense::create([
+            'group_id'=>$group->id,
+            'user_id'=>$user->id,
+        ]
+        );
+        $expense_history = ExpensesHistory::create([
+            'expense_id'=>$expense->id,
+            'action'=>1, // 1 - add 2 - update 3 - delete
+            'amount'=>$attributes['how_much'],
+            'item'=>$attributes['item'],
+            'title'=>$attributes['description'],
+        ]);
 
-
-        $user_1= auth()->user();
-        $expense = new Expense();
-        $expense->group_id=$group->id;
-        $expense->user_id=$user_1->id;
-        $expense->amount = $request->how_much;
-        $expense->item = $request ->item;
-        $expense->description = $request->description;
-        $expense->save();
-
-
-        foreach ($selected_users as $user_id){
-
+        foreach($attributes['selected_users'] as $user){
             DB::table('expenses_user')->insert([
-                [
-
-                    'user_id'=>$user_id,
-                    'expenses_id'=>$expense->id,
-                ],
+                    'user_id'=>$user,
+                    'expenses_history_id'=>$expense_history->id,
+                    'user_contribution' => $expense_history->amount/count($attributes['selected_users']+1),
             ]);
 
 
-        }
-        $expenses = Group::find($group->id)->expenses;
-//        $result=$this->my_join($group);
 
-        return view('groups.show ')->withGroup($group)->withExpenses($expenses);
+        }
+        $expenses_history= Group::find($group->id)->expenses_history;
+        return view('groups.show', ['group' => $group,'expenses_history' =>$expenses_history]);
     }
 
     private function my_join(Group $group){
