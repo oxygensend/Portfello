@@ -56,7 +56,7 @@ class User extends Authenticatable
     //TODO -> database functions or some query chaining
     public function active_groups()
     {
-$groups =$this->groups()
+$groups =$this->groups();
 
 return $groups->filter( function ($group, $key){
     return $this->getGroupBilance($group) !=0;
