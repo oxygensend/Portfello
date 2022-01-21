@@ -69,14 +69,14 @@ class User extends Authenticatable
     public function isIncluded(ExpensesHistory $expense_history){
 
     return $expense_history->users()->contains($this);
-//    TODO
 
     }
 
     public function userContribution(ExpensesHistory $expense_history){
 
-       return 10;
-//    TODO
+        $result= \DB::table('expenses_user')->where('user_id','=',$this->id)->where('expenses_history_id','=',$expense_history->id)->select('user_contribution')->get()->first();
+        return $result;
+
 
     }
 
