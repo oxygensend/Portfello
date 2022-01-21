@@ -22,10 +22,10 @@ class ExpenseSeeder extends Seeder
             'creator'=>$user->id,
         ]);
         $id=1;
-        DB::table('expenses_history')->insert([
+        DB::table('expenses_histories')->insert([
             [
                 'id'=>$id,
-                'expenses_id' => $expense->id,
+                'expense_id' => $expense->id,
                 'action'=>  1,
                 'amount' => 10,
                 'title' => 'bar',
@@ -51,10 +51,10 @@ class ExpenseSeeder extends Seeder
             'creator'=>$user->id+1,
         ]);
         $id=2;
-        DB::table('expenses_history')->insert([
+        DB::table('expenses_histories')->insert([
             [
 
-                'expenses_id' => $expense->id,
+                'expense_id' => $expense->id,
                 'action'=>  1,
                 'amount' => 20,
                 'title' => 'pizza',
@@ -80,10 +80,10 @@ class ExpenseSeeder extends Seeder
             'creator'=>$user->id+2,
         ]);
         $id=3;
-        DB::table('expenses_history')->insert([
+        DB::table('expenses_histories')->insert([
             [
 
-                'expenses_id' => $expense->id,
+                'expense_id' => $expense->id,
                 'action'=>  1,
                 'amount' => 50,
                 'title' => 'rynek',

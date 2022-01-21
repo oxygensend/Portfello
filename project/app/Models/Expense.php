@@ -13,6 +13,18 @@ class Expense extends Model
         return $this->belongsTo(Group::class);
     }
 
+    public function expense_histories(){
+        return $this->hasMany(ExpensesHistory::class);
+    }
+
+//last history
+    public function expense_history(){
+
+        return $this->histories()->orderByDesc('created_at')->where('action','!=', '3');
+
+    }
+
+
     public function users(){
         return $this->belongsToMany(
             User::class,
@@ -24,7 +36,7 @@ class Expense extends Model
 
     public function user(){
         return $this->belongsTo(
-            User::class);
+            User::class,'creator','id');
     }
 
     public function getMonth(){
@@ -45,13 +57,7 @@ class Expense extends Model
 
     }
 
-    public function getAmountString(){
-$str=$this->amount;
-        if(!empty($this->item)  ) $str.=" ".$this->item;
-//        else $str.=" "; TODO: currency
-        return $str;
 
-    }
 
 
 

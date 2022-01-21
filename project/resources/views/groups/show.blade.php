@@ -29,9 +29,12 @@
                         <div class="flex flex-col space-y-6">
 
 
-                            @forelse ($expenses as $expense)
-                                <x-expense-box :expense="$expense"
-                                               @click="window.location.href='{{route('groups.expenses.show', ['group'=>$group ,'expense'=>$expense] ) }}'"></x-expense-box>
+                            @forelse ($expenses_history as $expense_history)
+                                @php
+                                   # ddd($expense_history);
+                                @endphp
+                                <x-expense-box :expense="$expense_history"
+                                               @click="window.location.href='{{route('groups.expenses.show', ['group'=>$group ,'expense'=>$expense_history] ) }}'"></x-expense-box>
                             @empty
                                 <h2 class="text-xl font-semibold"> No expenses have been created yet</h2>
                             @endforelse

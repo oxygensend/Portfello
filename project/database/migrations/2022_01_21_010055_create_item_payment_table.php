@@ -19,7 +19,7 @@ class CreateItemPaymentTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->constrained()->cascadeOnDelete();
             $table->unsignedBigInteger('expenses_history_id');
-            $table->foreign('expenses_history_id')->references('id')->on('expenses_history')->constrained()->cascadeOnDelete();
+            $table->foreign('expenses_history_id')->references('id')->on('expenses_histories')->constrained()->cascadeOnDelete();
         });
     }
 

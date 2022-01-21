@@ -66,10 +66,13 @@ class User extends Authenticatable
         return $this->hasMany(Invites::class);
     }
 
-    public function isIncluded( Expense $expense){
+    public function isIncluded(ExpensesHistory $expense_history){
 
-        return $this->getUserContribution == 0;
+//        return $this->getUserContribution == 0;
+//    TODO
+    return true;
     }
+
 
 
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreExpenseRequest;
 use App\Http\Requests\UpdateExpenseRequest;
 use App\Models\Expense;
+use App\Models\ExpensesHistory;
 use App\Models\Group;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -110,9 +111,9 @@ class GroupExpenseController extends Controller
      * @param  \App\Models\Expense  $expense
      * @return \Illuminate\Http\Response
      */
-    public function show(Group $group,Expense $expense)
+    public function show(Group $group,ExpensesHistory $expense)
     {
-        return view('expenses.show ')->withExpense($expense)->withGroup($group);
+        return view('expenses.show ')->with(['expense' =>$expense])->withGroup($group);
     }
 
     /**
