@@ -56,11 +56,11 @@ class User extends Authenticatable
     //TODO -> database functions or some query chaining
     public function active_groups()
     {
-$groups =$this->groups();
+        $groups =$this->groups();
 
-return $groups->filter( function ($group, $key){
-    return $this->getGroupBilance($group) !=0;
-});
+        return $groups->filter( function ($group, $key){
+            return $this->getGroupBilance($group) !=0;
+        });
     }
 
 
@@ -87,14 +87,17 @@ return $groups->filter( function ($group, $key){
 
     public function isIncluded(ExpensesHistory $expense_history){
 
-    return $expense_history->users()->contains($this);
+        return $expense_history->users()->contains($this);
 
     }
 
     public function userContribution(ExpensesHistory $expense_history){
 
-        $result= \DB::table('expenses_user')->where('user_id','=',$this->id)->where('expenses_history_id','=',$expense_history->id)->select('user_contribution')->get()->first();
-        return $result;
+
+
+        $result= DB::table('expenses_user')->where('user_id','=',$this->id)->where('expenses_history_id','=',$expense_history->id)->select('user_contribution')->get()->first();
+
+        return 0;
 
     }
     public function balanceInGroup(){}
@@ -121,18 +124,18 @@ return $groups->filter( function ($group, $key){
 
         $amount=$this->userContribution();
 
-                if(!is_null($expense_history->item )){
-                    return   $amount." " . $expense_history->item ;
-                }else{
+        if(!is_null($expense_history->item )){
+            return   $amount." " . $expense_history->item ;
+        }else{
 
-                    return  $amount;
-                }
+            return  $amount;
+        }
 
     }
 
     public function getBack(ExpensesHistory $expense_history){
 
-       $amount=$expense_history->amount - $this->userContribution($expense_history);
+        $amount=$expense_history->amount - $this->userContribution($expense_history);
         if(!is_null($expense_history->item )){
             return   $amount." " . $expense_history->item ;
         }else{
@@ -143,15 +146,15 @@ return $groups->filter( function ($group, $key){
 
 
     public function whomOwe(Group $group){
-         $users_id = DB::table('expenses_user')
+        $users_id = DB::table('expenses_user')
             ->where('expenses_user.user_id', $this->id)
             ->join('expenses_histories','expenses_user.expenses_history_id',
                 '=','expenses_histories.id')
             ->join('expenses','expenses_histories.expense_id',
                 '=','expenses.id')
-             ->pluck('expenses.user_id')->toArray();
+            ->pluck('expenses.user_id')->toArray();
 
-         return User::whereIn('id',$users_id)->get();
+        return User::whereIn('id',$users_id)->get();
 
     }
 
@@ -194,7 +197,24 @@ return $groups->filter( function ($group, $key){
         return($amount-$contribution);
 
     }
-
+    public function CurrnetExpenseswithGroup()
+    {
+        return $this->hasManyThrough(ExpensesHistory::class, Expense::class,
+            '',
+            '',
+            'id',
+            'id',
+        )->join('groups','groups.id','=','expenses.group_id');
+    }
+    public function expenses_history()
+    {
+        return $this->hasManyThrough(ExpensesHistory::class, Expense::class,
+            '',
+            '',
+            'id',
+            'id',
+        );
+    }
 
 
 //    public function getUserContribution(Expense $expense){

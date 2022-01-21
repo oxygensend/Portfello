@@ -21,16 +21,18 @@
                              href="{{route('groups.show', $group)}}"
                              vertical='space-y-10'
                              :group="$group"
+                             :balance="true"
                 >
                 </x-group-box>
 
 
                 <div class="grow  w-full">
-                    <div class="items-center justify-center overflow-auto  h-full w-full flex ">
+                    <div class="items-center justify-center overflow-auto h-full w-full flex ">
                         <div class="flex flex-col space-y-6">
 
 
-                            @forelse ($expenses_history as $expense_history)
+
+                        @forelse ($expenses_history as $expense_history)
                                 @php
                                   # ddd($expense_history);
                                 @endphp
