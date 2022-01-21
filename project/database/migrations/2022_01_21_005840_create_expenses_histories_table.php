@@ -19,7 +19,7 @@ class CreateExpensesHistoriesTable extends Migration
             $table->unsignedBigInteger('expense_id');
             $table->foreign('expense_id')->references('id')->on('expenses')->constrained()->cascadeOnDelete();
             $table->bigInteger('action');
-            $table->float('amount');
+            $table->double('amount');
             $table->string('item')->nullable();
             $table->string('title');
 
