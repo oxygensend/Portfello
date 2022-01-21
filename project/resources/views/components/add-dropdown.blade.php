@@ -1,5 +1,5 @@
 @props(['group'])
-<div x-show="show" @click.away="show=false" class="right-8 px-2 py-4  absolute   md:right-16 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+<div x-show="show" @click.away="show=false" class="right-8 px-2 py-4  absolute  bottom-10 mb-16 md:right-16   rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                   aria-orientation="vertical"  style="display:none">
     <div class="py-1" >
 

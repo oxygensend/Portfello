@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="" tests="17" assertions="27" errors="0" warnings="0" failures="0" skipped="0" time="0.935454">
+    <testsuite name="Unit" tests="1" assertions="1" errors="0" warnings="0" failures="0" skipped="0" time="0.004524">
+      <testsuite name="Tests\Unit\ExampleTest" file="/home/szymon/Documents/Dev/portfello/project/tests/Unit/ExampleTest.php" tests="1" assertions="1" errors="0" warnings="0" failures="0" skipped="0" time="0.004524">
+        <testcase name="test_example" class="Tests\Unit\ExampleTest" classname="Tests.Unit.ExampleTest" file="/home/szymon/Documents/Dev/portfello/project/tests/Unit/ExampleTest.php" line="14" assertions="1" time="0.004524"/>
+      </testsuite>
+    </testsuite>
+    <testsuite name="Feature" tests="16" assertions="26" errors="0" warnings="0" failures="0" skipped="0" time="0.930930">
+      <testsuite name="Tests\Feature\Auth\AuthenticationTest" file="/home/szymon/Documents/Dev/portfello/project/tests/Feature/Auth/AuthenticationTest.php" tests="3" assertions="5" errors="0" warnings="0" failures="0" skipped="0" time="0.767973">
+        <testcase name="test_login_screen_can_be_rendered" class="Tests\Feature\Auth\AuthenticationTest" classname="Tests.Feature.Auth.AuthenticationTest" file="/home/szymon/Documents/Dev/portfello/project/tests/Feature/Auth/AuthenticationTest.php" line="14" assertions="1" time="0.712693"/>
+        <testcase name="test_users_can_authenticate_using_the_login_screen" class="Tests\Feature\Auth\AuthenticationTest" classname="Tests.Feature.Auth.AuthenticationTest" file="/home/szymon/Documents/Dev/portfello/project/tests/Feature/Auth/AuthenticationTest.php" line="21" assertions="3" time="0.043053"/>
+        <testcase name="test_users_can_not_authenticate_with_invalid_password" class="Tests\Feature\Auth\AuthenticationTest" classname="Tests.Feature.Auth.AuthenticationTest" file="/home/szymon/Documents/Dev/portfello/project/tests/Feature/Auth/AuthenticationTest.php" line="34" assertions="1" time="0.012227"/>
+      </testsuite>
+      <testsuite name="Tests\Feature\Auth\EmailVerificationTest" file="/home/szymon/Documents/Dev/portfello/project/tests/Feature/Auth/EmailVerificationTest.php" tests="3" assertions="6" errors="0" warnings="0" failures="0" skipped="0" time="0.036153">
+        <testcase name="test_email_verification_screen_can_be_rendered" class="Tests\Feature\Auth\EmailVerificationTest" classname="Tests.Feature.Auth.EmailVerificationTest" file="/home/szymon/Documents/Dev/portfello/project/tests/Feature/Auth/EmailVerificationTest.php" line="17" assertions="1" time="0.011094"/>
+        <testcase name="test_email_can_be_verified" class="Tests\Feature\Auth\EmailVerificationTest" classname="Tests.Feature.Auth.EmailVerificationTest" file="/home/szymon/Documents/Dev/portfello/project/tests/Feature/Auth/EmailVerificationTest.php" line="28" assertions="4" time="0.013571"/>
+        <testcase name="test_email_is_not_verified_with_invalid_hash" class="Tests\Feature\Auth\EmailVerificationTest" classname="Tests.Feature.Auth.EmailVerificationTest" file="/home/szymon/Documents/Dev/portfello/project/tests/Feature/Auth/EmailVerificationTest.php" line="49" assertions="1" time="0.011488"/>
+      </testsuite>
+      <testsuite name="Tests\Feature\Auth\PasswordConfirmationTest" file="/home/szymon/Documents/Dev/portfello/project/tests/Feature/Auth/PasswordConfirmationTest.php" tests="3" assertions="4" errors="0" warnings="0" failures="0" skipped="0" time="0.032633">
+        <testcase name="test_confirm_password_screen_can_be_rendered" class="Tests\Feature\Auth\PasswordConfirmationTest" classname="Tests.Feature.Auth.PasswordConfirmationTest" file="/home/szymon/Documents/Dev/portfello/project/tests/Feature/Auth/PasswordConfirmationTest.php" line="13" assertions="1" time="0.010739"/>
+        <testcase name="test_password_can_be_confirmed" class="Tests\Feature\Auth\PasswordConfirmationTest" classname="Tests.Feature.Auth.PasswordConfirmationTest" file="/home/szymon/Documents/Dev/portfello/project/tests/Feature/Auth/PasswordConfirmationTest.php" line="22" assertions="2" time="0.010703"/>
+        <testcase name="test_password_is_not_confirmed_with_invalid_password" class="Tests\Feature\Auth\PasswordConfirmationTest" classname="Tests.Feature.Auth.PasswordConfirmationTest" file="/home/szymon/Documents/Dev/portfello/project/tests/Feature/Auth/PasswordConfirmationTest.php" line="34" assertions="1" time="0.011191"/>
+      </testsuite>
+      <testsuite name="Tests\Feature\Auth\PasswordResetTest" file="/home/szymon/Documents/Dev/portfello/project/tests/Feature/Auth/PasswordResetTest.php" tests="4" assertions="6" errors="0" warnings="0" failures="0" skipped="0" time="0.069349">
+        <testcase name="test_reset_password_link_screen_can_be_rendered" class="Tests\Feature\Auth\PasswordResetTest" classname="Tests.Feature.Auth.PasswordResetTest" file="/home/szymon/Documents/Dev/portfello/project/tests/Feature/Auth/PasswordResetTest.php" line="15" assertions="1" time="0.008281"/>
+        <testcase name="test_reset_password_link_can_be_requested" class="Tests\Feature\Auth\PasswordResetTest" classname="Tests.Feature.Auth.PasswordResetTest" file="/home/szymon/Documents/Dev/portfello/project/tests/Feature/Auth/PasswordResetTest.php" line="22" assertions="1" time="0.027345"/>
+        <testcase name="test_reset_password_screen_can_be_rendered" class="Tests\Feature\Auth\PasswordResetTest" classname="Tests.Feature.Auth.PasswordResetTest" file="/home/szymon/Documents/Dev/portfello/project/tests/Feature/Auth/PasswordResetTest.php" line="33" assertions="2" time="0.015193"/>
+        <testcase name="test_password_can_be_reset_with_valid_token" class="Tests\Feature\Auth\PasswordResetTest" classname="Tests.Feature.Auth.PasswordResetTest" file="/home/szymon/Documents/Dev/portfello/project/tests/Feature/Auth/PasswordResetTest.php" line="50" assertions="2" time="0.018530"/>
+      </testsuite>
+      <testsuite name="Tests\Feature\Auth\RegistrationTest" file="/home/szymon/Documents/Dev/portfello/project/tests/Feature/Auth/RegistrationTest.php" tests="2" assertions="4" errors="0" warnings="0" failures="0" skipped="0" time="0.019030">
+        <testcase name="test_registration_screen_can_be_rendered" class="Tests\Feature\Auth\RegistrationTest" classname="Tests.Feature.Auth.RegistrationTest" file="/home/szymon/Documents/Dev/portfello/project/tests/Feature/Auth/RegistrationTest.php" line="13" assertions="1" time="0.008911"/>
+        <testcase name="test_new_users_can_register" class="Tests\Feature\Auth\RegistrationTest" classname="Tests.Feature.Auth.RegistrationTest" file="/home/szymon/Documents/Dev/portfello/project/tests/Feature/Auth/RegistrationTest.php" line="20" assertions="3" time="0.010119"/>
+      </testsuite>
+      <testsuite name="Tests\Feature\ExampleTest" file="/home/szymon/Documents/Dev/portfello/project/tests/Feature/ExampleTest.php" tests="1" assertions="1" errors="0" warnings="0" failures="0" skipped="0" time="0.005792">
+        <testcase name="test_example" class="Tests\Feature\ExampleTest" classname="Tests.Feature.ExampleTest" file="/home/szymon/Documents/Dev/portfello/project/tests/Feature/ExampleTest.php" line="15" assertions="1" time="0.005792"/>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>
