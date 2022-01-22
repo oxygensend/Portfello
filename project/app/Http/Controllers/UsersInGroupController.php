@@ -37,10 +37,8 @@ class UsersInGroupController extends Controller {
 
     }
 
-    public function destroy(Group $group, User $user)
+    public function destroy(Group $group)
     {
-
-
     }
 
     public function _checkConditions(&$msg, &$session, Group $group, $user)

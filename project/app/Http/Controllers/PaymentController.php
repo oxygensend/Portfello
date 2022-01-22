@@ -6,46 +6,51 @@ use App\Models\Expense;
 use App\Models\ExpensesHistory;
 use App\Models\Group;
 use App\Models\Payment;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+use phpDocumentor\Reflection\DocBlock\Tags\Author;
+use function PHPUnit\Framework\at;
 
 class PaymentController extends Controller
 {
     //
 
 
-    public function create(Group $group, ExpensesHistory $expense){
+    public function create(Group $group){
 
-        return view('payments.create',['group'=>$group, 'expense'=> $expense]);
+        return view('payments.create',['group'=>$group]);
 
     }
 
-    public function store(Group $group, ExpensesHistory $expense){
+    public function store(Group $group){
 
+        $user = auth()->user();
 
-        if($expense->item == NULL) {
             $attributes = request()->validate([
-                'amount' => 'required|numeric|min:0.01|max:' . auth()->user()->contributonInExpense($expense)
+                'selected_user' => 'required:in:' . $user->whomOwe($group),
+                'item' => 'nullable',
+                'how_much' => 'required|numeric'
             ]);
-        }
-        else {
-            $attributes['amount'] = auth()->user()->contributonInExpense($expense);
-            $attributes['item'] = $expense->item;
-        }
-        $attributes['user_1_id'] = auth()->user()->id;
-        $attributes['user_2_id'] = $expense->user->id;
-        $attributes['group_id'] = $group->id;
 
-        \DB::table('expenses_user')->where('expenses_user.user_id', $attributes['user_1_id'])
-            ->where('expenses_history_id', $expense->id)
-            ->join('expenses_histories', 'expenses_histories.id', 'expenses_user.expenses_history_id')
-            ->join('expenses', 'expenses.id', 'expenses_histories.expense_id')
-            ->where('group_id', $attributes['group_id'])
-            ->decrement('user_contribution', $attributes['amount']);
-        Payment::create($attributes);
 
-        $msg = auth()->user()->contributonInExpense($expense) ? "Money has been returned" : "You have paid your debt";
+            $user2 = User::find($attributes['selected_user']);
+            if($attributes['how_much'] > abs($user->getBalanceWithUser($user2, $group)) && $attributes['item'] == null){
+                throw ValidationException::withMessages(['how_much'=>'to much']);
+            }
 
-        return redirect(route('groups.expenses.show', [$group,$expense]))->with('success',$msg);
+
+
+        Payment::create([
+            'user_1_id' => auth()->user()->id,
+            'user_2_id' => $attributes['selected_user'],
+            'item' => $attributes['item'],
+            'amount' => $attributes['how_much'],
+            'group_id' => $group->id
+        ]);
+
+
+        return redirect(route('groups.show', $group))->with('success','transfer ok');
 
     }
 }

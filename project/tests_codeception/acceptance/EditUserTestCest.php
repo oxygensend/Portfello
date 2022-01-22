@@ -11,7 +11,7 @@ class EditUserTestCest
         $I->fillField('password', 'test123');
         $I->click('Log in');
     }
-
+/*
     // tests
     public function ChangeUsernameTest(AcceptanceTester $I)
     {
@@ -106,5 +106,5 @@ class EditUserTestCest
     }
 
 
-
+*/
 }

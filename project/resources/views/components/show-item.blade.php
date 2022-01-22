@@ -1,4 +1,4 @@
-@props(['group', 'expense'=>null])
+@props(['group'])
 
     <div class="py-1" >
 

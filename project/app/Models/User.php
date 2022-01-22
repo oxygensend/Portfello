@@ -169,6 +169,10 @@ return $groups->filter( function ($group, $key){
 
         })->sum('amount');
 
+
+        $payments_recived = $this->payments_recived()->where('group_id',$group->id)->sum('amount');
+        $payments_executed = $this->payments_executed()->where('group_id',$group->id)->sum('amount');
+
         $contribution = DB::table('expenses_user')
             ->where('expenses_user.user_id', $this->id)
             ->join('expenses_histories', 'expenses_user.expenses_history_id',
@@ -181,7 +185,7 @@ return $groups->filter( function ($group, $key){
             ->where('item', null)
             ->sum('user_contribution');
 
-        return($amount - $contribution);
+        return($amount - $contribution - $payments_recived + $payments_executed);
 
     }
 
@@ -194,6 +198,9 @@ return $groups->filter( function ($group, $key){
             $q->where('item', null);
         })->sum('amount');
 
+        $payments_recived = $this->payments_recived()->sum('amount');
+        $payments_executed = $this->payments_executed()->sum('amount');
+
         $contribution = DB::table('expenses_user')
             ->where('expenses_user.user_id', $this->id)
             ->join('expenses_histories', 'expenses_user.expenses_history_id',
@@ -204,9 +211,39 @@ return $groups->filter( function ($group, $key){
             ->where('expenses_histories.isLatest', true)
             ->where('item', null)
             ->sum('user_contribution');
-        return($amount-$contribution);
+        return($amount-$contribution - $payments_recived + $payments_executed);
 
     }
+
+    public function getBalanceWithUser(User $user, Group $group){
+
+        $payments_recived = $this->payments_recived()->where('group_id',$group->id)->where('user_1_id', $user->id)->sum('amount');
+        $payments_executed = $this->payments_executed()->where('group_id',$group->id)->where('user_2_id', $user->id)->sum('amount');
+        $user_contribution = DB::table('expenses_user')
+            ->where('expenses_user.user_id', $user->id)
+            ->join('expenses_histories', 'expenses_user.expenses_history_id',
+                '=', 'expenses_histories.id')
+            ->join('expenses', 'expenses_histories.expense_id',
+                '=', 'expenses.id')
+            ->where('expenses_histories.action', '!=', 3)
+            ->where('expenses_histories.isLatest', true)
+            ->where('expenses.id', $this->id)
+            ->where('item', null)
+            ->sum('user_contribution');
+        $my_contribution = DB::table('expenses_user')
+            ->where('expenses_user.user_id',$this->id)
+            ->join('expenses_histories', 'expenses_user.expenses_history_id',
+                '=', 'expenses_histories.id')
+            ->join('expenses', 'expenses_histories.expense_id',
+                '=', 'expenses.id')
+            ->where('expenses.id', $user->id)
+            ->where('expenses_histories.action', '!=', 3)
+            ->where('expenses_histories.isLatest', true)
+            ->where('item', null)
+            ->sum('user_contribution');
+        return($user_contribution - $my_contribution -$payments_recived + $payments_executed);
+    }
+
     public function getItemBalance()
     {
 

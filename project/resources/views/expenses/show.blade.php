@@ -21,11 +21,6 @@
                     </x-button>
                     @endif
 
-                    @if(auth()->user()->contributonInExpense($expense))
-                        <x-button class="text-center">
-                            <a href={{  route('groups.expenses.pay.create', ['group'=>$group, 'expense'=>$expense]) }}>Pay</a>
-                        </x-button>
-                    @endif
                 </div>
                <div class="flex flex-col space-y-6 mt-16 items-center h-full w-full ">
 

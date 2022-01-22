@@ -66,9 +66,10 @@ class GroupExpenseController extends Controller
             ]);
 
 
+
         }
-        $expenses_history = Group::find($group->id)->expenses_history;
-        return redirect(route('groups.show', ['group' => $group, 'expenses_history' => $expenses_history]));
+        $expenses_history= Group::find($group->id)->expenses_history;
+        return redirect(route('groups.show', ['group' => $group,'expenses_history' =>$expenses_history]));
     }
 
     private function my_join(Group $group)

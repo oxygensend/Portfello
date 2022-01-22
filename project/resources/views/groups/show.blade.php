@@ -3,6 +3,7 @@
         <a href="{{ route('groups.show', $group) }}">{{$group->name}}</a>
     </x-slot>
     <div class="w-full h-full ">
+        @admin($group)
         <div x-data class="absolute  top-16 md:top-28 right-8 md:right-16 "
              @click="window.location.href='{{route('groups.edit', ['group'=>$group ]) }}'">
             <img class="w-10 h-10"
@@ -10,6 +11,7 @@
                  alt=""
                  @click="window.location.href='{{route('groups.edit', ['group'=>$group ]) }}'">
         </div>
+        @endadmin
 
         <div x-data>
 
@@ -25,17 +27,15 @@
                 >
                 </x-group-box>
 
-
                 <div class="grow  w-full">
                     <div class="items-center justify-center overflow-auto h-full w-full flex ">
                         <div class="flex flex-col space-y-6">
 
 
 
-                        @forelse ($expenses_history as $expense_history)
-                                @php
-                                  # ddd($expense_history);
-                                @endphp
+                            @forelse ($expenses_history as $expense_history)
+
+
                                 <x-expense-box :expense="$expense_history"
                                                @click="window.location.href='{{route('groups.expenses.show', ['group'=>$group ,'expense'=>$expense_history] ) }}'"></x-expense-box>
                             @empty
@@ -54,8 +54,13 @@
                     <x-slot name="link" class="font-bold" href="{{ route('groups.expenses.create', $group)}}"> Add
                         expense
                     </x-slot>
-                </x-floating-button>
 
+
+                </x-floating-button>
+                <x-button class="text-center">
+                    <a href={{  route('groups.pay.create', ['group'=>$group]) }}>Payment</a>
+                </x-button>
             </div>
         </div>
+    </div>
 </x-app-layout>
