@@ -8,9 +8,9 @@
 
         <div class="border border-gray-200 h-fit rounded-xl 	pt-6 pb-16 px-6  w-full  sm:w-8/12 md:w-5/12 min-w-[350px] mt-10 bg-white">
             <div class="flex flex-col  items-center h-full w-full ">
-                @if(Auth::user()==$expense->user )
                 <div class="flex justify-end w-full items-end space-x-2">
 
+                    @if(Auth::user()==$expense->user )
                     <x-action-button name="Delete"
                                      action="{{  route('groups.expenses.destroy', ['group'=>$group, 'expense'=>$expense]) }}"
                                      method='DELETE'
@@ -19,16 +19,20 @@
                     <x-button class="text-center">
                         <a href={{  route('groups.expenses.edit', ['group'=>$group, 'expense'=>$expense]) }}>Edit</a>
                     </x-button>
+                    @endif
 
-
+                    @if(auth()->user()->contributonInExpense($expense))
+                        <x-button class="text-center">
+                            <a href={{  route('groups.expenses.pay.create', ['group'=>$group, 'expense'=>$expense]) }}>Pay</a>
+                        </x-button>
+                    @endif
                 </div>
-                @endif
-                <div class="flex flex-col space-y-6 mt-16 items-center h-full w-full ">
+               <div class="flex flex-col space-y-6 mt-16 items-center h-full w-full ">
 
                 <div class="text-4xl font-semibold">{{$expense->description}}
                 </div>
 
-                <div class="text-3xl font-semibold"> {{$expense->getAmountString()}}
+                <div class="text-3xl font-semibold"> {{$expense->getAmountString() . ' zł'}}
                 </div>
                     <div>
                     Created by <span class="font-semibold     text-lg"

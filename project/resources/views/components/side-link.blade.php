@@ -8,3 +8,4 @@ $classes='block py-2.5 px-4 rounded transition duration-200 hover:text-white  ho
 <a {{ $attributes->merge(['class' => $classes]) }}>
     {{ $slot }}
 </a>
+

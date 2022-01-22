@@ -23,10 +23,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('groups', GroupController::class)->parameters(['groups'=>'group:slug']);
     Route::resource('groups.add-user', \App\Http\Controllers\UsersInGroupController::class);
     Route::resource('groups.expenses', App\Http\Controllers\GroupExpenseController::class);
-
+    Route::resource('groups.expenses.pay', \App\Http\Controllers\PaymentController::class);
     Route::post('/invites/accept/{invite}','App\Http\Controllers\InvitesController@accept')->name('invites.accept');
     Route::delete('/invites/delete/{invite}', 'App\Http\Controllers\InvitesController@delete')->name('invites.delete');
-    Route::get('/history', \App\Http\Controllers\HistoryController::class)->name('history');
+    //Route::get('/history', \App\Http\Controllers\HistoryController::class)->name('history');
     Route::get('/dashboard', \App\Http\Controllers\DashboardController::class)->name('dashboard');
 
     Route::get('/logout', 'App\Http\Controllers\LogoutController@logout');

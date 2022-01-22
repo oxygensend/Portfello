@@ -1,8 +1,5 @@
 @props(['expense' , 'href'=>'','group'])
-@php
-    #ddd($expense);
-    $group= $group  ?? null
-@endphp
+
 
 <div class="flex justify-start flex-col  border-gray-200 py-2 px-4 rounded-xl">
     <div class=" mb-2"> <span class="font-semibold" >{{$expense->user->name}}</span> {{$expense->getStringAction()  }} expense</div>
@@ -13,9 +10,8 @@
         <h3>{{$expense->getDay()}}</h3>
     </div>
 
-    <div class="w-16 h-16 bg-white rounded-lg"><img class="rounded-lg" src="{{url('/images/wallet2.png') }}"></div>
-
-    @if( !empty($group))
+    <x-image properties="w-16 h-16 box relative"  src="{{ auth()->user()->avatar }}" />
+        @if( !empty($group))
         <div class="flex flex-col ">
             <h2 class="">In group</h2>
             <h3 class="font-bold">{{$group->name}}</h3>
@@ -29,6 +25,7 @@
 
         if($isCreator)
             {$creator="You";
+
                 $right_uppertext="You get back ";
                 $right_lowertext= $expense->user->getBack($expense);
 

@@ -27,12 +27,12 @@ CREATE TABLE `expenses` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `group_id` bigint unsigned NOT NULL,
-  `amount` double(8,2) NOT NULL,
-  `item` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `expenses_group_id_foreign` (`group_id`),
-  CONSTRAINT `expenses_group_id_foreign` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE
+  KEY `expenses_user_id_foreign` (`user_id`),
+  CONSTRAINT `expenses_group_id_foreign` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `expenses_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -46,6 +46,37 @@ LOCK TABLES `expenses` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `expenses_histories`
+--
+
+DROP TABLE IF EXISTS `expenses_histories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `expenses_histories` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `expense_id` bigint unsigned NOT NULL,
+  `action` bigint NOT NULL,
+  `amount` double(8,2) NOT NULL,
+  `item` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `expenses_histories_expense_id_foreign` (`expense_id`),
+  CONSTRAINT `expenses_histories_expense_id_foreign` FOREIGN KEY (`expense_id`) REFERENCES `expenses` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `expenses_histories`
+--
+
+LOCK TABLES `expenses_histories` WRITE;
+/*!40000 ALTER TABLE `expenses_histories` DISABLE KEYS */;
+/*!40000 ALTER TABLE `expenses_histories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `expenses_user`
 --
 
@@ -54,16 +85,14 @@ DROP TABLE IF EXISTS `expenses_user`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `expenses_user` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `user_1_id` bigint unsigned NOT NULL,
-  `user_2_id` bigint unsigned NOT NULL,
-  `expenses_id` bigint unsigned NOT NULL,
+  `user_contribution` double NOT NULL DEFAULT '0',
+  `user_id` bigint unsigned NOT NULL,
+  `expenses_history_id` bigint unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `expenses_user_user_1_id_foreign` (`user_1_id`),
-  KEY `expenses_user_user_2_id_foreign` (`user_2_id`),
-  KEY `expenses_user_expenses_id_foreign` (`expenses_id`),
-  CONSTRAINT `expenses_user_expenses_id_foreign` FOREIGN KEY (`expenses_id`) REFERENCES `expenses` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `expenses_user_user_1_id_foreign` FOREIGN KEY (`user_1_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `expenses_user_user_2_id_foreign` FOREIGN KEY (`user_2_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+  KEY `expenses_user_user_id_foreign` (`user_id`),
+  KEY `expenses_user_expenses_history_id_foreign` (`expenses_history_id`),
+  CONSTRAINT `expenses_user_expenses_history_id_foreign` FOREIGN KEY (`expenses_history_id`) REFERENCES `expenses_histories` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `expenses_user_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -165,6 +194,68 @@ LOCK TABLES `groups` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `invites`
+--
+
+DROP TABLE IF EXISTS `invites`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `invites` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned NOT NULL,
+  `group_id` bigint unsigned NOT NULL,
+  `text` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `displayed` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `invites_user_id_foreign` (`user_id`),
+  KEY `invites_group_id_foreign` (`group_id`),
+  CONSTRAINT `invites_group_id_foreign` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `invites_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `invites`
+--
+
+LOCK TABLES `invites` WRITE;
+/*!40000 ALTER TABLE `invites` DISABLE KEYS */;
+/*!40000 ALTER TABLE `invites` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `item_payment`
+--
+
+DROP TABLE IF EXISTS `item_payment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `item_payment` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `user_id` bigint unsigned NOT NULL,
+  `expenses_history_id` bigint unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `item_payment_user_id_foreign` (`user_id`),
+  KEY `item_payment_expenses_history_id_foreign` (`expenses_history_id`),
+  CONSTRAINT `item_payment_expenses_history_id_foreign` FOREIGN KEY (`expenses_history_id`) REFERENCES `expenses_histories` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `item_payment_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `item_payment`
+--
+
+LOCK TABLES `item_payment` WRITE;
+/*!40000 ALTER TABLE `item_payment` DISABLE KEYS */;
+/*!40000 ALTER TABLE `item_payment` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `migrations`
 --
 
@@ -176,7 +267,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -185,7 +276,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_resets_table',1),(3,'2019_08_19_000000_create_failed_jobs_table',1),(4,'2019_12_14_000001_create_personal_access_tokens_table',1),(5,'2022_01_08_194834_create_groups_table',1),(6,'2022_01_08_195804_create_group_user_table',1),(7,'2022_01_08_203000_create_expenses_table',1),(8,'2022_01_08_210450_create_expenses_user_table',1);
+INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_resets_table',1),(3,'2019_08_19_000000_create_failed_jobs_table',1),(4,'2019_12_14_000001_create_personal_access_tokens_table',1),(5,'2022_01_08_194834_create_groups_table',1),(6,'2022_01_08_195804_create_group_user_table',1),(7,'2022_01_16_194545_create_invites_table',1),(8,'2022_01_21_005648_create_expenses_table',1),(9,'2022_01_21_005840_create_expenses_histories_table',1),(10,'2022_01_21_010055_create_item_payment_table',1),(11,'2022_01_21_010248_create_expenses_user_table',1),(12,'2022_01_21_010450_create_payment_table',1);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -211,6 +302,40 @@ CREATE TABLE `password_resets` (
 LOCK TABLES `password_resets` WRITE;
 /*!40000 ALTER TABLE `password_resets` DISABLE KEYS */;
 /*!40000 ALTER TABLE `password_resets` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `payment`
+--
+
+DROP TABLE IF EXISTS `payment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `payment` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `user_1_id` bigint unsigned NOT NULL,
+  `user_2_id` bigint unsigned NOT NULL,
+  `group_id` bigint unsigned NOT NULL,
+  `amount` decimal(8,2) NOT NULL DEFAULT '0.00',
+  PRIMARY KEY (`id`),
+  KEY `payment_user_1_id_foreign` (`user_1_id`),
+  KEY `payment_user_2_id_foreign` (`user_2_id`),
+  KEY `payment_group_id_foreign` (`group_id`),
+  CONSTRAINT `payment_group_id_foreign` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `payment_user_1_id_foreign` FOREIGN KEY (`user_1_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `payment_user_2_id_foreign` FOREIGN KEY (`user_2_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `payment`
+--
+
+LOCK TABLES `payment` WRITE;
+/*!40000 ALTER TABLE `payment` DISABLE KEYS */;
+/*!40000 ALTER TABLE `payment` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -265,7 +390,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_name_unique` (`name`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -274,8 +399,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Dr. Cedrick Feeney Jr.','test@test.com','2022-01-16 10:22:05','$2y$10$dlYXMtGrjN3y1GrI72jIlOCYZhJcCuRfeGd.CXsW4Bjrd6DUyL2F.','ZqdTxSw5Gj','2022-01-16 10:22:05','2022-01-16 10:22:05','test'),(2,'test2','test2@test.com','2022-01-16 10:22:05','$2y$10$2UCA8Mlab/gtqnM0AQuLFuwuasDFNKN0cVm03X3Zb9ZlxFuEoandG','qx2BFySFdQ','2022-01-16 10:22:05','2022-01-16 10:22:05','test');
-
+INSERT INTO `users` VALUES (1,'Casimer Homenick','test@test.com','2022-01-21 15:19:25','$2y$10$iJwKvmcpHuaNHhnW/eTceOzRzW/KB61H804uhGnD7UxY4qehML79C','4N7QFqsizk','2022-01-21 15:19:25','2022-01-21 15:19:25','/images/default_avatar.jpg'),(2,'Szymon Berdzik','test2@test.com','2022-01-21 15:19:25','$2y$10$gDCFlBepYJlsIQvrKh25yuuRUTgENResyrDKnJD9AbBVgbEh2G/Xm','dNiEGza9YE','2022-01-21 15:19:25','2022-01-21 15:19:25','/images/default_avatar.jpg'),(3,'Daniel Definski','test3@test.com','2022-01-21 15:19:25','$2y$10$vo0MWVD1ivayAHnkQ3/liuvIHZ7dyZGE5tVDEggKypJwnyB.tFcBS','4DmklTaaCr','2022-01-21 15:19:25','2022-01-21 15:19:25','/images/default_avatar.jpg'),(4,'Jakub Machalica','test4@test.com','2022-01-21 15:19:25','$2y$10$c2Z8S51VPMqSnvjqlC1uhuwpWMf5uFZ/mOMKpE010ZafscMzOO.pi','HEPfqivzrC','2022-01-21 15:19:25','2022-01-21 15:19:25','/images/default_avatar.jpg');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -288,6 +412,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-16 11:22:05
-
--- Dump completed on 2022-01-16 14:04:05
+-- Dump completed on 2022-01-21 16:19:25

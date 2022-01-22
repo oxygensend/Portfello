@@ -36,7 +36,10 @@ return $this->expense->user();
 
     public function users(){
 //
-      return DB::table('expenses_histories')->where('expenses_histories.id','=',$this->id) ->join('expenses_user','expenses_histories.id','=','expenses_user.expenses_history_id')->join('users','users.id','=','expenses_user.user_id')->select('users.*' ,'expenses_user.user_contribution')->get();
+      return DB::table('expenses_histories')->where('expenses_histories.id','=',$this->id)
+          ->join('expenses_user','expenses_histories.id','=','expenses_user.expenses_history_id')
+          ->join('users','users.id','=','expenses_user.user_id')
+          ->select('users.*' ,'expenses_user.user_contribution')->get();
 
 
     }
@@ -53,12 +56,12 @@ return $this->expense->user();
     }
 
     public function group(){
-        return $this->expense->group
-
-
-        ();
+        return $this->expense->group();
 
     }
+
+
+
     public function getStringAction(){
 
         $actions= [1=>'added' ,'edited', 'deleted'];

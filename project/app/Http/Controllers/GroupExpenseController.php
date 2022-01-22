@@ -13,11 +13,7 @@ use Nette\Schema\ValidationException;
 
 class GroupExpenseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index(Group $group)
     {
         $user_expenses=auth()->user()->expenses;
@@ -26,23 +22,14 @@ class GroupExpenseController extends Controller
         return view('expenses.index',['result'=>$user_expenses])->withGroup($group);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create(Group $group)
     {
         $new_id=auth()->user()->id;
         return view('expenses.create')->withGroup($group)->withUsers($group->users->where('id', '!=', $new_id));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreExpenseRequest  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(StoreExpenseRequest $request,Group $group)
     {
 
@@ -73,14 +60,14 @@ class GroupExpenseController extends Controller
             DB::table('expenses_user')->insert([
                     'user_id'=>$user,
                     'expenses_history_id'=>$expense_history->id,
-                    'user_contribution' => $expense_history->amount/count($attributes['selected_users']+1),
+                    'user_contribution' => round($expense_history->amount/count($attributes['selected_users']),2),
             ]);
 
 
 
         }
         $expenses_history= Group::find($group->id)->expenses_history;
-        return view('groups.show', ['group' => $group,'expenses_history' =>$expenses_history]);
+        return redirect(route('groups.show', ['group' => $group,'expenses_history' =>$expenses_history]));
     }
 
     private function my_join(Group $group){
@@ -102,35 +89,19 @@ class GroupExpenseController extends Controller
         //TODO nie dziala helpppp
         return $result->sortBy('updated_at',SORT_REGULAR, TRUE);
     }
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Expense  $expense
-     * @return \Illuminate\Http\Response
-     */
+
     public function show(Group $group,ExpensesHistory $expense)
     {
         return view('expenses.show ')->with(['expense' =>$expense])->withGroup($group);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Expense  $expense
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit(Expense $expense)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateExpenseRequest  $request
-     * @param  \App\Models\Expense  $expense
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(UpdateExpenseRequest $request, Expense $expense)
     {
         //

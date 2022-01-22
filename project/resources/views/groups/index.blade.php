@@ -20,7 +20,7 @@
                 <h2 class="text-xl font-semibold">Nie należysz jeszcze do żadnej grupy. </h2>
             @endforelse
 {{--            TODO--}}
-{{--            {{ $groups->links() }}--}}
+            {{ $groups->links() }}
         </div>
 
         <x-floating-button>
