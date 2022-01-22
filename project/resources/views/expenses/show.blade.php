@@ -53,7 +53,6 @@
 
 <x-user-list-box :user="$user" ></x-user-list-box>
 
-
                     @endforeach
                 </div>
 </div>
