@@ -74,14 +74,17 @@ class GroupController extends Controller {
         Gate::authorize('admin', $group);
         $attributes = request()->validate([
             'name' => 'required',
-            'avatar' => 'required|image|mimes:jpg,png|max:2048',
+            'avatar' => 'image|mimes:jpg,png|max:2048',
             'smart_billing' => 'boolean',
         ]);
 
-
-        $fileName =  time() . '.' . request()->file('avatar')->getClientOriginalExtension();
-        request()->avatar->move(storage_path('app/public/group_avatars/'),$fileName);
-        $imagePath = '/storage/group_avatars/'.$fileName;
+        if (!empty(request()->avatar)) {
+            $fileName = time() . '.' . request()->file('avatar')->getClientOriginalExtension();
+            request()->avatar->move(storage_path('app/public/group_avatars/'), $fileName);
+            $imagePath = '/storage/group_avatars/' . $fileName;
+        }else{
+            $imagePath = $group->avatar;
+        }
 
         File::delete($group->avatar);
 
