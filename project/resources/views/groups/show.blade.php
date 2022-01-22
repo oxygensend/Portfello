@@ -21,7 +21,7 @@
                              href="{{route('groups.show', $group)}}"
                              vertical='space-y-10'
                              :group="$group"
-                             :balance="true"
+                             balance="true"
                 >
                 </x-group-box>
 

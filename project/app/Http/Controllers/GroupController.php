@@ -36,7 +36,7 @@ class GroupController extends Controller {
             request()->avatar->move(storage_path('app/public/group_avatars/'),$fileNameToStore);
             $imagePath = 'storage/group_avatars/'.$fileNameToStore;
         }else{
-            $imagePath = '/images/default_avatar.jpg';
+            $imagePath = '/images/default_group.png';
         }
 
         $group = Group::create([

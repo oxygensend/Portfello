@@ -32,7 +32,7 @@
                 <div class="text-4xl font-semibold">{{$expense->description}}
                 </div>
 
-                <div class="text-3xl font-semibold"> {{$expense->getAmountString() . ' zł'}}
+                <div class="text-3xl font-semibold"> {{$expense->getAmountString() }}
                 </div>
                     <div>
                     Created by <span class="font-semibold     text-lg"
