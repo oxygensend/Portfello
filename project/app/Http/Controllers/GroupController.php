@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Auth;
+
 
 
 class GroupController extends Controller {
@@ -56,16 +59,19 @@ class GroupController extends Controller {
     {
 
         $expenses_history= Group::find($group->id)->expenses_history;
-        return view('groups.show', ['group' => $group,'expenses_history' =>$expenses_history]);
+        return view('groups.show', ['group' => $group,'expenses_history' =>$expenses_history,'user' => Auth::user()]);
     }
 
     public function edit(Group $group)
     {
-        return view('groups.edit')->withGroup($group);
+        Gate::authorize('admin', $group);
+            return view('groups.edit')->withGroup($group);
+
     }
 
     public function update(Group $group)
     {
+        Gate::authorize('admin', $group);
         $attributes = request()->validate([
             'name' => 'required',
             'avatar' => 'required|image|mimes:jpg,png|max:2048',
