@@ -23,6 +23,16 @@ class PaymentController extends Controller
 
     }
 
+    public function getItemsList(Group $group, User $user){
+
+
+        //jesli wgl sa takie itemy
+        return json_encode($user);
+
+    }
+
+
+
     public function store(Group $group){
 
         $user = auth()->user();

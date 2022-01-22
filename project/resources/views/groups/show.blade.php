@@ -24,6 +24,7 @@
                              vertical='space-y-10'
                              :group="$group"
                              balance="true"
+                             group_show="false"
                 >
                 </x-group-box>
 
@@ -57,9 +58,7 @@
 
 
                 </x-floating-button>
-                <x-button class="text-center">
-                    <a href={{  route('groups.pay.create', ['group'=>$group]) }}>Payment</a>
-                </x-button>
+
             </div>
         </div>
     </div>
