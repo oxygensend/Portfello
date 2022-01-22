@@ -47,17 +47,19 @@
                         </div>
 
                         <div class="mt-4 flex space-x-2">
-                            <x-button class="text-center">
+                            <x-button id="Update" name="Update" class="text-center">
                                 Update
                             </x-button>
 
                     </form>
-                            <x-action-button name="Delete"
+
+                        <x-action-button name="Delete"
                                      action="{{  route('groups.destroy', $group) }}"
                                      method='DELETE'
                             />
 
                         </div>
+
 
                 <div x-data="{ show: {{ session('show') ?? 'false' }} }">
                     <div class="mt-6" @click="show =! show">

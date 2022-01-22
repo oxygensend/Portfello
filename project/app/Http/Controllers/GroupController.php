@@ -3,13 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Auth;
-
 
 
 class GroupController extends Controller {
@@ -59,36 +56,31 @@ class GroupController extends Controller {
     {
 
         $expenses_history= Group::find($group->id)->expenses_history;
-        return view('groups.show', ['group' => $group,'expenses_history' =>$expenses_history,'user' => Auth::user()]);
+        return view('groups.show', ['group' => $group,'expenses_history' =>$expenses_history]);
     }
 
     public function edit(Group $group)
     {
-        Gate::authorize('admin', $group);
-            return view('groups.edit')->withGroup($group);
-
+        return view('groups.edit')->withGroup($group);
     }
 
     public function update(Group $group)
     {
-        Gate::authorize('admin', $group);
         $attributes = request()->validate([
             'name' => 'required',
             'avatar' => 'image|mimes:jpg,png|max:2048',
             'smart_billing' => 'boolean',
         ]);
 
-        if (!empty(request()->avatar)) {
+        if(request()->file('avatar')) {
             $fileName = time() . '.' . request()->file('avatar')->getClientOriginalExtension();
             request()->avatar->move(storage_path('app/public/group_avatars/'), $fileName);
             $imagePath = '/storage/group_avatars/' . $fileName;
-        }else{
-            $imagePath = $group->avatar;
-        }
 
-        File::delete($group->avatar);
+            File::delete($group->avatar);
 
         $group->avatar = $imagePath;
+        }
         $group->slug = Str::slug($attributes['name']);
         $group->name = $attributes['name'];
         //TODO smart_billing trzeba dodac tutaj - NIE TRZEBA

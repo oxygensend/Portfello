@@ -9,7 +9,7 @@ class ExpensesInGroupTestsCest
         $I->fillField('email', 'test@test.com');
         $I->fillField('password', 'test123');
         $I->click('Log in');
-
+/*
         $I->amOnPage('/groups');
         $I->click('Create');
         $I->fillField('name', 'test group');
@@ -44,6 +44,6 @@ class ExpensesInGroupTestsCest
         $option = $I->grabTextFrom('select option:nth-child(2)');
         $I->selectOption("select", "test2");
         //$I->dontsee("What kind of item ");
-
+*/
     }
 }

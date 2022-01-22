@@ -73,7 +73,7 @@ class GroupExpenseController extends Controller
             DB::table('expenses_user')->insert([
                     'user_id'=>$user,
                     'expenses_history_id'=>$expense_history->id,
-                    'user_contribution' => $expense_history->amount/count($attributes['selected_users']+1),
+                'user_contribution' => round($expense_history->amount/count($attributes['selected_users']),2),
             ]);
 
 
