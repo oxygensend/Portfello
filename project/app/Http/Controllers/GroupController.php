@@ -6,7 +6,8 @@ use App\Models\Group;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Facades\File;
+
 
 class GroupController extends Controller {
 
@@ -67,17 +68,18 @@ class GroupController extends Controller {
     {
         $attributes = request()->validate([
             'name' => 'required',
-            'avatar' => 'image|nullable',
+            'avatar' => 'required|image|mimes:jpg,png|max:2048',
             'smart_billing' => 'boolean',
         ]);
 
-        if ($attributes['avatar'] != null) {
-            $image = Image::make(request()->file('avatar'));
-            $fileName = 'group_avatars/' . time() . '.' . request()->file('avatar')->getClientOriginalExtension();
-            $image->save(storage_path('app/public/' . $fileName));
-            $group->avatar = 'storage/' . $fileName;
-        }
 
+        $fileName =  time() . '.' . request()->file('avatar')->getClientOriginalExtension();
+        request()->avatar->move(storage_path('app/public/group_avatars/'),$fileName);
+        $imagePath = '/storage/group_avatars/'.$fileName;
+
+        File::delete($group->avatar);
+
+        $group->avatar = $imagePath;
         $group->slug = Str::slug($attributes['name']);
         $group->name = $attributes['name'];
         //TODO smart_billing trzeba dodac tutaj - NIE TRZEBA
