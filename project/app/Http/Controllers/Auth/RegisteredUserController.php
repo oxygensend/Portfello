@@ -45,8 +45,7 @@ class RegisteredUserController extends Controller
         //avatar handling
         if (!empty($request->image)){
             $fileExtension = $request->file('image')->getClientOriginalExtension();
-            $fileName = pathinfo($request->file('image')->getClientOriginalName(),PATHINFO_FILENAME);
-            $fileNameToStore = $fileName.'_'.time().'.'.$fileExtension;
+            $fileNameToStore = time().'.'.$fileExtension;
             $request->image->move(storage_path('app/public/user_avatars/'),$fileNameToStore);
             $imagePath = 'storage/user_avatars/'.$fileNameToStore;
         }else{
