@@ -59,7 +59,7 @@ class User extends Authenticatable
 $groups =$this->groups;
 
 return $groups->filter( function ($group, $key){
-    return $this->getGroupBilance($group) !=0;
+    return $this->getGroupBalance($group) !=0;
 });
     }
 

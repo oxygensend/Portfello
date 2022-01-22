@@ -54,7 +54,8 @@ class GroupController extends Controller {
     public function show(Group $group)
     {
 
-        $expenses_history= Group::find($group->id)->expenses_history;
+        $expenses_history= Group::find($group->id)->expenses_history()->orderBy('created_at','desc')->get();
+
         return view('groups.show', ['group' => $group,'expenses_history' =>$expenses_history]);
     }
 

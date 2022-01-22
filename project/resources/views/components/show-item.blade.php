@@ -1,4 +1,4 @@
-@props(['group'])
+@props(['group', 'expense'=>null])
 
     <div class="py-1" >
 
@@ -17,7 +17,7 @@
                 <x-input id="how_much" class="block mt-1 w-full"
                          type="number"
                          name="how_much"
-                         :value="old('how_much')" autofocus />
+                         :value=" empty($expense) ? old('how_much') : $expense->amount  " autofocus />
             </div>
             <x-error name="how_much"/>
 

@@ -1,5 +1,5 @@
 
-@props(['group', 'avatar', 'imgsize'=>'w-40 h-40' , 'vertical' ,'balance'])
+@props(['group', 'avatar', 'imgsize'=>'w-40 h-40' , 'vertical' ,'balance'=>''])
 <div class="flex justify-center items-center  {{ isset($vertical) ? "flex-col $vertical items-center justify-center ":'space-x-10' }}">
     <x-image src="{{ $avatar ?? '' }}" properties="{{$imgsize}} rounded-xl overflow-hidden" />
 
