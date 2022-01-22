@@ -2,7 +2,11 @@
 
 
 <div class="flex justify-start flex-col  border-gray-200 py-2 px-4 rounded-xl">
-    <div class=" mb-2"> <span class="font-semibold" >{{$expense->user->name}}</span> {{$expense->getStringAction()  }} expense</div>
+    @if(Auth::user()->name ==$expense->user->name)
+        <div class=" mb-2"> <span class="font-semibold" >You </span>{{$expense->getStringAction()  }} expense  <a x-show="{{$group_show}}"> in {{ $expense->group->name }}</a> </div>
+    @else
+        <div class=" mb-2"> <span class="font-semibold" >{{$expense->user->name}}</span> {{$expense->getStringAction()  }} expense <a x-show="{{$group_show}}"> in {{ $expense->group->name }}</a></div>
+    @endif
 <div {{ $attributes->merge(['class' => 'flex flex-row space-x-8 items-center bg-sidebar_main_color opacity-90 py-3 px-4 rounded-md text-white' ] ) }} >
 
     <div class="flex flex-col ">
@@ -34,7 +38,7 @@
          $creator=$expense->user->name;
             if( $expense->user ->isIncluded($expense)){
                $right_uppertext="You owe ";
-                $right_lowertext= $expense->user->owes($expense);
+               $right_lowertext= $expense->user->owes($expense);
         }
             else{
                 $right_uppertext=null;

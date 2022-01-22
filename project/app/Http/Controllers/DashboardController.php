@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Group;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -16,9 +17,7 @@ class DashboardController extends Controller
      */
     public function __invoke(Request $request)
     {
-
-        ddd(auth()->user()->getBalanceWithUser(User::find(1), Group::find(1)));
-        $groups=\Auth::user()->active_groups();
+        $groups=Auth::user()->active_groups();
 
         return view('dashboard')->withGroups( $groups);
     }

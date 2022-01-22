@@ -12,7 +12,7 @@
                              avatar="{{asset($group->avatar)}}"
                              href="{{route('groups.show', $group)}}"
                              balance="true"
-                :group="$group"
+                             :group="$group"
                 />
 
 
