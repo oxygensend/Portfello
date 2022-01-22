@@ -17,7 +17,8 @@ class DashboardController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $groups=Auth::user()->active_groups();
+
+        $groups=\Auth::user()->active_groups();
 
         return view('dashboard')->withGroups( $groups);
     }

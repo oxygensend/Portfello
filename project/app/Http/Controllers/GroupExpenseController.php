@@ -42,6 +42,9 @@ class GroupExpenseController extends Controller
             'how_much' => 'required | numeric',
 
         ]);
+
+
+
 //        ddd('dumping this one', $request);
         $user = auth()->user();
         $selected_users = $request->selected_users;

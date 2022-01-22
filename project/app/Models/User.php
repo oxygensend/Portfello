@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Codeception\Subscriber\GracefulTermination;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -114,7 +116,15 @@ return $groups->filter( function ($group, $key){
 //
 //    }
 
+    private function  combineArrays($a1, $a2, $a3) : Collection {
+        $sums = array();
+        foreach (array_keys($a1 + $a2 + $a3) as $key) {
+            $sums[$key] = @($a1[$key] + $a2[$key] - $a3[$key]);
+        }
 
+        return collect($sums);
+
+    }
 
     public function owes(ExpensesHistory $expense_history){
 
@@ -227,7 +237,7 @@ return $groups->filter( function ($group, $key){
                 '=', 'expenses.id')
             ->where('expenses_histories.action', '!=', 3)
             ->where('expenses_histories.isLatest', true)
-            ->where('expenses.id', $this->id)
+            ->where('expenses.user_id', $this->id)
             ->where('item', null)
             ->sum('user_contribution');
         $my_contribution = DB::table('expenses_user')
@@ -236,7 +246,7 @@ return $groups->filter( function ($group, $key){
                 '=', 'expenses_histories.id')
             ->join('expenses', 'expenses_histories.expense_id',
                 '=', 'expenses.id')
-            ->where('expenses.id', $user->id)
+            ->where('expenses.user_id', $user->id)
             ->where('expenses_histories.action', '!=', 3)
             ->where('expenses_histories.isLatest', true)
             ->where('item', null)
@@ -244,10 +254,56 @@ return $groups->filter( function ($group, $key){
         return($user_contribution - $my_contribution -$payments_recived + $payments_executed);
     }
 
+    public function getItemBalanceWithUser(User $user, Group $group){
+        $user_contribution = DB::table('expenses_user')
+            ->where('expenses_user.user_id', $user->id)
+            ->join('expenses_histories', 'expenses_user.expenses_history_id',
+                '=', 'expenses_histories.id')
+            ->join('expenses', 'expenses_histories.expense_id',
+                '=', 'expenses.id')
+            ->where('expenses.user_id', $this->id)
+            ->where('expenses_histories.action', '!=', 3)
+            ->where('expenses_histories.isLatest', true)
+            ->where('item','!=', null)
+            ->select('expenses_histories.item', 'expenses_user.user_contribution','expenses_histories.amount')
+            ->groupBy('item')->selectRaw(' item,  sum(user_contribution) as user_contribution ')
+            ->pluck('user_contribution', 'item')->toArray();
+
+        $my_contribution = DB::table('expenses_user')
+            ->where('expenses_user.user_id', $this->id)
+            ->join('expenses_histories', 'expenses_user.expenses_history_id',
+                '=', 'expenses_histories.id')
+            ->join('expenses', 'expenses_histories.expense_id',
+                '=', 'expenses.id')
+            ->where('expenses.user_id', $user->id)
+            ->where('expenses_histories.action', '!=', 3)
+            ->where('expenses_histories.isLatest', true)
+            ->where('item','!=', null)
+            ->select('expenses_histories.item', 'expenses_user.user_contribution','expenses_histories.amount')
+            ->groupBy('item')->selectRaw(' item, sum(user_contribution) as user_contribution')
+            ->pluck('user_contribution', 'item')->toArray();
+
+        $payments_recived = $this->payments_recived()->where('item','!=',null)
+            ->where('group_id', $group->id)
+            ->where('user_1_id',$user->id)
+            ->pluck('amount', 'item')->toArray();
+        $payments_executed = $this->payments_executed()->where('item','!=',null)
+            ->where('user_1_id',$this->id)
+            ->pluck('amount', 'item')->toArray();
+
+        $sums = array();
+        foreach (array_keys($user_contribution + $my_contribution + $payments_recived + $payments_executed) as $key) {
+            $sums[$key] = @($user_contribution[$key] - $my_contribution[$key] - $payments_recived[$key] + $payments_executed[$key]);
+        }
+
+        return($sums);
+
+    }
+
     public function getItemBalance()
     {
 
-        $balance = DB::table('expenses_user')
+        $contribution = DB::table('expenses_user')
             ->where('expenses_user.user_id', $this->id)
             ->join('expenses_histories', 'expenses_user.expenses_history_id',
                 '=', 'expenses_histories.id')
@@ -258,16 +314,18 @@ return $groups->filter( function ($group, $key){
             ->where('item','!=', null)
             ->select('expenses_histories.item', 'expenses_user.user_contribution','expenses_histories.amount')
             ->groupBy('item')->selectRaw(' item, sum(amount) as amount , sum(user_contribution) as user_contribution, sum(amount-user_contribution) as balance ')
-            ->pluck('balance', 'item');
+            ->pluck('balance', 'item')->toArray();
 
+        $payments_recived = $this->payments_recived()->where('item','!=',null)->pluck('amount', 'item')->toArray();
+        $payments_executed = $this->payments_executed()->where('item','!=',null)->pluck('amount', 'item')->toArray();
 
-        return($balance);
+        return($this->combineArrays($contribution, $payments_executed, $payments_recived));
 
     }
 
     public function getGroupItemBalance($group){
 
-        $balance = DB::table('expenses_user')
+        $contribution = DB::table('expenses_user')
             ->where('expenses_user.user_id', $this->id)
             ->join('expenses_histories', 'expenses_user.expenses_history_id',
                 '=', 'expenses_histories.id')
@@ -279,10 +337,19 @@ return $groups->filter( function ($group, $key){
             ->where('item','!=', null)
             ->select('expenses_histories.item', 'expenses_user.user_contribution','expenses_histories.amount')
             ->groupBy('item')->selectRaw(' item, sum(amount) as amount , sum(user_contribution) as user_contribution, sum(amount-user_contribution) as balance ')
-            ->pluck('balance', 'item');
+            ->pluck('balance', 'item')->toArray();
+
+        $payments_recived = $this->payments_recived()
+                ->where('item','!=',null)
+                ->where('group_id', $group->id)
+                ->pluck('amount', 'item')->toArray();
+        $payments_executed = $this->payments_executed()
+            ->where('item','!=',null)
+            ->where('group_id', $group->id)
+            ->pluck('amount', 'item')->toArray();
 
 
-        return($balance);
+        return($this->combineArrays($contribution, $payments_executed, $payments_recived));
 
     }
 
