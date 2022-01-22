@@ -19,7 +19,9 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth','PreventBackHistory'])->group(function () {
+
+
     Route::resource('groups', GroupController::class)->parameters(['groups'=>'group:slug']);
     Route::resource('groups.add-user', \App\Http\Controllers\UsersInGroupController::class);
     Route::resource('groups.expenses', App\Http\Controllers\GroupExpenseController::class);
@@ -37,9 +39,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/edit-user/change-username',[App\Http\Controllers\EditUserController::class,'ChangeUsername']);
     Route::patch('/edit-user/change-avatar',[App\Http\Controllers\EditUserController::class,'ChangeAvatar']);
 });
-
-
-    //Route::resource('/edit-user',App\Http\Controllers\EditUserController::class);
 
 
 
