@@ -22,27 +22,31 @@ class GroupController extends Controller {
     }
 
 
-    public function store()
+    public function store(Request $request)
     {
         $attributes = request()->validate([
             'name' => 'required',
-            'avatar' => 'image',
+            'avatar' => 'image|mimes:jpg,png|max:2048',
             'smart_billing' => 'boolean',
         ]);
-        if ($attributes['avatar'] ?? false) {
-            $image = Image::make(request()->file('avatar'));
-            $fileName = 'group_avatars/' . time() . '.' . request()->file('avatar')->getClientOriginalExtension();
-            $image->save(storage_path('app/public/' . $fileName));
-            $fileName = 'storage/' . $fileName;
-        } else {
-            $fileName = '/images/default_group.png';
+
+        if (!empty(request()->avatar)){
+            $fileExtension = request()->file('avatar')->getClientOriginalExtension();
+            $fileNameToStore = time().'.'.$fileExtension;
+            request()->avatar->move(storage_path('app/public/group_avatars/'),$fileNameToStore);
+            $imagePath = 'storage/group_avatars/'.$fileNameToStore;
+        }else{
+            $imagePath = '/images/default_avatar.jpg';
         }
 
-        $attributes['avatar'] = $fileName;
-        $attributes['user_id'] = auth()->user()->id;
-        $attributes['slug'] = Str::slug($attributes['name']);
+        $group = Group::create([
+            'name' => request()->name,
+            'user_id' => auth()->user()->id,
+            'slug' => Str::slug($attributes['name']),
+            'avatar' => $imagePath
+        ]);
 
-        $group = Group::create($attributes);
+
         $group->users()->attach(auth()->user()->id);
         return redirect(route('groups.index'))->with('success', 'Group has been created');
     }
