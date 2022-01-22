@@ -9,8 +9,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable {
-
+class User extends Authenticatable
+{
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
@@ -22,7 +22,7 @@ class User extends Authenticatable {
         'name',
         'email',
         'password',
-        'avatar',
+        'avatar'
     ];
 
     /**
@@ -43,7 +43,6 @@ class User extends Authenticatable {
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
     public function groups()
     {
         return $this->belongsToMany(
@@ -53,6 +52,17 @@ class User extends Authenticatable {
             'group_id'
         );
     }
+
+    //TODO -> database functions or some query chaining
+    public function active_groups()
+    {
+$groups =$this->groups();
+
+return $groups->filter( function ($group, $key){
+    return $this->getGroupBilance($group) !=0;
+});
+    }
+
 
     public function expenses()
     {
@@ -64,63 +74,70 @@ class User extends Authenticatable {
         );
     }
 
-    public function payments_executed()
-    {
+    public function payments_executed(){
         return $this->hasMany(Payment::class, 'user_1_id');
     }
-
-    public function payments_recived()
-    {
+    public function payments_recived(){
         return $this->hasMany(Payment::class, 'user_2_id');
     }
-
-    public function invites()
-    {
+    public function invites(){
 
         return $this->hasMany(Invites::class);
     }
 
-    public function isIncluded(ExpensesHistory $expense_history)
-    {
+    public function isIncluded(ExpensesHistory $expense_history){
 
-        return $expense_history->users()->contains($this);
+    return $expense_history->users()->contains($this);
 
     }
 
-    public function userContribution(ExpensesHistory $expense_history)
-    {
+    public function userContribution(ExpensesHistory $expense_history){
 
-        $result = \DB::table('expenses_user')->where('user_id', '=', $this->id)->where('expenses_history_id', '=', $expense_history->id)->value('user_contribution');
+        $result= \DB::table('expenses_user')->where('user_id','=',$this->id)->where('expenses_history_id','=',$expense_history->id)->select('user_contribution')->get()->first();
         return $result;
 
     }
+    public function balanceInGroup(){}
+
+//    public function balancePaymentInGroup(Group $group){
+//
+//
+// $plus=$this->expenses()->where('group_id','=',$group->id)->join('expenses_histories','expenses_histories.expense_id','=','expenses.id')->where('expenses_histories.isLatest','=',1)->where('expenses_histories.action','!=',3)->select('amount')->sum('amount');
+//
+//
+//
+//
+//    $minus= $this->expenses()->where('group_id','=',$group->id)->join('expenses_histories','expenses_histories.expense_id','=','expenses.id')->where('expenses_histories.isLatest','=',1)->join('expenses_user','expenses_histories.id','=','expenses_user.expenses_history_id')->where('expenses_user.user_id','=',$this->id)->sum('user_contribution');
+//
+//return $plus-$minus;
+//
+//
+//    }
 
 
 
-    public function owes(ExpensesHistory $expense_history)
-    {
+    public function owes(ExpensesHistory $expense_history){
 
 
-        $amount = $this->userContribution();
+        $amount=$this->userContribution();
 
-        if (!is_null($expense_history->item)) {
-            return $amount . " " . $expense_history->item;
-        } else {
+                if(!is_null($expense_history->item )){
+                    return   $amount." " . $expense_history->item ;
+                }else{
 
-            return $amount;
-        }
+                    return  $amount;
+                }
 
     }
 
-    public function getBack(ExpensesHistory $expense_history)
-    {
+    public function getBack(ExpensesHistory $expense_history){
 
-        $amount = $expense_history->amount - $this->userContribution($expense_history);
-        if (!is_null($expense_history->item)) {
-            return $amount . " " . $expense_history->item;
-        } else {
+       $amount=$expense_history->amount - $this->userContribution($expense_history);
+        if(!is_null($expense_history->item )){
+            return   $amount." " . $expense_history->item ;
+        }else{
 
-            return $amount;
+            return  $amount;
         }
     }
 
@@ -129,13 +146,13 @@ class User extends Authenticatable {
     {
         $users_id = DB::table('expenses_user')
             ->where('expenses_user.user_id', $this->id)
-            ->join('expenses_histories', 'expenses_user.expenses_history_id',
-                '=', 'expenses_histories.id')
-            ->join('expenses', 'expenses_histories.expense_id',
-                '=', 'expenses.id')
-            ->pluck('expenses.user_id')->toArray();
+            ->join('expenses_histories','expenses_user.expenses_history_id',
+                '=','expenses_histories.id')
+            ->join('expenses','expenses_histories.expense_id',
+                '=','expenses.id')
+             ->pluck('expenses.user_id')->toArray();
 
-        return User::whereIn('id', $users_id)->get();
+         return User::whereIn('id',$users_id)->get();
 
     }
 
@@ -143,11 +160,13 @@ class User extends Authenticatable {
     {
 
 
-        $amount = ExpensesHistory::whereHas('expense', function ($q) use ($group) {
+        $amount = ExpensesHistory::whereHas('expense', function($q) use ($group) {
             $q->where('user_id', $this->id);
             $q->where('group_id', $group->id);
-        })->where('action', '!=', 3)->where('isLatest', true)->sum('amount');
+            $q->where('isLatest', 1);
+            $q->where('action', '!=','3');
 
+        })->sum('amount');
 
         $contribution = DB::table('expenses_user')
             ->where('expenses_user.user_id', $this->id)
@@ -160,8 +179,7 @@ class User extends Authenticatable {
             ->where('expenses_histories.isLatest', true)
             ->sum('user_contribution');
 
-        return round(($amount - $contribution),2);
-
+        return($amount - $contribution);
 
     }
 
@@ -169,9 +187,9 @@ class User extends Authenticatable {
     {
         $amount = ExpensesHistory::whereHas('expense', function ($q) {
             $q->where('user_id', $this->id);
-        })->where('action', '!=', 3)
-            ->where('isLatest', true)->sum('amount');
-
+            $q->where('isLatest', 1);
+            $q->where('action', '!=','3');
+        })->sum('amount');
 
         $contribution = DB::table('expenses_user')
             ->where('expenses_user.user_id', $this->id)
@@ -182,7 +200,7 @@ class User extends Authenticatable {
             ->where('expenses_histories.action', '!=', 3)
             ->where('expenses_histories.isLatest', true)
             ->sum('user_contribution');
-        return round(($amount - $contribution ),2);
+        return($amount-$contribution);
 
     }
 
@@ -200,14 +218,15 @@ class User extends Authenticatable {
             ->value('user_contribution');
     }
 
-    public function getExpenseString(Expense $expense)
-    {
+    public function getExpenseString(Expense $expense){
 //
 //        $result= DB::table('users')->join('expenses_user', 'expenses_user.user_id', '=','users.id')->where('expenses_user.expenses_id','=',$expense->id)->get();
 //        ddd($result);
 
         return 10;
     }
+
+
 
 
 }
