@@ -11,6 +11,7 @@
                 <x-group-box name="{{$group->name}}"
                              avatar="{{asset($group->avatar)}}"
                              href="{{route('groups.show', $group)}}"
+                             balance="true"
                 :group="$group"
                 />
 

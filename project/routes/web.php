@@ -26,7 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('groups.expenses.pay', \App\Http\Controllers\PaymentController::class);
     Route::post('/invites/accept/{invite}','App\Http\Controllers\InvitesController@accept')->name('invites.accept');
     Route::delete('/invites/delete/{invite}', 'App\Http\Controllers\InvitesController@delete')->name('invites.delete');
-    //Route::get('/history', \App\Http\Controllers\HistoryController::class)->name('history');
+    Route::get('/history', \App\Http\Controllers\HistoryController::class)->name('history');
     Route::get('/dashboard', \App\Http\Controllers\DashboardController::class)->name('dashboard');
 
     Route::get('/logout', 'App\Http\Controllers\LogoutController@logout');

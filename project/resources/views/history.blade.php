@@ -13,14 +13,14 @@
                         @forelse ($expenses_history as $expense_history)
 
 
-                           <div class="flex" >
+                           <div class="" >
                                <x-group-box class="flex-1 space-y-3 mt-4 object-left" imgsize='w-12 h-12 md:w-7 md:h-7'
                                             name="{{$expense_history->group->name}}"
                                             avatar="{{asset($expense_history->group->avatar)}}"
                                             href="{{route('groups.show', $expense_history->group)}}"
                                             vertical='space-y-4'
                                             :group=" $expense_history->group"
-                                            :balance="false"
+                                            balance="false"
                                >
                                </x-group-box>
                             <x-expense-box  class="flex-1 w-7/8 object-right " :expense="$expense_history"

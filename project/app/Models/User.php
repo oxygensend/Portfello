@@ -119,7 +119,7 @@ return $groups->filter( function ($group, $key){
     public function owes(ExpensesHistory $expense_history){
 
 
-        $amount=$this->userContribution();
+        $amount=$this->contributonInExpense($expense_history);
 
                 if(!is_null($expense_history->item )){
                     return   $amount." " . $expense_history->item ;
@@ -132,7 +132,7 @@ return $groups->filter( function ($group, $key){
 
     public function getBack(ExpensesHistory $expense_history){
 
-       $amount=$expense_history->amount - $this->userContribution($expense_history);
+       $amount=$expense_history->amount - $this->contributonInExpense($expense_history);
         if(!is_null($expense_history->item )){
             return   $amount." " . $expense_history->item ;
         }else{
@@ -164,6 +164,7 @@ return $groups->filter( function ($group, $key){
             $q->where('user_id', $this->id);
             $q->where('group_id', $group->id);
             $q->where('isLatest', 1);
+            $q->where('item', null);
             $q->where('action', '!=','3');
 
         })->sum('amount');
@@ -177,6 +178,7 @@ return $groups->filter( function ($group, $key){
             ->where('group_id', $group->id)
             ->where('expenses_histories.action', '!=', 3)
             ->where('expenses_histories.isLatest', true)
+            ->where('item', null)
             ->sum('user_contribution');
 
         return($amount - $contribution);
@@ -189,6 +191,7 @@ return $groups->filter( function ($group, $key){
             $q->where('user_id', $this->id);
             $q->where('isLatest', 1);
             $q->where('action', '!=','3');
+            $q->where('item', null);
         })->sum('amount');
 
         $contribution = DB::table('expenses_user')
@@ -199,12 +202,52 @@ return $groups->filter( function ($group, $key){
                 '=', 'expenses.id')
             ->where('expenses_histories.action', '!=', 3)
             ->where('expenses_histories.isLatest', true)
+            ->where('item', null)
             ->sum('user_contribution');
         return($amount-$contribution);
 
     }
+    public function getItemBalance()
+    {
+
+        $balance = DB::table('expenses_user')
+            ->where('expenses_user.user_id', $this->id)
+            ->join('expenses_histories', 'expenses_user.expenses_history_id',
+                '=', 'expenses_histories.id')
+            ->join('expenses', 'expenses_histories.expense_id',
+                '=', 'expenses.id')
+            ->where('expenses_histories.action', '!=', 3)
+            ->where('expenses_histories.isLatest', true)
+            ->where('item','!=', null)
+            ->select('expenses_histories.item', 'expenses_user.user_contribution','expenses_histories.amount')
+            ->groupBy('item')->selectRaw(' item, sum(amount) as amount , sum(user_contribution) as user_contribution, sum(amount-user_contribution) as balance ')
+            ->pluck('balance', 'item');
 
 
+        return($balance);
+
+    }
+
+    public function getGroupItemBalance($group){
+
+        $balance = DB::table('expenses_user')
+            ->where('expenses_user.user_id', $this->id)
+            ->join('expenses_histories', 'expenses_user.expenses_history_id',
+                '=', 'expenses_histories.id')
+            ->join('expenses', 'expenses_histories.expense_id',
+                '=', 'expenses.id')
+            ->where('expenses.group_id', $group->id)
+            ->where('expenses_histories.action', '!=', 3)
+            ->where('expenses_histories.isLatest', true)
+            ->where('item','!=', null)
+            ->select('expenses_histories.item', 'expenses_user.user_contribution','expenses_histories.amount')
+            ->groupBy('item')->selectRaw(' item, sum(amount) as amount , sum(user_contribution) as user_contribution, sum(amount-user_contribution) as balance ')
+            ->pluck('balance', 'item');
+
+
+        return($balance);
+
+    }
 
     public function contributonInExpense(ExpensesHistory $expense){
 
@@ -217,7 +260,24 @@ return $groups->filter( function ($group, $key){
             ->where('isLatest', true)
             ->value('user_contribution');
     }
-
+  public function CurrnetExpenseswithGroup()
+    {
+        return $this->hasManyThrough(ExpensesHistory::class, Expense::class,
+            '',
+            '',
+            'id',
+            'id',
+        )->join('groups','groups.id','=','expenses.group_id');
+    }
+    public function expenses_history()
+    {
+        return $this->hasManyThrough(ExpensesHistory::class, Expense::class,
+            '',
+            '',
+            'id',
+            'id',
+        );
+    }
     public function getExpenseString(Expense $expense){
 //
 //        $result= DB::table('users')->join('expenses_user', 'expenses_user.user_id', '=','users.id')->where('expenses_user.expenses_id','=',$expense->id)->get();

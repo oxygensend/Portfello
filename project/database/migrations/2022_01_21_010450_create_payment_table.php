@@ -23,6 +23,7 @@ class CreatePaymentTable extends Migration
             $table->unsignedBigInteger('group_id');
             $table->foreign('group_id')->references('id')->on('groups')->constrained()->cascadeOnDelete();
             $table->decimal('amount')->default(0);
+            $table->string('item')->nullable();
         });
     }
 
