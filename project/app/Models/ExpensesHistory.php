@@ -49,11 +49,7 @@ return $this->expense->user();
         return $this->belongsTo(Expense::class);
     }
 
-    public function getMonth(){
-        if(empty($this->created_at))return "None";
-        return $this->created_at->format('M') ;
 
-    }
 
     public function group(){
         return $this->expense->group();
@@ -72,6 +68,12 @@ return $this->expense->user();
 
         if(empty($this->created_at))return "None";
         return $this->created_at->format('j') ;
+
+    }
+
+    public function getMonth(){
+        if(empty($this->created_at))return "None";
+        return $this->created_at->format('M') ;
 
     }
 

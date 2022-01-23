@@ -158,6 +158,50 @@ return $groups->filter( function ($group, $key){
         }
     }
 
+    public function getPaymentHistoryInGroup(Group $group){
+
+       $ids=  $this->paymentHistoryInGroup($group)->get();
+
+
+  $ids= array_map( function($value){
+  return $value->id;
+
+  } , $ids->toArray() );
+
+
+ return Payment::findMany( $ids);
+
+
+    }
+    public function getPaymentHistory(){
+
+        $ids=  $this->paymentHistory()->get();
+
+        $ids= array_map( function($value){
+            return $value->id;
+
+        } , $ids->toArray() );
+
+
+        return Payment::findMany( $ids);
+
+    }
+
+    public function paymentHistoryInGroup(Group $group){
+
+    return $this->paymentHistory()->where('payments.group_id',$group->id );
+
+    }
+    public function paymentHistory(){
+
+        $user=auth()->user();
+
+      return  $payments = DB::table('payments')->join('groups','payments.group_id','=','groups.id')->join('group_user', 'group_user.group_id','=','groups.id')->where('group_user.user_id','=',$user->id)->select('payments.*');
+//how to convert query to models?? TODO
+
+
+    }
+
 
     public function whomOwe(Group $group)
     {

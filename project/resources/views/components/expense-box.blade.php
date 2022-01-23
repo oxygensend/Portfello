@@ -14,7 +14,7 @@
         <h3>{{$expense->getDay()}}</h3>
     </div>
 
-    <x-image properties="w-16 h-16 box relative"  src="{{ auth()->user()->avatar }}" />
+    <x-image properties="w-16 h-16 box relative"  src="{{ $expense->user->avatar }}" />
         @if( !empty($group))
         <div class="flex flex-col ">
             <h2 class="">In group</h2>
@@ -59,16 +59,13 @@
 
 
 
-
-
-
     @endphp
     <div class="grow">
         <div class="flex justify-start space-x-6 ">
 
             <div class="flex flex-col w-64 ">
-                <h2 class="text-xl truncate">{{Str::limit ($expense->title ,40 )}}</h2>
-                <h3 class="text-lg ">{{ Str::limit($centertext,40)  }}</h3>
+                <h2 class="text-xl truncate">{{Str::limit ($expense->title ,50 )}}</h2>
+                <h3 class="text-lg ">{{ Str::limit($centertext,50)  }}</h3>
             </div>
 
             <div class="flex grow flex-col items-center justify-center ">
