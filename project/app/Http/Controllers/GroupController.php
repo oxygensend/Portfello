@@ -13,7 +13,7 @@ class GroupController extends Controller {
 
     public function index()
     {
-        return view('groups.index', ['groups' => Group::paginate(5)]);
+        return view('groups.index', ['groups' => auth()->user()->groups]);
     }
 
 
@@ -37,7 +37,7 @@ class GroupController extends Controller {
             request()->avatar->move(storage_path('app/public/group_avatars/'),$fileNameToStore);
             $imagePath = 'storage/group_avatars/'.$fileNameToStore;
         }else{
-            $imagePath = '/images/default_group.png';
+            $imagePath = '/images/default_avatar.jpg';
         }
 
         $group = Group::create([
@@ -54,9 +54,8 @@ class GroupController extends Controller {
 
     public function show(Group $group)
     {
-
-        $expenses_history= Group::find($group->id)->expenses_history()->orderBy('created_at','desc')->get();
-
+        Gate::authorize('member', $group);
+        $expenses_history= Group::find($group->id)->expenses_history;
         return view('groups.show', ['group' => $group,'expenses_history' =>$expenses_history]);
     }
 
@@ -80,7 +79,7 @@ class GroupController extends Controller {
 
             File::delete($group->avatar);
 
-        $group->avatar = $imagePath;
+            $group->avatar = $imagePath;
         }
         $group->slug = Str::slug($attributes['name']);
         $group->name = $attributes['name'];
@@ -99,3 +98,6 @@ class GroupController extends Controller {
     }
 
 }
+
+
+
