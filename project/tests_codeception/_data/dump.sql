@@ -320,6 +320,7 @@ CREATE TABLE `payments` (
   `user_2_id` bigint unsigned NOT NULL,
   `group_id` bigint unsigned NOT NULL,
   `amount` decimal(8,2) NOT NULL DEFAULT '0.00',
+  `item` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `payments_user_1_id_foreign` (`user_1_id`),
   KEY `payments_user_2_id_foreign` (`user_2_id`),
@@ -391,7 +392,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_name_unique` (`name`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -400,7 +401,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Ms. Claudine Ferry Jr.','test@test.com','2022-01-22 10:11:09','$2y$10$PvuhBv9D/DmXvk.gpQXF4ubEPQqaIvOaMCc26sUKfhY.wbmgQgv6W','VljT7Tsffs','2022-01-22 10:11:09','2022-01-22 10:11:09','/images/default_avatar.jpg'),(2,'Szymon Berdzik','test2@test.com','2022-01-22 10:11:09','$2y$10$DwLy7kOrs5Ctqmm1vX/pbe.6er1/pqYINHo6XNSjBXZwjUXpMRoXu','yVflu2VI3z','2022-01-22 10:11:09','2022-01-22 10:11:09','/images/default_avatar.jpg'),(3,'Daniel Definski','test3@test.com','2022-01-22 10:11:09','$2y$10$LY.VUrbRfvXZeIn0IfU6yuPie323qVDxs.vVOUCJbwkPFfGWiGXDW','4gbOOfZf1q','2022-01-22 10:11:09','2022-01-22 10:11:09','/images/default_avatar.jpg'),(4,'Jakub Machalica','test4@test.com','2022-01-22 10:11:09','$2y$10$KDUicA9kzsRzyhSnfCc7b.IVqtg5BzZShKt.GMwxZtxSkWt4my1tu','iMRKsLdjEg','2022-01-22 10:11:09','2022-01-22 10:11:09','/images/default_avatar.jpg');
+INSERT INTO `users` VALUES (1,'Roberto Huels','test@test.com','2022-01-22 22:22:42','$2y$10$6fLAQc7oUqWSF3XwqqoLWOHOn3VoMSw4B8uA56jNI2.4CgV.dc9zG','mTkMqcLg7H','2022-01-22 22:22:42','2022-01-22 22:22:42','/images/default_avatar.jpg'),(2,'test2','test2@test.com','2022-01-22 22:22:42','$2y$10$3De1kpu73FvZLd4DQx8U1uuI2shRC12zC70GZ.1pQaJCw1B5pu/96','cchYzn0XzV','2022-01-22 22:22:42','2022-01-22 22:22:42','/images/default_avatar.jpg'),(3,'Szymon Berdzik','test5@test.com','2022-01-22 22:22:42','$2y$10$BZoindr7/iT7Iq2ZKg8gW.EQyJOC.5/suiJOQQjpYmQcCBctrHmAC','4yHzskYyoX','2022-01-22 22:22:42','2022-01-22 22:22:42','/images/default_avatar.jpg'),(4,'Daniel Definski','test3@test.com','2022-01-22 22:22:42','$2y$10$4IVL52MLV1Kis5olrCCpLeP.0HoeF7mfoD4LcylE18wWBzD03LOKO','PtKnJs7kon','2022-01-22 22:22:42','2022-01-22 22:22:42','/images/default_avatar.jpg'),(5,'Jakub Machalica','test4@test.com','2022-01-22 22:22:42','$2y$10$QwadISPzax.pPJhmcQgSFONk0s5gzHhRJ1tjU.ARDPxmbzlpT4awy','1FAfKbS3QA','2022-01-22 22:22:42','2022-01-22 22:22:42','/images/default_avatar.jpg');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -413,4 +414,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-22 11:11:09
+-- Dump completed on 2022-01-22 23:22:42

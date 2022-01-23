@@ -5,6 +5,7 @@
     <h2 class="text-3xl mb-10 font-semibold">Overall you are owed {{Auth::user()->getBalance()}}</h2>
     <div class="  flex flex-col space-y-10  items-start" >
 
+
         @forelse ($groups as $group)
             <x-group-box name="{{$group->name}}"
                          avatar="{{asset($group->avatar)}}"

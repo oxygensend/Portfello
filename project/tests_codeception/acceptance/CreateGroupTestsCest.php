@@ -52,13 +52,14 @@ class CreateGroupTestsCest
         $I->fillField('name', 'test group');
         $I->checkOption('smart_billing');
         $I->click('Create');
-        $I->see('Group has been created');
+        $I->see('Group h1as been created');
+
 
         $I->seeCurrentUrlEquals('/groups');
         $I->dontSee('Nie należysz jeszcze do żadnej grupy.');
         $I->see('test group');
         $I->seeInDatabase('groups', ['name' => 'test group',
-                                     'avatar' => '/images/default_group.png',
+                                     'avatar' => "/images/default_group.png",
                                      'smart_billing' => 1]);
         $I->amOnPage('/groups/create');
         $I->fillField('name', 'test group2');

@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 Route::get('/', function () {
     return view('home');
 });
@@ -56,4 +55,8 @@ Route::middleware(['auth','PreventBackHistory'])->group(function () {
 
 
 
+Auth::routes(['verify' => true]);
 require __DIR__.'/auth.php';
+
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
