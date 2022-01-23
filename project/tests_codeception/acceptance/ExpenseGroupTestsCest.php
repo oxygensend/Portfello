@@ -11,40 +11,15 @@ class ExpenseGroupTestsCest {
         $I->fillField('password', 'test123');
         $I->click('Log in');
 
-        $I->amOnPage('/groups');
-        $I->click('Create');
+
+        $I->amOnPage('groups/create');
         $I->fillField('name', 'test group');
         $I->click('Create');
-        $I->see('test group');
-        $I->click('test group');
-        $I->amOnPage('/groups/1');
-
-        $I->amOnPage('/groups/1/edit');
-        $I->click('Add user');
-        $I->fillField('username', 'test2');
-        $I->click('#add');
-
-        $I->amOnPage('/logout');
-        $I->amOnPage('/login');
-        $I->fillField('email', 'test2@test.com');
-        $I->fillField('password', 'test123');
-        $I->click('Log in');
-        $I->amOnPage('/edit-user');
-        $I->see('Do you want to join the test group group?');
-        $I->click('#accept');
-
-        $I->amOnPage('/logout');
-        $I->seeCurrentUrlEquals('/');
-        $I->click('Log in');
-        $I->fillField('email', 'test@test.com');
-        $I->fillField('password', 'test123');
-        $I->click('Log in');
+        $I->haveInDatabase('group_user', ['user_id' => 2, 'group_id' => 1]);
 
         $this->user = $I->grabFromDatabase('users','name', ['id'=>1]);
         $this->created_at = $I->grabFromDatabase('expenses','created_at',['id'=>1]);
         $I->amOnPage("/groups/1/expenses/create");
-        $I->see("How");
-        $I->see("How much");
         $I->seeInDatabase('users', ['name' => 'test2']);
         $I->click('Select users');
         $I->checkOption('all');
@@ -55,6 +30,8 @@ class ExpenseGroupTestsCest {
         $I->click('#button_select_confirm');
 
     }
+
+
 
 
     public  function ShowViewExpenseTest(AcceptanceTester $I){

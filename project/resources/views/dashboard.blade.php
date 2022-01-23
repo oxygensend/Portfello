@@ -14,7 +14,8 @@
             />
 
         @empty
-            <h2 class="text-xl font-semibold">Nie należysz jeszcze do żadnej grupy. </h2>
+            <h2 class="text-xl font-semibold">{{ $belong_to_group ?"You don't have expenses yet in any group." :
+                                                "You don't belong to any group yet."}}</h2>
         @endforelse
 
 
