@@ -137,6 +137,7 @@ class AddingUserTestCest {
 
 
     }
-    //TODO only admin can see add user Delete and edit buttons
+
+
 
 }

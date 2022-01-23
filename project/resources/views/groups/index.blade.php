@@ -18,7 +18,7 @@
 
 {{--                <h2> {{Auth::user->balancePaymentInGroup( $group)}}</h2>--}}
             @empty
-                <h2 class="text-xl font-semibold">You don't belong to any groups yet </h2>
+                <h2 class="text-xl font-semibold">You don't belong to any groups yet.</h2>
             @endforelse
 {{--            TODO--}}
 {{--            {{ $groups->links() }}--}}

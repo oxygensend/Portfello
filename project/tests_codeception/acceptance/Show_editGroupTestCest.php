@@ -10,34 +10,14 @@ class Show_editGroupTestCest
         $I->seeCurrentUrlEquals('/login');
         $I->fillField('email', 'test@test.com');
         $I->fillField('password', 'test123');
+        $I->click('Log in');
 
         //creating group
-        $I->click('Log in');
-        $I->amOnPage('/groups/create');
+
+        $I->amOnPage('groups/create');
         $I->fillField('name', 'test group');
         $I->click('Create');
-
-        // ading user to group
-        $I->amOnPage('/groups/1/edit');
-        $I->click('Add user');
-        $I->fillField('username', 'test2');
-        $I->click('#add');
-
-        $I->amOnPage('/logout');
-        $I->amOnPage('/login');
-        $I->fillField('email', 'test2@test.com');
-        $I->fillField('password', 'test123');
-        $I->click('Log in');
-        $I->amOnPage('/edit-user');
-        $I->see('Do you want to join the test group group?');
-        $I->click('Accept');
-
-        $I->amOnPage('/logout');
-        $I->seeCurrentUrlEquals('/');
-        $I->click('Log in');
-        $I->fillField('email', 'test@test.com');
-        $I->fillField('password', 'test123');
-        $I->click('Log in');
+        $I->haveInDatabase('group_user', ['user_id' => 2, 'group_id' => 1]);
 
 
         // creating expense
@@ -143,5 +123,18 @@ class Show_editGroupTestCest
         $I->click('');
         $I->see('User has been deleted');
         $I->dontSeeInDatabase('group_user',['user_id'=>2,'group_id'=>1]);
+    }
+
+    public function OnlyAdminCanDeleteTest(AcceptanceTester $I){
+
+        $I->wantTo('Test if only Admin see proper links');
+        $I->amOnPage('/logout');
+        $I->amOnPage('/login');
+        $I->fillField('email','test2@test.com');
+        $I->fillField('password', 'test123');
+        $I->click('Log in');
+        $I->amOnPage('/groups/1/edit');
+        $I->dontSee('Delete');
+
     }
 }

@@ -26,7 +26,8 @@ class DashboardController extends Controller
 
         $groups=\Auth::user()->active_groups();
 
-        return view('dashboard')->withGroups( $groups);
+       $belong_to_group = auth()->user()->groups()->count() ? true : false;
+        return view('dashboard', ['belong_to_group' => $belong_to_group])->withGroups( $groups);
     }
 
 

@@ -63,7 +63,9 @@
                                     <form method="POST" action="{{route('groups.add-user.destroy', [$group,$user->id])}}" >
                                         @csrf
                                         @method('DELETE')
-                                        <button class="delete" data-toggle="modal"><i class="material-icons text-red-600" data-toggle="tooltip" title="Delete">&#xE872;</i></button>
+                                        <button class="delete"
+                                                onclick="return confirm('Are you sure you want to leave this group?')"
+                                                data-toggle="modal"><i class="material-icons text-red-600" data-toggle="tooltip" title="Delete">&#xE872;</i></button>
                                     </form>
 
                                 @endif
