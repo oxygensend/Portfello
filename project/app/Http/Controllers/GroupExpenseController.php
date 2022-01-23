@@ -10,6 +10,7 @@ use App\Models\Group;
 use App\Rules\SelectedUsers;
 use App\Rules\SelectedUsersAuthor;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use App\Models\User;
 
@@ -39,16 +40,15 @@ class GroupExpenseController extends Controller
 
         $attributes = request()->validate([
             'description' => 'required',
-            'selected_users' => ['required', new SelectedUsers() , new SelectedUsersAuthor()] ,
+            'selected_users' => 'required',
             'item' => 'nullable',
-            'how_much' => 'required | numeric',
-        ],[
+            'how_much' => 'required | numeric|min:0.1',
 
         ]);
 
 
 
-
+//        ddd('dumping this one', $request);
         $user = auth()->user();
         $selected_users = $request->selected_users;
         $expense = Expense::create([
@@ -107,6 +107,7 @@ class GroupExpenseController extends Controller
 
     public function edit(Group $group, ExpensesHistory $expense)
     {
+        Gate::authorize('expense_creator', $expense);
         return view('expenses.edit ')->with(['expense' => $expense])->withGroup($group);
     }
 
@@ -120,7 +121,7 @@ class GroupExpenseController extends Controller
             'title' => 'required',
             'selected_users' => ['required', new SelectedUsers() , new SelectedUsersAuthor()] ,
             'item' => 'nullable',
-            'how_much' => 'required | numeric',
+            'how_much' => 'required | numeric|min:0.1',
         ]);
 
 

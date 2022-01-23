@@ -52,16 +52,17 @@
                                 Update
                             </x-button>
 
+                        </div>
                     </form>
 
-                    <x-action-button name="Delete"
+                    <div class="mt-4 flex space-x-2">
+                        <x-action-button name="Delete"
+                                     id="delete"
                                      action="{{  route('groups.destroy', $group) }}"
                                      method='DELETE'
                                      onclick="return confirm('Are you sure you want to delete this group?')"
                     />
-
-                </div>
-
+                    </div>
 
                 <div x-data="{ show: {{ session('show') ?? 'false' }} }">
                     <div class="mt-6" @click="show =! show">
@@ -71,11 +72,10 @@
                             </x-slot>
                         </x-floating-button>
                     </div>
+
                     <x-add-dropdown :group="$group" />
 
 
-
-                    </form>
                 </div>
             </div>
         </div>

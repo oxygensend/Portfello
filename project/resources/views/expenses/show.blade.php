@@ -7,10 +7,10 @@
     <div class="w-full h-full flex justify-center  pb-10 ">
 
         <div class="border border-gray-200 h-fit rounded-xl 	pt-6 pb-16 px-6  w-full  sm:w-8/12 md:w-5/12 min-w-[350px] mt-10 bg-white">
-            <div class="flex flex-col  items-center h-full w-full ">
+        <div class="flex flex-col  items-center h-full w-full ">
                 <div class="flex justify-end w-full items-end space-x-2">
 
-                    @if(Auth::user()==$expense->user &&  $expense->isLatest == true && $expense->action !=3)
+                    @expense_creator($expense)
 
                     <x-action-button name="Delete"
                                      action="{{  route('groups.expenses.destroy', ['group'=>$group, 'expense'=>$expense]) }}"
@@ -20,7 +20,7 @@
                     <x-button class="text-center">
                         <a href={{  route('groups.expenses.edit', ['group'=>$group, 'expense'=>$expense]) }}>Edit</a>
                     </x-button>
-                    @endif
+                    @endexpense_creator
 
                 </div>
                <div class="flex flex-col space-y-6 mt-16 items-center h-full w-full ">

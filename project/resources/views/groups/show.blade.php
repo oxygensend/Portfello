@@ -37,7 +37,7 @@
                             @forelse ($expenses_history as $expense_history)
 
 
-                                <x-expense-box group_show="false" :expense="$expense_history"
+                                <x-expense-box id="{{ 'expense' . $expense_history->expense_id}}" group_show="false" :expense="$expense_history"
                                                @click="window.location.href='{{route('groups.expenses.show', ['group'=>$group ,'expense'=>$expense_history] ) }}'"></x-expense-box>
                             @empty
                                 <h2 class="text-xl font-semibold"> No expenses have been created yet</h2>

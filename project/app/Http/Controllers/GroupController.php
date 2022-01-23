@@ -38,14 +38,14 @@ class GroupController extends Controller {
             request()->avatar->move(storage_path('app/public/group_avatars/'),$fileNameToStore);
             $imagePath = 'storage/group_avatars/'.$fileNameToStore;
         }else{
-            $imagePath = '/images/default_avatar.jpg';
+            $imagePath = '/images/default_group.png';
         }
 
         $group = Group::create([
-            'name' => request()->name,
+            'name' => $attributes['name'],
             'user_id' => auth()->user()->id,
-            'slug' => Str::slug($attributes['name']),
-            'avatar' => $imagePath
+            'avatar' => $imagePath,
+            'smart_billing' => $attributes['smart_billing'] ?? 0
         ]);
 
 
@@ -82,9 +82,8 @@ class GroupController extends Controller {
 
             $group->avatar = $imagePath;
         }
-        $group->slug = Str::slug($attributes['name']);
         $group->name = $attributes['name'];
-        //TODO smart_billing trzeba dodac tutaj - NIE TRZEBA
+        $group->smart_billing = $attributes['smart_billing'] ?? 0;
 
         $group->save();
         return redirect(route('groups.show', $group))->with('success', 'Group has been edited');

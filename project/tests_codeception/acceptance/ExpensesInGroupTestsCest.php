@@ -16,34 +16,140 @@ class ExpensesInGroupTestsCest
         $I->click('Create');
         $I->see('test group');
         $I->click('test group');
-        $I->amOnPage('/groups/test-group');
+        $I->amOnPage('/groups/1');
+
+         $I->amOnPage('/groups/1/edit');
+        $I->click('Add user');
+        $I->fillField('username', 'test2');
+        $I->click('#add');
+
+        $I->amOnPage('/logout');
+        $I->amOnPage('/login');
+        $I->fillField('email', 'test2@test.com');
+        $I->fillField('password', 'test123');
+        $I->click('Log in');
+        $I->amOnPage('/edit-user');
+        $I->see('Do you want to join the test group group?');
+        $I->click('Accept');
+
+        $I->amOnPage('/logout');
+        $I->seeCurrentUrlEquals('/login');
+        $I->fillField('email', 'test@test.com');
+        $I->fillField('password', 'test123');
+        $I->click('Log in');
 
 
-
-
-        $this->group_id = $I->grabFromDatabase('groups', 'id', [
-            'id' => '1'
-        ]);
-        $this->slug = $I->grabFromDatabase('groups', 'slug', [
-            'id' => '1'
-        ]);
-        $I->amOnPage("/groups/$this->slug");
-        $I->seeCurrentUrlEquals("/groups/$this->slug");
-        $I->see("add a new expense");
-        $I->click("Add a new expense");
+        $I->amOnPage("/groups/1");
+        $I->see("Add  expense");
+        $I->click("Add expense");
     }
 
     // tests
     public function TryingToAddNewExpenses(AcceptanceTester $I)
     {
-        $I->seeCurrentUrlEquals("/groups/$this->group_id/expenses/create");
-        $I->see("Who");
+        $I->wantTo('Test adding new expense with money');
+        $I->seeCurrentUrlEquals("/groups/1/expenses/create");
         $I->see("How");
         $I->see("How much");
         $I->seeInDatabase('users', ['name'=>'test2']);
-        $option = $I->grabTextFrom('select option:nth-child(2)');
-        $I->selectOption("select", "test2");
-        //$I->dontsee("What kind of item ");
+        $I->click('Select users');
+        $I->checkOption('all');
+        $I->click('#user_confirm');
+        $I->fillField('description', 'Test expense');
+        $I->selectOption('form select[name=how]','money');
+        $I->fillField('how_much', 10);
+        $I->click('#button_select_confirm');
+        $I->seeCurrentUrlEquals('/groups/1');
+        $I->see('You added expense in test group');
+        $I->see('You paid 10 You get back 5 ');
+        $I->see('Your balance: 5');
+        $I->seeInDatabase('expenses',['user_id'=> '1', 'group_id' => '1']);
+        $I->seeInDatabase('expenses_histories',[
+            'expense_id'=>1,
+            'item'=>null,
+            'amount'=>10,
+            'isLatest'=>1,
+            'action'=>1,
+            'title'=>'Test expense'
+        ]);
+
+        $I->seeInDatabase('expenses_user',[
+            'user_id' => 1,
+            'user_contribution'=>5
+        ]);
+
+        $I->seeInDatabase('expenses_user',[
+            'user_id' => 2,
+            'user_contribution'=>5
+        ]);
 
     }
+
+    public function TryingToAddNewExpensesItem(AcceptanceTester $I)
+    {
+        $I->wantTo('Test adding new expense with item');
+        $I->seeCurrentUrlEquals("/groups/1/expenses/create");
+        $I->see("How");
+        $I->see("How much");
+        $I->click('Select users');
+        $I->checkOption('all');
+        $I->click('#user_confirm');
+        $I->fillField('description', 'Test expense');
+        $I->selectOption('form select[name=how]','item');
+        $I->fillField('#item', 'piwo');
+        $I->fillField('how_much', 4);
+        $I->click('#button_select_confirm');
+        $I->seeCurrentUrlEquals('/groups/1');
+        $I->see('You added expense in test group');
+        $I->see('You bought 4 piwo You get back 2 piwo ');
+        $I->seeInDatabase('expenses',['user_id'=> '1', 'group_id' => '1']);
+        $I->seeInDatabase('expenses_histories',[
+            'expense_id'=>1,
+            'item'=>'piwo',
+            'amount'=>4,
+            'isLatest'=>1,
+            'action'=>1,
+            'title'=>'Test expense'
+        ]);
+
+        $I->seeInDatabase('expenses_user',[
+            'user_id' => 1,
+            'user_contribution'=>2
+        ]);
+
+        $I->seeInDatabase('expenses_user',[
+            'user_id' => 2,
+            'user_contribution'=>2
+        ]);
+
+    }
+public function ExpenseValidationTest(AcceptanceTester $I)
+    {
+        $I->wantTo('Test validation');
+        $I->seeCurrentUrlEquals("/groups/1/expenses/create");
+        $I->see("How");
+        $I->see("How much");
+        $I->click('Select users');
+        $I->uncheckOption('all');
+        $I->click('#user_confirm');
+        $I->fillField('description', 'Test expense');
+        $I->selectOption('form select[name=how]','item');
+        $I->fillField('#item', 'piwo');
+        $I->fillField('how_much','' );
+        $I->click('#button_select_confirm');
+        $I->seeCurrentUrlEquals("/groups/1/expenses/create");
+        $I->see('How much field is required');
+        $I->selectOption('form select[name=how]','money');
+        $I->fillField('how_much','' );
+        $I->click('#button_select_confirm');
+        $I->seeCurrentUrlEquals("/groups/1/expenses/create");
+        $I->see('How much field is required');
+        $I->fillField('how_much','test' );
+        $I->click('#button_select_confirm');
+        $I->see('The How much must be a number');
+        $I->fillField('how_much', -1 );
+        $I->click('#button_select_confirm');
+        $I->see('How much must be at least 0.');
+    }
+
 }
