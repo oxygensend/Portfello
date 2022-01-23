@@ -88,8 +88,15 @@ return $groups->filter( function ($group, $key){
     }
 
     public function isIncluded(ExpensesHistory $expense_history){
+        $id=DB::table('expenses_histories')->join('expenses_user','expenses_user.expenses_history_id','=','expenses_histories.id')
+            ->where('expenses_user.expenses_history_id','=',$expense_history->id)->get('user_id')->toArray();
 
-    return $expense_history->users()->contains($this);
+        foreach($id as $i){
+            if($i->user_id==$this->id)
+                return true;
+        }
+
+        return false;
 
     }
 
