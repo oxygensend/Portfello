@@ -161,15 +161,6 @@ return $groups->filter( function ($group, $key){
 
     public function whomOwe(Group $group)
     {
-//        $users_id = DB::table('expenses_user')
-//            ->where('expenses_user.user_id', $this->id)
-//            ->join('expenses_histories','expenses_user.expenses_history_id',
-//                '=','expenses_histories.id')
-//            ->join('expenses','expenses_histories.expense_id',
-//                '=','expenses.id')
-//             ->pluck('expenses.user_id')->toArray();
-//
-//         return User::whereIn('id',$users_id)->get();
 
         $whomOweMoney=[];
         $whomOweItems=[];
@@ -199,8 +190,6 @@ return $groups->filter( function ($group, $key){
 
     }
 
-//        ddd([$user, $balance]);
-//        ddd($whomOweItems);
         $users_union= $whomOweItems + $whomOweMoney;
 
 

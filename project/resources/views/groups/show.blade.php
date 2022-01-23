@@ -2,6 +2,23 @@
     <x-slot name="header">
         <a href="{{ route('groups.show', $group) }}">{{$group->name}}</a>
     </x-slot>
+    <script>
+
+        function toggleList( id){
+
+            var list = document.getElementById(`user_list${id}`);
+
+            if (list.style.display == "none"){
+                list.style.display = "block";
+            }else{
+                list.style.display = "none";
+            }
+
+
+        }
+
+    </script>
+
     <div class="w-full h-full ">
 
         <div x-data class="absolute  top-16 md:top-28 right-8 md:right-16 "
@@ -27,6 +44,50 @@
                              group_show="false"
                 >
                 </x-group-box>
+                @php
+
+                    @endphp
+
+<div class="balance_box flex flex-col justify-start space-y-4">
+@forelse($group->users as $user)
+
+    @php
+        $balance_money=  auth()->user()->getBalanceWithUser($user, $group);
+$balance_items=auth()->user()->getItemBalanceWithUser($user, $group);
+
+        @endphp
+
+    @if($balance_money==0 && sizeof($balance_items) == 0)
+        @else
+                        <div class=" text-xl"><div class=" border-indigo-500 border-b-2"> <h2 onclick="toggleList({{$user->id}})" >Balance with user: {{$user->name}} </h2>
+                            </div>
+                            <ul class="mt-2 text-lg" id="user_list{{$user->id}}" style="display:none;">
+
+                        @if($balance_money !=0)
+
+                            <li>You {{ ($balance_money >0 ? "are owed " :'owe ').  abs($balance_money )}}  </li>
+                            @endif
+                            @if(sizeof($balance_items) != 0)
+
+                                @foreach( $balance_items as $item =>$amount)
+
+                                    <li>You {{ ($amount >0 ? "are owed " :'owe ') . abs($amount). " " .$item }}  </li>
+
+                                @endforeach
+
+                            @endif
+                            </ul>
+                        </div>
+
+
+        @endif
+
+
+                @empty
+
+                @endforelse
+</div>
+
 
                 <div class="grow  w-full">
                     <div class="items-center justify-center overflow-auto h-full w-full flex ">
@@ -62,4 +123,7 @@
             </div>
         </div>
     </div>
+
+
+
 </x-app-layout>

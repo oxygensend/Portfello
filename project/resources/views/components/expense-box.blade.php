@@ -33,12 +33,11 @@
                 $right_uppertext="You get back ";
                 $right_lowertext= $expense->user->getBack($expense);
 
-
         }else{
          $creator=$expense->user->name;
             if( $actual_user->isIncluded($expense)){
                $right_uppertext="You owe ";
-               $right_lowertext=$actual_user->owes($expense);
+               $right_lowertext=abs($actual_user->owes($expense));
         }
             else{
                 $right_uppertext=null;

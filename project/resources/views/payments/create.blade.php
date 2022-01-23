@@ -31,7 +31,7 @@
                             <div>
                                 <x-label for="user" :value="__('With')"/>
 
-                                <select id="user_select" name="user_select" required>
+                                <select id="select_user" name="select_user" required>
                                     @foreach($users as $user)
 
                                         <option name="{{$user->name}}" value="{{$user->id}}">{{$user->name}}</option>
@@ -43,6 +43,7 @@
                                         @endif
                                 </select>
                             </div>
+                            <x-error name="select_user"/>
 
 
                             <div id="how_select_box">
@@ -52,7 +53,7 @@
                                     <option name="money" value="money">Money</option>
                                     <option name="item" value="item">Item</option>
                                 </select>
-
+                                <x-error name="how"/>
                             </div>
 
 
@@ -69,6 +70,7 @@
 
                                 <x-input id="how_much" class="block mt-1 w-full"
                                          type="number"
+                                         step="0.01"
                                          name="how_much"
                                          :value=" empty($expense) ? old('how_much') : $expense->amount  " min="0"
                                          autofocus />
@@ -123,7 +125,7 @@ item_select.addEventListener('change',function(event){
         document.getElementById("item_select_box").style.display = 'none';
         var how_select = document.getElementById('how');
 
-        user_select = document.getElementById("user_select");
+        user_select = document.getElementById("select_user");
 
 
 
@@ -147,11 +149,8 @@ item_select.addEventListener('change',function(event){
             if (how_select.value == "item") {
 
                 getItemsList(user_select.value);
-
-
             } else {
                 document.getElementById("how_select_box").removeChild(info);
-
             }
             reload_amount();
 

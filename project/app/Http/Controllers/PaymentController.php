@@ -26,7 +26,6 @@ class PaymentController extends Controller
     public function getItemsList(Group $group, User $user){
 
 
-        //jesli wgl sa takie itemy
        $items= \Auth::user()->getItemBalanceWithUser($user, $group);
 //todo
         $filtered=[];
@@ -44,24 +43,25 @@ class PaymentController extends Controller
 
         $user = auth()->user();
 
+//        ddd(\request());
             $attributes = request()->validate([
-                'selected_user' => 'required:in:' . $user->whomOwe($group),
+                'select_user' => 'required:in:' . $user->whomOwe($group),
                 'item' => 'nullable',
                 'how_much' => 'required|numeric'
             ]);
 
 
-            $user2 = User::find($attributes['selected_user']);
-            if($attributes['how_much'] > abs($user->getBalanceWithUser($user2, $group)) && $attributes['item'] == null){
-                throw ValidationException::withMessages(['how_much'=>'to much']);
+            $user2 = User::find($attributes['select_user']);
+            if($attributes['how_much'] > abs($user->getBalanceWithUser($user2, $group)) && ($attributes['item']??null) == null){
+                throw ValidationException::withMessages(['how_much'=>'Too large payment amount']);
             }
 
 
 
         Payment::create([
             'user_1_id' => auth()->user()->id,
-            'user_2_id' => $attributes['selected_user'],
-            'item' => $attributes['item'],
+            'user_2_id' => $attributes['select_user'],
+            'item' => ($attributes['item'] ?? null),
             'amount' => $attributes['how_much'],
             'group_id' => $group->id
         ]);
