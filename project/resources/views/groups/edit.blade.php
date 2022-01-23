@@ -47,7 +47,7 @@
                             />
                         </div>
 
-                        <div class="mt-4 flex space-x-2">
+                        <div class="mt-4 flex inline space-x-2">
                             <x-button id="Update" name="Update" class="text-center">
                                 Update
                             </x-button>
@@ -55,7 +55,7 @@
                         </div>
                     </form>
 
-                    <div class="mt-4 flex space-x-2">
+                    <div class="mt-4 flex inline space-x-2">
                         <x-action-button name="Delete"
                                      id="delete"
                                      action="{{  route('groups.destroy', $group) }}"
