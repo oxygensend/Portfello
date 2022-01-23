@@ -6,19 +6,16 @@ $amount=$payment->amount;
 $item=$payment->item ?? null;
 
 
-
     $middle_text="";
 $author_text=$payment_author->name;
-$receiver_text=$payment_author->name;
+$receiver_text=$payment_receiver->name;
 
     if(Auth::user()->name == $payment_author->name){
 
       $author_text="You";
-
-    }elseif( Auth::user()->name == $payment_author->name)
+    }elseif( Auth::user()->name == $payment_receiver->name)
 
     {
-
         $receiver_text="You";
 
     }
@@ -33,9 +30,6 @@ $receiver_text=$payment_author->name;
 }else{
         $value_text= $amount . " " . $item;
 }
-
-
-
 
 
 
@@ -70,8 +64,18 @@ $receiver_text=$payment_author->name;
             <div class="flex justify-start space-x-6 ">
 
                 <div class="flex flex-col w-64 ">
-                    <h2 class="text-xl truncate">{{Str::limit ($author_text . " paid " .$receiver_text . " ".$value_text ,50 )}}</h2>
+                    <h2 class="text-xl truncate">{{Str::limit ($author_text . " paid " .$receiver_text ,50 )}}</h2>
                 </div>
+
+                <div class="flex grow flex-col items-center justify-center ">
+
+
+                        <h3 class=" font-bold">{{Str::limit($value_text,40)  }}</h3>
+
+
+                </div>
+
+
 
             </div>
         </div>
