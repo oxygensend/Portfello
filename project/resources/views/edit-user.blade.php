@@ -156,6 +156,8 @@
                                     <div class="mt-2 flex items-center overflow-auto">
                                         <strong>{{$invite->text}}</strong>
                                         <x-action-button name="Accept"
+                                                         id="#accept"
+
                                                          action="{{ route('invites.accept', $invite->id) }}" class="bg-green-600 hover:bg-green-800 flex-1 mr-2 ml-2"
                                         />
 
@@ -174,7 +176,7 @@
             </div>
         </div>
 
-    <script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js">
+    <script type="text/javascript" >
         $('#image').change(function(){
 
             let reader = new FileReader();

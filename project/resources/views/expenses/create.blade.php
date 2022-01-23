@@ -127,9 +127,8 @@
                                 }else{
 
                                     if(n_of_checked>0) n_of_checked-=1;
+
                                 }
-                                // console.log(n_of_checkboxes);
-                                // console.log(n_of_checked);
 
                                 all_checkbox.checked=(n_of_checked== n_of_checkboxes);
                             });
@@ -143,7 +142,7 @@
                     </script>
 
 
-                    <div class="flex  items-center mt-10">
+                    <div id="user_confirm" class="flex  items-center mt-10">
                         <x-button type="submit" class="  font-bold">
                             Confirm
                         </x-button>

@@ -40,16 +40,15 @@ class GroupExpenseController extends Controller
 
         $attributes = request()->validate([
             'description' => 'required',
-            'selected_users' => ['required', new SelectedUsers() , new SelectedUsersAuthor()] ,
+            'selected_users' => 'required',
             'item' => 'nullable',
-            'how_much' => 'required | numeric',
-        ],[
+            'how_much' => 'required | numeric|min:0.1',
 
         ]);
 
 
 
-
+//        ddd('dumping this one', $request);
         $user = auth()->user();
         $selected_users = $request->selected_users;
         $expense = Expense::create([
@@ -122,7 +121,7 @@ class GroupExpenseController extends Controller
             'title' => 'required',
             'selected_users' => ['required', new SelectedUsers() , new SelectedUsersAuthor()] ,
             'item' => 'nullable',
-            'how_much' => 'required | numeric',
+            'how_much' => 'required | numeric|min:0.1',
         ]);
 
 

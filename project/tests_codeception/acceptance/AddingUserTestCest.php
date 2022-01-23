@@ -19,7 +19,7 @@ class AddingUserTestCest {
         $I->click('Create');
         $I->see('test group');
         $I->click('test group');
-        $I->amOnPage('/groups/test-group');
+        $I->amOnPage('/groups/1');
 
 
         $this->group_id = $I->grabFromDatabase('groups', 'id', [
@@ -36,12 +36,12 @@ class AddingUserTestCest {
     {
 
         $I->wantTo('Test validation errors while adding new user to group when user doesnt exists');
-        $I->amOnPage('/groups/test-group/edit');
+        $I->amOnPage('/groups/1/edit');
         $I->see('Add user');
         $I->click('Add user');
         $I->fillField('username', '');
         $I->click('#add');
-        $I->seeCurrentUrlEquals('/groups/test-group/edit');
+        $I->seeCurrentUrlEquals('/groups/1/edit');
         $I->see('The username field is required.');
     }
 
@@ -50,11 +50,11 @@ class AddingUserTestCest {
 
         $I->wantTo('Test if user is  added properly to group');
 
-        $I->amOnPage('/groups/test-group/edit');
+        $I->amOnPage('/groups/1/edit');
         $I->click('Add user');
         $I->fillField('username', 'test2');
         $I->click('#add');
-        $I->seeCurrentUrlEquals('/groups/test-group/edit');
+        $I->seeCurrentUrlEquals('/groups/1/edit');
         $I->see('Request has been sent to test2');
         $I->seeInDatabase('invites', ['user_id' => $this->test2_id, 'group_id' => $this->group_id]);
 
@@ -75,11 +75,11 @@ class AddingUserTestCest {
     public function UserConfrimInvitationTest(AcceptanceTester $I){
         $I->wantTo('Test if user can confirm invite properly');
 
-        $I->amOnPage('/groups/test-group/edit');
+        $I->amOnPage('/groups/1/edit');
         $I->click('Add user');
         $I->fillField('username', 'test2');
         $I->click('#add');
-        $I->seeCurrentUrlEquals('/groups/test-group/edit');
+        $I->seeCurrentUrlEquals('/groups/1/edit');
         $I->see('Request has been sent to test2');
         $I->seeInDatabase('invites', ['user_id' => $this->test2_id, 'group_id' => $this->group_id]);
 
@@ -97,11 +97,11 @@ class AddingUserTestCest {
     public function UserDiscardInvitationTest(AcceptanceTester $I){
         $I->wantTo('Test if user can discard invite properly');
 
-        $I->amOnPage('/groups/test-group/edit');
+        $I->amOnPage('/groups/1/edit');
         $I->click('Add user');
         $I->fillField('username', 'test2');
         $I->click('#add');
-        $I->seeCurrentUrlEquals('/groups/test-group/edit');
+        $I->seeCurrentUrlEquals('/groups/1/edit');
         $I->see('Request has been sent to test2');
         $I->seeInDatabase('invites', ['user_id' => $this->test2_id, 'group_id' => $this->group_id]);
 
@@ -122,13 +122,13 @@ class AddingUserTestCest {
 
         $I->wantTo('Test if user can add user whose is already in group');
 
-        $I->amOnPage('/groups/test-group/edit');
+        $I->amOnPage('/groups/1/edit');
         $I->click('Add user');
         $I->fillField('username', 'test2');
         $I->click('#add');
         $I->seeInDatabase('invites', ['user_id' => $this->test2_id, 'group_id' => $this->group_id]);
 
-        $I->amOnPage('/groups/test-group/edit');
+        $I->amOnPage('/groups/1/edit');
         $I->click('Add user');
         $I->fillField('username', 'test2');
         $I->click('#add');

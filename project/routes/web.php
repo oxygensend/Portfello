@@ -29,7 +29,7 @@ Route::middleware(['auth','PreventBackHistory'])->group(function () {
     Route::get('/', function () {
         return redirect('/dashboard');});
 
-    Route::resource('groups', GroupController::class)->parameters(['groups'=>'group:slug']);
+    Route::resource('groups', GroupController::class);
     Route::resource('groups.add-user', \App\Http\Controllers\UsersInGroupController::class);
     Route::resource('groups.expenses', App\Http\Controllers\GroupExpenseController::class);
 

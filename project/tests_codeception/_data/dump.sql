@@ -227,36 +227,6 @@ LOCK TABLES `invites` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `item_payments`
---
-
-DROP TABLE IF EXISTS `item_payments`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `item_payments` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `user_id` bigint unsigned NOT NULL,
-  `expenses_history_id` bigint unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `item_payments_user_id_foreign` (`user_id`),
-  KEY `item_payments_expenses_history_id_foreign` (`expenses_history_id`),
-  CONSTRAINT `item_payments_expenses_history_id_foreign` FOREIGN KEY (`expenses_history_id`) REFERENCES `expenses_histories` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `item_payments_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `item_payments`
---
-
-LOCK TABLES `item_payments` WRITE;
-/*!40000 ALTER TABLE `item_payments` DISABLE KEYS */;
-/*!40000 ALTER TABLE `item_payments` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `migrations`
 --
 
@@ -268,7 +238,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -277,7 +247,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_resets_table',1),(3,'2019_08_19_000000_create_failed_jobs_table',1),(4,'2019_12_14_000001_create_personal_access_tokens_table',1),(5,'2022_01_08_194834_create_groups_table',1),(6,'2022_01_08_195804_create_group_user_table',1),(7,'2022_01_16_194545_create_invites_table',1),(8,'2022_01_21_005648_create_expenses_table',1),(9,'2022_01_21_005840_create_expenses_histories_table',1),(10,'2022_01_21_010055_create_item_payment_table',1),(11,'2022_01_21_010248_create_expenses_user_table',1),(12,'2022_01_21_010450_create_payment_table',1);
+INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_resets_table',1),(3,'2019_08_19_000000_create_failed_jobs_table',1),(4,'2019_12_14_000001_create_personal_access_tokens_table',1),(5,'2022_01_08_194834_create_groups_table',1),(6,'2022_01_08_195804_create_group_user_table',1),(7,'2022_01_16_194545_create_invites_table',1),(8,'2022_01_21_005648_create_expenses_table',1),(9,'2022_01_21_005840_create_expenses_histories_table',1),(10,'2022_01_21_010248_create_expenses_user_table',1),(11,'2022_01_21_010450_create_payment_table',1);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -401,7 +371,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Roberto Huels','test@test.com','2022-01-22 22:22:42','$2y$10$6fLAQc7oUqWSF3XwqqoLWOHOn3VoMSw4B8uA56jNI2.4CgV.dc9zG','mTkMqcLg7H','2022-01-22 22:22:42','2022-01-22 22:22:42','/images/default_avatar.jpg'),(2,'test2','test2@test.com','2022-01-22 22:22:42','$2y$10$3De1kpu73FvZLd4DQx8U1uuI2shRC12zC70GZ.1pQaJCw1B5pu/96','cchYzn0XzV','2022-01-22 22:22:42','2022-01-22 22:22:42','/images/default_avatar.jpg'),(3,'Szymon Berdzik','test5@test.com','2022-01-22 22:22:42','$2y$10$BZoindr7/iT7Iq2ZKg8gW.EQyJOC.5/suiJOQQjpYmQcCBctrHmAC','4yHzskYyoX','2022-01-22 22:22:42','2022-01-22 22:22:42','/images/default_avatar.jpg'),(4,'Daniel Definski','test3@test.com','2022-01-22 22:22:42','$2y$10$4IVL52MLV1Kis5olrCCpLeP.0HoeF7mfoD4LcylE18wWBzD03LOKO','PtKnJs7kon','2022-01-22 22:22:42','2022-01-22 22:22:42','/images/default_avatar.jpg'),(5,'Jakub Machalica','test4@test.com','2022-01-22 22:22:42','$2y$10$QwadISPzax.pPJhmcQgSFONk0s5gzHhRJ1tjU.ARDPxmbzlpT4awy','1FAfKbS3QA','2022-01-22 22:22:42','2022-01-22 22:22:42','/images/default_avatar.jpg');
+INSERT INTO `users` VALUES (1,'Shania O\'Hara','test@test.com','2022-01-23 13:27:15','$2y$10$5mzGny..rAcdw9yhUdOfHOBHrpB./FiksRdK6loELVszvqBLjV1KC','FDmSfUEN6U','2022-01-23 13:27:15','2022-01-23 13:27:15','/images/default_avatar.jpg'),(2,'test2','test2@test.com','2022-01-23 13:27:15','$2y$10$FUt9f6T0QpOFSyANbiI8f.7niNGK/sjbSLpl43GQlkGfW.893P1ty','LLlsLZ0S6b','2022-01-23 13:27:15','2022-01-23 13:27:15','/images/default_avatar.jpg'),(3,'Szymon Berdzik','test5@test.com','2022-01-23 13:27:15','$2y$10$coBRMXtWwl5wVUG633h5se7AaDAmD4TQ9mGatfKUvGiNFi8kvIp1i','krQjv4kwuU','2022-01-23 13:27:15','2022-01-23 13:27:15','/images/default_avatar.jpg'),(4,'Daniel Definski','test3@test.com','2022-01-23 13:27:15','$2y$10$m1i8.upKKDlQMCWZAy7UauGVMXkGE88zggNjUNPGBq78bPJinIngW','RVygmMyyJ2','2022-01-23 13:27:15','2022-01-23 13:27:15','/images/default_avatar.jpg'),(5,'Jakub Machalica','test4@test.com','2022-01-23 13:27:15','$2y$10$zrZ2H6o1ee.r1Igo1sxiWeOyjZJWP0wWDxOvpxiomf3zG1sxH3ROO','3fPV37tqXC','2022-01-23 13:27:15','2022-01-23 13:27:15','/images/default_avatar.jpg');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -414,4 +384,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-22 23:22:42
+-- Dump completed on 2022-01-23 14:27:15

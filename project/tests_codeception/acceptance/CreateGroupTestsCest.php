@@ -22,7 +22,7 @@ class CreateGroupTestsCest
         $I->wantTo('Test if message when there is no groups displays properly');
         $I->amOnPage('/groups');
         $I->seeCurrentUrlEquals('/groups');
-        $I->see('Nie należysz jeszcze do żadnej grupy.');
+        $I->see("You don't belong to any groups yet");
         $I->seeLink('Create');
     }
 
@@ -50,13 +50,13 @@ class CreateGroupTestsCest
         $I->wantTo('Test creating new group');
         $I->amOnPage('/groups/create');
         $I->fillField('name', 'test group');
-        $I->checkOption('smart_billing');
+        $I->checkOption('#smart_billing');
         $I->click('Create');
-        $I->see('Group h1as been created');
+        $I->see('Group has been created');
 
 
         $I->seeCurrentUrlEquals('/groups');
-        $I->dontSee('Nie należysz jeszcze do żadnej grupy.');
+        $I->dontSee("You don't belong to any groups yet");
         $I->see('test group');
         $I->seeInDatabase('groups', ['name' => 'test group',
                                      'avatar' => "/images/default_group.png",
@@ -67,7 +67,7 @@ class CreateGroupTestsCest
         $I->see('Group has been created');
 
         $I->seeCurrentUrlEquals('/groups');
-        $I->dontSee('Nie należysz jeszcze do żadnej grupy.');
+        $I->dontSee("You don't belong to any groups yet");
         $I->see('test group');
         $I->seeInDatabase('groups', ['name' => 'test group2',
                                      'avatar' => '/images/default_group.png',
