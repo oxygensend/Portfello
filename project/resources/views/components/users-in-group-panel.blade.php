@@ -33,8 +33,11 @@
                                     {{$user->name}}
                                 @endif
                             </td>
-                            <td class="text-sm text-gray-900 font-light  px-6 py-4 whitespace-nowrap">
-                                <x-image src="{{$user->avatar}}" properties=" w-12 h-12 rounded-xl overflow-hidden" />
+                            <td class="text-sm text-gray-900 font-light  px-6 py-4 whitespace-nowrap items-center justify-center  text-center">
+                                <div class="h-full w-full flex justify-center items-center">
+                                    <x-image src="{{$user->avatar}}" properties=" w-12 h-12 rounded-xl overflow-hidden" />
+
+                                </div>
                             </td>
                             <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                 @admin($group)
