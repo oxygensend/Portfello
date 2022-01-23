@@ -69,7 +69,7 @@ class ExpenseSeeder extends Seeder
         ]);
         DB::table('expenses_user')->insert([
             [
-                'user_contribution'=>3,
+                'user_contribution'=>5,
                 'user_id'=>$user->id+2,
                 'expenses_history_id' => $id,
             ],
@@ -105,7 +105,7 @@ class ExpenseSeeder extends Seeder
         ]);
         DB::table('expenses_user')->insert([
             [
-                'user_contribution'=>9,
+                'user_contribution'=>17,
                 'user_id'=>$user->id+3,
                 'expenses_history_id' => $id,
             ],

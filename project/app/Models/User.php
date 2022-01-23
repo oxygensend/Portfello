@@ -139,10 +139,10 @@ return $groups->filter( function ($group, $key){
         $amount=$this->contributonInExpense($expense_history);
 
                 if(!is_null($expense_history->item )){
-                    return   $amount." " . $expense_history->item ;
+                    return   [$amount, $expense_history->item];
                 }else{
 
-                    return  $amount;
+                    return  [$amount,null];
                 }
 
     }
@@ -321,7 +321,7 @@ public function getItemDebtWittUser( Group $group ,User $user ){
             ->join('expenses_histories', 'expenses_user.expenses_history_id',
                 '=', 'expenses_histories.id')
             ->join('expenses', 'expenses_histories.expense_id',
-                '=', 'expenses.id')
+                '=', 'expenses.id')->where('expenses.group_id',$group->id)
             ->where('expenses_histories.action', '!=', 3)
             ->where('expenses_histories.isLatest', true)
             ->where('expenses.user_id', $this->id)
@@ -332,7 +332,7 @@ public function getItemDebtWittUser( Group $group ,User $user ){
             ->join('expenses_histories', 'expenses_user.expenses_history_id',
                 '=', 'expenses_histories.id')
             ->join('expenses', 'expenses_histories.expense_id',
-                '=', 'expenses.id')
+                '=', 'expenses.id')->where('expenses.group_id',$group->id)
             ->where('expenses.user_id', $user->id)
             ->where('expenses_histories.action', '!=', 3)
             ->where('expenses_histories.isLatest', true)
@@ -348,7 +348,7 @@ public function getItemDebtWittUser( Group $group ,User $user ){
             ->join('expenses_histories', 'expenses_user.expenses_history_id',
                 '=', 'expenses_histories.id')
             ->join('expenses', 'expenses_histories.expense_id',
-                '=', 'expenses.id')
+                '=', 'expenses.id')->where('expenses.group_id',$group->id)
             ->where('expenses.user_id', $this->id)
             ->where('expenses_histories.action', '!=', 3)
             ->where('expenses_histories.isLatest', true)
@@ -362,7 +362,7 @@ public function getItemDebtWittUser( Group $group ,User $user ){
             ->join('expenses_histories', 'expenses_user.expenses_history_id',
                 '=', 'expenses_histories.id')
             ->join('expenses', 'expenses_histories.expense_id',
-                '=', 'expenses.id')
+                '=', 'expenses.id')->where('expenses.group_id',$group->id)
             ->where('expenses.user_id', $user->id)
             ->where('expenses_histories.action', '!=', 3)
             ->where('expenses_histories.isLatest', true)
