@@ -23,8 +23,8 @@
     @endif
 
     @php
-
-        $isCreator= $expense->user ==Auth::user();
+        $actual_user=Auth::user();
+        $isCreator= $expense->user ==$actual_user;
 
 
         if($isCreator)
@@ -36,9 +36,9 @@
 
         }else{
          $creator=$expense->user->name;
-            if( $expense->user ->isIncluded($expense)){
+            if( $actual_user->isIncluded($expense)){
                $right_uppertext="You owe ";
-               $right_lowertext= $expense->user->owes($expense);
+               $right_lowertext=$actual_user->owes($expense);
         }
             else{
                 $right_uppertext=null;
