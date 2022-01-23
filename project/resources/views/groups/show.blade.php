@@ -94,15 +94,36 @@ $balance_items=auth()->user()->getItemBalanceWithUser($user, $group);
                         <div class="flex flex-col space-y-6">
 
 
+                            @forelse ($expenses_payments as $merged_object)
 
-                            @forelse ($expenses_history as $expense_history)
+
+                                @if($merged_object instanceof \App\Models\Payment)
+
+                                    <x-payment-box :payment="$merged_object"></x-payment-box>
+
+@else
 
 
-                                <x-expense-box id="{{ 'expense' . $expense_history->expense_id}}" group_show="false" :expense="$expense_history"
-                                               @click="window.location.href='{{route('groups.expenses.show', ['group'=>$group ,'expense'=>$expense_history] ) }}'"></x-expense-box>
+                                <x-expense-box id="{{ 'expense' . $merged_object->expense_id}}" group_show="false" :expense="$merged_object"
+                                               @click="window.location.href='{{route('groups.expenses.show', ['group'=>$group ,'expense'=>$merged_object] ) }}'"></x-expense-box>
+                                @endif
+
                             @empty
-                                <h2 class="text-xl font-semibold"> No expenses have been created yet</h2>
+                                <h2 class="text-xl font-semibold"> No expenses or payments been created yet</h2>
                             @endforelse
+
+
+
+
+
+{{--                            @forelse ($expenses_history as $expense_history)--}}
+
+
+{{--                                <x-expense-box id="{{ 'expense' . $expense_history->expense_id}}" group_show="false" :expense="$expense_history"--}}
+{{--                                               @click="window.location.href='{{route('groups.expenses.show', ['group'=>$group ,'expense'=>$expense_history] ) }}'"></x-expense-box>--}}
+{{--                            @empty--}}
+{{--                                <h2 class="text-xl font-semibold"> No expenses have been created yet</h2>--}}
+{{--                            @endforelse--}}
 
 
                         </div>

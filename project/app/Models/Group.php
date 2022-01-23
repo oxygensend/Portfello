@@ -23,6 +23,13 @@ class Group extends Model
         return $this->hasMany(Expense::class);
     }
 
+    public function payments(){
+
+            return $this->hasMany(Payment::class);
+
+    }
+
+
     public function expenses_history()
     {
         return $this->hasManyThrough(ExpensesHistory::class, Expense::class,
@@ -41,7 +48,5 @@ class Group extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function payments(){
-        return $this->hasMany(Payment::class);
-    }
+
 }

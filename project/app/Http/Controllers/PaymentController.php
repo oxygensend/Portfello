@@ -8,6 +8,7 @@ use App\Models\Group;
 use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use phpDocumentor\Reflection\DocBlock\Tags\Author;
 use function PHPUnit\Framework\at;
@@ -22,6 +23,8 @@ class PaymentController extends Controller
         return view('payments.create',['group'=>$group]);
 
     }
+
+
 
     public function getItemsList(Group $group, User $user){
 

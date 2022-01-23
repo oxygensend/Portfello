@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\Payment;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
@@ -57,7 +58,20 @@ class GroupController extends Controller {
     {
         Gate::authorize('member', $group);
         $expenses_history= Group::find($group->id)->expenses_history()->orderBy('created_at','desc')->get();
-        return view('groups.show', ['group' => $group,'expenses_history' =>$expenses_history]);
+
+
+
+$payments=auth()->user()->getPaymentHistoryInGroup($group );
+
+$merged=array_merge($expenses_history->all(), $payments->all());
+
+usort($merged, function($a,$b){
+    $tmp1 = strtotime($a['created_at']);
+    $tmp2 = strtotime($b['created_at']);
+    return  $tmp2 - $tmp1;
+});
+
+        return view('groups.show', ['group' => $group,'expenses_history' =>$expenses_history, 'expenses_payments'=>$merged]);
     }
 
     public function edit(Group $group)
