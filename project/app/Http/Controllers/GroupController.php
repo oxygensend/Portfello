@@ -71,7 +71,7 @@ usort($merged, function($a,$b){
     return  $tmp2 - $tmp1;
 });
 
-        return view('groups.show', ['group' => $group,'expenses_history' =>$expenses_history, 'expenses_payments'=>$merged]);
+        return view('groups.show', ['group' => $group, 'expenses_payments'=>$merged]);
     }
 
     public function edit(Group $group)
