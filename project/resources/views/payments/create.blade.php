@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
         </script>
 
         Payments in <a :href="route('groups.show',$group )"> {{ $group->name }}</a>
@@ -17,32 +17,69 @@
                 <form method="post" action="{{ route('groups.pay.store',$group )}}">
                     @csrf
                     <div x-data="{show_item:false}" class="flex flex-col   ">
-                        <div>
-                            <x-label for="option" :value="__('How')"/>
-                            <select id="how" name="how"
-                                    @change='event.target.value == "item" ? show_item = true : show_item = false'>
-                                <option name="money" value="money">Money</option>
-                                <option name="item" value="item">Item</option>
-                            </select>
 
-                        </div>
 
-                        <x-show-item group={{ $group }} />
+                        @php
+                            $users= auth()->user()->whomOwe($group);
+                        @endphp
 
-                        <div class="flex  items-center mt-10">
-                            <x-button type="button" id='button_select' x-on:click="show = ! show"
-                                      class=" font-medium font-bold">
-                                Select users
-                            </x-button>
-                        </div>
 
-                        <x-select-users-panel name="selected_user" type="radio" :users="auth()->user()->whomOwe($group)"/>
+                        @if(sizeof($users) !=0)
 
-                        <div class="flex  items-center mt-8">
-                            <x-button type="button"
-                            >transfer
-                            </x-button>
-                        </div>
+                            <div>
+                                <x-label for="user" :value="__('With')"/>
+
+                                <select id="user_select" name="user_select" required>
+                                    @foreach($users as $user)
+
+                                        <option name="{{$user->name}}" value="{{$user->id}}">{{$user->name}}</option>
+
+
+                                    @endforeach
+
+
+                                        @endif
+                                </select>
+                            </div>
+
+
+                            <div>
+                                <x-label for="option" :value="__('How')"/>
+                                <select id="how" name="how"
+                                        @change='event.target.value == "item" ? show_item = true : show_item = false'>
+                                    <option name="money" value="money">Money</option>
+                                    <option name="item" value="item">Item</option>
+                                </select>
+
+                            </div>
+
+
+                            <div id="item_select_box">
+                                <x-label for="option" :value="__('Item')"/>
+                                <select id="item_select" name="item_select" id="item_select"
+                                        @change='event.target.value == "item" ? show_item = true : show_item = false'>
+
+                                </select>
+
+                            </div>
+                            <div>
+                                <x-label for="how_much" :value="__('How much')" />
+
+                                <x-input id="how_much" class="block mt-1 w-full"
+                                         type="number"
+                                         name="how_much"
+                                         :value=" empty($expense) ? old('how_much') : $expense->amount  " autofocus />
+                            </div>
+                            <x-error name="how_much"/>
+
+
+
+
+                            <div class="flex  items-center mt-8">
+                                <x-button type="button"
+                                >Settle up
+                                </x-button>
+                            </div>
 
                     </div>
                 </form>
@@ -52,63 +89,66 @@
     <script>
 
         var current_checked;
+        items = [];
 
-        var inputs= document.getElementsByClassName("user_checkbox");
+        console.log(document.getElementById("item_select_box"));
+        document.getElementById("item_select_box").style.display = 'none';
+        var how_select = document.getElementById('how');
 
-        for(i = 0; i < inputs.length; i++) {
-
-            if(inputs[i].type="radio") {
-
-                if(inputs[i].checked){
-                    current_checked=inputs[i];
-                    break;
-                }}
-        }
+        user_select = document.getElementById("user_select");
 
 
+        user_select.addEventListener('change', function (event) {
 
-        document.getElementById("button_select").addEventListener("click", function (event) {
-            event.preventDefault()
-        });
-
-        document.getElementById("button_select_confirm").addEventListener("click", function (event) {
-            event.preventDefault();
-
-
-
-            for(i = 0; i < inputs.length; i++) {
-
-                if(inputs[i].type="radio") {
-
-                    if(inputs[i].checked){
-                        if(current_checked== inputs[i])break;
-
-                        current_checked=inputs[i];
-                        getItemsList(current_checked.value);
-                    }}
+            selected_user_id = user_select.value;
+            console.log(user_select.value);
+            if (how_select.value == "item") {
+                getItemsList(user_select.value);
             }
 
+        })
 
-        });
+        how_select.addEventListener('change', function (event) {
+            console.log(how_select.value);
+            if (how_select.value == "item") {
+                document.getElementById("item_select_box").style.display = 'block';
+
+                getItemsList(user_select.value);
+            } else {
+                document.getElementById("item_select_box").style.display = 'none';
+
+            }
+
+        })
 
 
-
-
+        item_select_innerhtml = "";
 
         function getItemsList(selected_user_id) {
 
-            console.log(selected_user_id);
+            console.log("FUNKCJA");
             $.ajax({
-                url: '/payment/'+1 + '/'+selected_user_id,
+                url: '/payment/' + {!! json_encode($group->id)!!} + '/' + selected_user_id,
                 type: 'GET',
-                dataType:"JSON",
+                dataType: "JSON",
                 data: {},
-                success: function(response){ // What to do if we succeed
-                        alert(JSON.stringify(response)) ;
+                success: function (response) { // What to do if we succeed
+
+                    items = [];
+                    item_select_innerhtml = "";
+
+                    for (var item in response) {
+                        items.push({item: response[item]});
+
+                        item_select_innerhtml += `<option name=${item} value=${item}>` + item + " : "+response[item] + "</option>";
+                    }
+                    console.log(item_select_innerhtml);
+                    document.getElementById("item_select").innerHTML = item_select_innerhtml;
                 },
-                error: function(response){
-                    alert(JSON.stringify(response)) ;
-                }});
+                error: function (response) {
+
+                }
+            });
         }
 
 

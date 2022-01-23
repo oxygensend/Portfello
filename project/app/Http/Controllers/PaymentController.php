@@ -27,7 +27,8 @@ class PaymentController extends Controller
 
 
         //jesli wgl sa takie itemy
-        return json_encode($user);
+       $items= \Auth::user()->getItemBalanceWithUser($user, $group);
+        return json_encode($items);
 
     }
 
