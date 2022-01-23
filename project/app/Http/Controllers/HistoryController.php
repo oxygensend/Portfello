@@ -29,6 +29,18 @@ class HistoryController extends Controller
             $expenses_history=$expenses_history->merge($temp);
         }
 
-       return view('history', ['expenses_history'=>$expenses_history]);
+        $payments=auth()->user()->getPaymentHistory( );
+
+        $merged=array_merge($expenses_history->all(), $payments->all());
+
+        usort($merged, function($a,$b){
+            $tmp1 = strtotime($a['created_at']);
+            $tmp2 = strtotime($b['created_at']);
+            return  $tmp2 - $tmp1;
+        });
+
+
+
+       return view('history', [ 'expenses_payments'=>$merged]);
     }
 }
