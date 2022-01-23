@@ -7,6 +7,8 @@ use App\Http\Requests\UpdateExpenseRequest;
 use App\Models\Expense;
 use App\Models\ExpensesHistory;
 use App\Models\Group;
+use App\Rules\SelectedUsers;
+use App\Rules\SelectedUsersAuthor;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use App\Models\User;
@@ -37,15 +39,16 @@ class GroupExpenseController extends Controller
 
         $attributes = request()->validate([
             'description' => 'required',
-            'selected_users' => 'required',
+            'selected_users' => ['required', new SelectedUsers() , new SelectedUsersAuthor()] ,
             'item' => 'nullable',
             'how_much' => 'required | numeric',
+        ],[
 
         ]);
 
 
 
-//        ddd('dumping this one', $request);
+
         $user = auth()->user();
         $selected_users = $request->selected_users;
         $expense = Expense::create([
@@ -115,7 +118,7 @@ class GroupExpenseController extends Controller
 
         $attributes = request()->validate([
             'title' => 'required',
-            'selected_users' => 'required',
+            'selected_users' => ['required', new SelectedUsers() , new SelectedUsersAuthor()] ,
             'item' => 'nullable',
             'how_much' => 'required | numeric',
         ]);
@@ -192,8 +195,41 @@ class GroupExpenseController extends Controller
     }
 
 
-    public function destroy(Expense $expense)
+    public function destroy(Group $group,ExpensesHistory $expense)
     {
-        //
+        if($expense->isLatest == true && $expense->action ==3){
+
+            return redirect(route('groups.expenses.show', ['group' => $group ,'expense'=>$expense]));
+
+        }
+
+
+
+        $expense_history_new = ExpensesHistory::create([
+            'expense_id' => $expense->expense_id,
+            'action' => 3, // 1 - add 2 - update 3 - delete
+            'amount' => $expense->amount,
+            'item' => $expense->item,
+            'title' =>$expense->title
+        ]);
+
+        $expense->isLatest=false;
+        $expense->save();
+        $users= $expense->users() ;
+
+        foreach ($users as  $user) {
+            DB::table('expenses_user')->insert([
+                'user_id' => $user->id,
+                'expenses_history_id' => $expense_history_new->id,
+                'user_contribution' => round($expense_history_new->amount / count($users), 2),
+            ]);
+
+        }
+
+        return redirect(route('groups.show', ['group' => $group]));
+
+
+
+
     }
 }
