@@ -50,7 +50,7 @@ class PaymentController extends Controller
             $attributes = request()->validate([
                 'select_user' => 'required:in:' . $user->whomOwe($group),
                 'item' => 'nullable',
-                'how_much' => 'required|numeric'
+                'how_much' => 'required|numeric|min:0.01'
             ]);
 
 
