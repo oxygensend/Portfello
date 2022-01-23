@@ -59,7 +59,9 @@ $balance_items=auth()->user()->getItemBalanceWithUser($user, $group);
 
     @if($balance_money==0 && sizeof($balance_items) == 0)
         @else
-                        <div class=" text-xl"><div class=" border-indigo-500 border-b-2"> <h2 onclick="toggleList({{$user->id}})" >Balance with user: {{$user->name}} </h2>
+
+
+                                    <div class=" text-xl"><div class=" border-indigo-500 border-b-2"> <h2 onclick="toggleList({{$user->id}})" >Balance with user: {{$user->name}} </h2>
                             </div>
                             <ul class="mt-2 text-lg" id="user_list{{$user->id}}" style="display:none;">
 
