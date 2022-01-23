@@ -161,17 +161,64 @@ return $groups->filter( function ($group, $key){
 
     public function whomOwe(Group $group)
     {
-        $users_id = DB::table('expenses_user')
-            ->where('expenses_user.user_id', $this->id)
-            ->join('expenses_histories','expenses_user.expenses_history_id',
-                '=','expenses_histories.id')
-            ->join('expenses','expenses_histories.expense_id',
-                '=','expenses.id')
-             ->pluck('expenses.user_id')->toArray();
+//        $users_id = DB::table('expenses_user')
+//            ->where('expenses_user.user_id', $this->id)
+//            ->join('expenses_histories','expenses_user.expenses_history_id',
+//                '=','expenses_histories.id')
+//            ->join('expenses','expenses_histories.expense_id',
+//                '=','expenses.id')
+//             ->pluck('expenses.user_id')->toArray();
+//
+//         return User::whereIn('id',$users_id)->get();
 
-         return User::whereIn('id',$users_id)->get();
+        $whomOweMoney=[];
+        $whomOweItems=[];
+
+        forEach($group->users as $user){
+
+            if($user->is(auth()->user())  ) continue;
+
+
+
+                $balance = $this->getBalanceWithUser($user, $group);
+//            ddd([$user, $balance]);
+
+
+                if($balance < 0 ) $whomOweMoney[$user->id] = 1;
+
+                $balance_array = $this->getItemBalanceWithUser($user,$group);
+
+
+                foreach($balance_array as $balance_item){
+                    if($balance_item <0 ){
+                        $whomOweItems[$user->id]=1;
+                        break;
+                    }
+
+                }
 
     }
+
+//        ddd([$user, $balance]);
+//        ddd($whomOweItems);
+        $users_union= $whomOweItems + $whomOweMoney;
+
+
+       $users= User::whereIn('id',array_keys($users_union) )->get();
+return $users;
+
+    }
+
+
+
+
+public function getItemDebtWittUser( Group $group ,User $user ){
+
+
+
+}
+
+
 
     public function getGroupBalance(Group $group)
     {

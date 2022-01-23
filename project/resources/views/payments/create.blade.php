@@ -21,6 +21,8 @@
 
                         @php
                             $users= auth()->user()->whomOwe($group);
+
+
                         @endphp
 
 
@@ -68,7 +70,8 @@
                                 <x-input id="how_much" class="block mt-1 w-full"
                                          type="number"
                                          name="how_much"
-                                         :value=" empty($expense) ? old('how_much') : $expense->amount  " autofocus />
+                                         :value=" empty($expense) ? old('how_much') : $expense->amount  " min="0"
+                                         autofocus />
                             </div>
                             <x-error name="how_much"/>
 
@@ -88,6 +91,32 @@
     </div>
     <script>
 
+        item_select = document.getElementById("item_select");
+
+function reload_amount(){
+    if (document.getElementById("item_select_box").style.display==="block") {
+        var regex = /[+-]?\d+(\.\d+)?/g;
+        value=parseFloat(item_select.options[item_select.selectedIndex].text.split(':')[1].match(regex));
+        document.getElementById("how_much").value=value;
+
+
+    }else{
+        document.getElementById("how_much").value=0;
+
+
+    }
+}
+// async function awaitItems(){
+//     await getItemsList();
+//     reload_amount()
+//
+// }
+
+item_select.addEventListener('change',function(event){
+
+    reload_amount();
+
+});
         var current_checked;
         items = [];
 
@@ -98,31 +127,34 @@
         user_select = document.getElementById("user_select");
 
 
+
         user_select.addEventListener('change', function (event) {
 
             selected_user_id = user_select.value;
             console.log(user_select.value);
             if (how_select.value == "item") {
                 getItemsList(user_select.value);
-            }
 
+            }
+            reload_amount();
         })
 
         how_select.addEventListener('change', function (event) {
             console.log(how_select.value);
             if (how_select.value == "item") {
                 document.getElementById("item_select_box").style.display = 'block';
-
                 getItemsList(user_select.value);
             } else {
                 document.getElementById("item_select_box").style.display = 'none';
 
             }
+            reload_amount();
 
         })
 
 
         item_select_innerhtml = "";
+
 
         function getItemsList(selected_user_id) {
 
@@ -133,17 +165,31 @@
                 dataType: "JSON",
                 data: {},
                 success: function (response) { // What to do if we succeed
+                    console.log(response);
+
 
                     items = [];
                     item_select_innerhtml = "";
+                    console.log(response);
+                    if(Object.keys(response).length >0) {
+                        for (var item in response) {
+                            items.push({item: response[item]});
 
-                    for (var item in response) {
-                        items.push({item: response[item]});
+                            item_select_innerhtml += `<option name=${item} value=${item}>` + item + " : " + response[item] + "</option>";
+                        }
 
-                        item_select_innerhtml += `<option name=${item} value=${item}>` + item + " : "+response[item] + "</option>";
+                        console.log(item_select_innerhtml);
+                        document.getElementById("item_select").innerHTML = item_select_innerhtml;
+                        document.getElementById("item_select_box").style.display="block";
+
+
+
+                    }else{
+                        document.getElementById("item_select_box").style.display="none";
+
                     }
-                    console.log(item_select_innerhtml);
-                    document.getElementById("item_select").innerHTML = item_select_innerhtml;
+
+
                 },
                 error: function (response) {
 

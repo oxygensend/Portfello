@@ -18,7 +18,8 @@ class HistoryController extends Controller
     public function __invoke(Request $request)
     {
 
-        $expenses_history= Auth::user()->expenses_history()->get() ;
+        $expenses_history= Auth::user()->expenses_history()->orderBy('created_at','desc')->get();
+
         $users=DB::table('expenses_user')->where('expenses_user.user_id','=',auth()->user()->id)
             ->join('expenses_histories','expenses_user.expenses_history_id','=','expenses_histories.id')
             ->join('expenses','expenses.id','=','expenses_histories.expense_id')->get(['expenses_histories.id','expenses.user_id']);
