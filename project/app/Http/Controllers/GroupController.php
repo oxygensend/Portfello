@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
-use Illuminate\Auth\Access\Gate;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -56,7 +56,7 @@ class GroupController extends Controller {
     public function show(Group $group)
     {
         Gate::authorize('member', $group);
-        $expenses_history= Group::find($group->id)->expenses_history;
+        $expenses_history= Group::find($group->id)->expenses_history()->orderBy('created_at','desc')->get();
         return view('groups.show', ['group' => $group,'expenses_history' =>$expenses_history]);
     }
 
