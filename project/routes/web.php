@@ -15,21 +15,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
 
-Route::get('/home', function () {
-    return view('home');
-});
+
+Route::get('/home',App\Http\Controllers\RedirectController::class);
+Route::get('/',App\Http\Controllers\RedirectController::class);
+
 
 Route::middleware(['auth','PreventBackHistory'])->group(function () {
     Route::get('/payment/{group}/{user}','App\Http\Controllers\PaymentController@getItemsList');
 
-    Route::get('/', function () {
-        return redirect('/dashboard');});
-
-    Route::resource('groups', GroupController::class);
+    Route::resource('groups', GroupController::class)->parameters(['groups'=>'group:slug']);
     Route::resource('groups.add-user', \App\Http\Controllers\UsersInGroupController::class);
     Route::resource('groups.expenses', App\Http\Controllers\GroupExpenseController::class);
 
