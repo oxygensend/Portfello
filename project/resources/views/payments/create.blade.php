@@ -45,7 +45,7 @@
                             </div>
 
 
-                            <div>
+                            <div id="how_select_box">
                                 <x-label for="option" :value="__('How')"/>
                                 <select id="how" name="how"
                                         @change='event.target.value == "item" ? show_item = true : show_item = false'>
@@ -56,7 +56,7 @@
                             </div>
 
 
-                            <div id="item_select_box">
+                            <div id="item_select_box" class="hidden">
                                 <x-label for="option" :value="__('Item')"/>
                                 <select id="item_select" name="item_select" id="item_select"
                                         @change='event.target.value == "item" ? show_item = true : show_item = false'>
@@ -99,7 +99,6 @@ function reload_amount(){
         value=parseFloat(item_select.options[item_select.selectedIndex].text.split(':')[1].match(regex));
         document.getElementById("how_much").value=value;
 
-
     }else{
         document.getElementById("how_much").value=0;
 
@@ -135,17 +134,23 @@ item_select.addEventListener('change',function(event){
             if (how_select.value == "item") {
                 getItemsList(user_select.value);
 
+            }else{
+                document.getElementById("how_select_box").removeChild(info);
+
             }
             reload_amount();
+
         })
 
         how_select.addEventListener('change', function (event) {
             console.log(how_select.value);
             if (how_select.value == "item") {
-                document.getElementById("item_select_box").style.display = 'block';
+
                 getItemsList(user_select.value);
+
+
             } else {
-                document.getElementById("item_select_box").style.display = 'none';
+                document.getElementById("how_select_box").removeChild(info);
 
             }
             reload_amount();
@@ -154,7 +159,10 @@ item_select.addEventListener('change',function(event){
 
 
         item_select_innerhtml = "";
-
+        var info=document.createElement('p');
+        info.style.color='red';
+        info.textContent=
+            "You owe no items";
 
         function getItemsList(selected_user_id) {
 
@@ -182,10 +190,12 @@ item_select.addEventListener('change',function(event){
                         document.getElementById("item_select").innerHTML = item_select_innerhtml;
                         document.getElementById("item_select_box").style.display="block";
 
+                        document.getElementById("how_select_box").removeChild(info);
 
 
                     }else{
                         document.getElementById("item_select_box").style.display="none";
+                        document.getElementById("how_select_box").appendChild(info);
 
                     }
 
