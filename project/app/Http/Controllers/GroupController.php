@@ -63,7 +63,7 @@ class GroupController extends Controller {
 
     public function edit(Group $group)
     {
-        return view('groups.edit')->withGroup($group);
+        return view('groups.edit')->withGroup($group)->withUsers($group->users);
     }
 
     public function update(Group $group)
