@@ -34,7 +34,8 @@ class ExpenseGroupTestsCest {
         $I->click('#accept');
 
         $I->amOnPage('/logout');
-        $I->seeCurrentUrlEquals('/login');
+        $I->seeCurrentUrlEquals('/');
+        $I->click('Log in');
         $I->fillField('email', 'test@test.com');
         $I->fillField('password', 'test123');
         $I->click('Log in');

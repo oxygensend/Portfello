@@ -313,8 +313,7 @@ public function getItemDebtWittUser( Group $group ,User $user ){
     }
 
     public function getBalanceWithUser(User $user, Group $group){
-
-
+        if($user->is(auth()->user())  ) return 0;
         $payments_recived = $this->payments_recived()->where('group_id',$group->id)->where('user_1_id', $user->id)->sum('amount');
         $payments_executed = $this->payments_executed()->where('group_id',$group->id)->where('user_2_id', $user->id)->sum('amount');
         $user_contribution = DB::table('expenses_user')
@@ -343,6 +342,7 @@ public function getItemDebtWittUser( Group $group ,User $user ){
     }
 
     public function getItemBalanceWithUser(User $user, Group $group){
+        if($user->is(auth()->user())  ) return [];
         $user_contribution = DB::table('expenses_user')
             ->where('expenses_user.user_id', $user->id)
             ->join('expenses_histories', 'expenses_user.expenses_history_id',
