@@ -22,7 +22,11 @@
                                         @csrf
                                         @method("PATCH")
                                         <div class="mt-1 flex ">
-                                            <input type="text" name="name" id="name" class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-md sm:text-sm border-gray-300 mr-2" value="{{$user->name}}">
+                                            <x-input class=" flex-1 block w-full rounded-md border-gray-300 mr-2"
+                                                     type="text"
+                                                     name="name"
+                                                     value="{{$user->name}}"
+                                            />
                                         </div>
                                         <div class="mt-2 flex items-center py-2">
                                             <x-button type="submit">
@@ -48,8 +52,16 @@
                                         @csrf
                                         @method("PATCH")
                                         <div class="mt-1 flex ">
-                                            <input type="text" name="email" id="email" class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-md sm:text-sm border-gray-300 mr-2" placeholder="Enter a new email address">
-                                            <input type="text" name="repeated_new_email" id="repeated_new_email" class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-md sm:text-sm border-gray-300 mr-2" placeholder="Repeat the same address">
+                                            <x-input class=" flex-1 block w-full rounded-md border-gray-300 mr-2"
+                                                     type="email"
+                                                     name="email"
+                                                     placeholder="Enter a new email address"
+                                            />
+                                            <x-input class=" flex-1 block w-full rounded-md border-gray-300 mr-2"
+                                                     type="email"
+                                                     name="repeated_new_email"
+                                                     placeholder="Repeat the same address"
+                                            />
                                         </div>
                                         <div class="mt-2 flex items-center py-2">
                                             <x-button type="submit">
@@ -89,10 +101,21 @@
                                 @csrf
                                     @method("PATCH")
                                     <div class="mt-2 flex items-center">
-
-                                        <input type="password" name="current_password" id="current_password" class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-md border-gray-300 mr-2" placeholder="Current password">
-                                        <input type="password" name="new_password" id="new_password" class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-md border-gray-300 mr-2" placeholder="New password">
-                                        <input type="password" name="repeated_new_password" id="repeated_new_password" class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-md border-gray-300 mr-2" placeholder="Repeat new password">
+                                        <x-input class=" flex-1 block w-full rounded-md border-gray-300 mr-2"
+                                                 type="password"
+                                                 name="current_password"
+                                                 placeholder="Current Password"
+                                        />
+                                        <x-input class=" flex-1 block w-full rounded-md border-gray-300 mr-2"
+                                                 type="password"
+                                                 name="new_password"
+                                                 placeholder="New Password"
+                                        />
+                                        <x-input class=" flex-1 block w-full rounded-md border-gray-300 mr-2"
+                                                 type="password"
+                                                 name="repeated_new_password"
+                                                 placeholder="Repeat new Password"
+                                        />
 
                                     </div>
                                     <div class="mt-2 flex items-center pb-2">
@@ -104,6 +127,14 @@
                                         <x-error name="repeated_new_password"/>
                                     </div>
                                 </form>
+                            <x-action-button name="Deactivate account"
+                                             action="{{route('deactivate')}}"
+                                             method='DELETE'
+                                             class="bg-red-600 hover:bg-red-800"
+                                             onclick="return confirm('Are you sure you want to deactivate you account?')"
+
+                            />
+
                         </div>
 
                     </div>
@@ -122,15 +153,15 @@
                         <div class=" sm:rounded-md sm:overflow-hidden pb-2">
                             <div class="px-4 py-5 bg-white space-y-6 sm:p-6 p-2 rounded-md">
                                 @forelse($invites as $invite)
-                                    <div class="mt-2 flex items-center">
+                                    <div class="mt-2 flex items-center overflow-auto">
                                         <strong>{{$invite->text}}</strong>
                                         <x-action-button name="Accept"
-                                                         action="{{ route('invites.accept', $invite->id) }}" class="bg-green-500 hover:bg-green-400 flex-1 mr-2 ml-2"
+                                                         action="{{ route('invites.accept', $invite->id) }}" class="bg-green-600 hover:bg-green-800 flex-1 mr-2 ml-2"
                                         />
 
 
                                         <x-action-button name="Discard"
-                                                         action="{{ route('invites.delete', $invite->id)}}" class="bg-red-500 hover:bg-red-400 flex-1 mr-2 ml-2"
+                                                         action="{{ route('invites.delete', $invite->id)}}" class="bg-red-600 hover:bg-red-800 flex-1 mr-2 ml-2"
                                                          method='DELETE'
                                         />
                                     </div>
@@ -142,7 +173,8 @@
                 </div>
             </div>
         </div>
-    <script type="text/javascript">
+
+    <script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js">
         $('#image').change(function(){
 
             let reader = new FileReader();
@@ -152,5 +184,6 @@
             reader.readAsDataURL(this.files[0]);
 
         });
+
     </script>
 </x-app-layout>

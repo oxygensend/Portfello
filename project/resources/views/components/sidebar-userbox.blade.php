@@ -28,7 +28,8 @@
         var channel = pusher.subscribe('invites-sent');
         channel.bind('invites-status', function(data) {
             var invites_n = data['invites_n'];
-            if(invites_n){
+            var user = data['user_id'];
+            if(invites_n && user === {{auth()->user()->id}}){
 
                 $('#lovejs').show();
                 $('#lovejs').text(invites_n);

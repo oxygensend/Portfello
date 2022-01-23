@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Group;
 use App\Models\Invites;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -119,6 +120,26 @@ class EditUserController extends Controller{
     }
 
 
+    public function deleteAccount(){
+
+        foreach (\auth()->user()->groups as $group){
+            if($group->admin->id == auth()->user()->id){
+                $new_admin=DB::table('group_user')->where('group_id', $group->id)
+                    ->where('user_id','!=',auth()->user()->id)
+                    ->orderBy('created_at')->first();
+                if($new_admin == null)
+                    Group::find($group->id)->delete();
+                else
+                    Group::find($group->id)->update(['user_id'=>$new_admin->user_id]);
+
+            }
+
+        }
+
+
+        DB::table('users')->where('id', \auth()->user()->id)->delete();
+       return redirect('/');
+    }
 
 
 

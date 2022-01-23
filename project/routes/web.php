@@ -44,8 +44,7 @@ Route::middleware(['auth','PreventBackHistory'])->group(function () {
     Route::patch('/edit-user/change-password',[App\Http\Controllers\EditUserController::class,'ChangePassword']);
     Route::patch('/edit-user/change-username',[App\Http\Controllers\EditUserController::class,'ChangeUsername']);
     Route::patch('/edit-user/change-avatar',[App\Http\Controllers\EditUserController::class,'ChangeAvatar']);
-});
-
+    Route::delete('/edit-user/change-avatar', 'App\Http\Controllers\EditUserController@deleteAccount')->name('deactivate');});
 
 
 

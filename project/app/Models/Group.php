@@ -15,7 +15,7 @@ class Group extends Model
             'group_user',
             'group_id',
             'user_id'
-        );
+        )->withTimestamps();
     }
 
     public function expenses()

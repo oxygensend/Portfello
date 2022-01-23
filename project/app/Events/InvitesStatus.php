@@ -18,13 +18,14 @@ class InvitesStatus implements ShouldBroadcast{
 
 
     public $invites_n;
-
+    public $user_id;
     public function __construct($user)
     {
 
         $this->invites_n = DB::table('invites')
             ->where('user_id', $user->id)
             ->where('displayed',False)->count();
+        $this->user_id = $user->id;
     }
 
     public function broadcastOn()
