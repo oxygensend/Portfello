@@ -19,10 +19,15 @@ Route::get('/', function () {
     return view('home');
 });
 
+Route::get('/home', function () {
+    return view('home');
+});
+
 Route::middleware(['auth','PreventBackHistory'])->group(function () {
     Route::get('/payment/{group}/{user}','App\Http\Controllers\PaymentController@getItemsList');
 
-    Route::get('/', function () {return redirect('/dashboard');});
+    Route::get('/', function () {
+        return redirect('/dashboard');});
 
     Route::resource('groups', GroupController::class)->parameters(['groups'=>'group:slug']);
     Route::resource('groups.add-user', \App\Http\Controllers\UsersInGroupController::class);
@@ -47,15 +52,6 @@ Route::middleware(['auth','PreventBackHistory'])->group(function () {
     Route::delete('/edit-user/change-avatar', 'App\Http\Controllers\EditUserController@deleteAccount')->name('deactivate');});
 
 
-
-
-
-
-
-
-
-
 require __DIR__.'/auth.php';
 
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

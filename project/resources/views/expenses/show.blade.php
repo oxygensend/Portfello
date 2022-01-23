@@ -10,7 +10,8 @@
             <div class="flex flex-col  items-center h-full w-full ">
                 <div class="flex justify-end w-full items-end space-x-2">
 
-                    @if(Auth::user()==$expense->user )
+                    @if(Auth::user()==$expense->user &&  $expense->isLatest == true && $expense->action !=3)
+
                     <x-action-button name="Delete"
                                      action="{{  route('groups.expenses.destroy', ['group'=>$group, 'expense'=>$expense]) }}"
                                      method='DELETE'

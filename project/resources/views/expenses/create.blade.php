@@ -19,6 +19,7 @@
                                  name="description"
                                  :value="old('description')" autofocus/>
 
+                        <x-error name="description"/>
                     </div>
 
                     <div>
@@ -40,6 +41,7 @@
                             Select users
                         </x-button>
                     </div>
+                    <x-error name="selected_users"/>
 
 
                     {{--                    MODAL--}}
