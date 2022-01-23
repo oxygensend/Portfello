@@ -37,8 +37,10 @@ class UsersInGroupController extends Controller {
 
     }
 
-    public function destroy(Group $group)
+    public function destroy(Group $group, $user_id)
     {
+        DB::table('group_user')->where('group_user.group_id','=',$group->id)->where('group_user.user_id','=',$user_id)->delete();
+        return redirect(route('groups.edit', $group))->with('success', 'User has been deleted');
     }
 
     public function _checkConditions(&$msg, &$session, Group $group, $user)

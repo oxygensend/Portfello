@@ -33,6 +33,9 @@ class AppServiceProvider extends ServiceProvider
         Blade::if('admin', function ($group) {
             return request()->user()->can('admin', $group);
         });
+        Blade::if('elseadmin', function ($group) {
+            return !request()->user()->can('admin', $group);
+        });
         Model::unguard();
     }
 }
