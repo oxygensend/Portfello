@@ -1,4 +1,4 @@
-@props(['payment' ,'group','group_show'])
+@props(['payment' ,'group','group_show'=>false])
 @php
 $payment_author= \App\Models\User::find($payment->user_1_id);
 $payment_receiver=\App\Models\User::find($payment->user_2_id);
@@ -46,7 +46,7 @@ $receiver_text=$payment_author->name;
 
 <div class="flex justify-start flex-col  border-gray-200 py-2 px-4 rounded-xl">
 
-        <div class=" mb-2"> <span class="font-semibold" >{{$author_text}} created  payment</span><a x-show="{{$groupShow}}"> in {{ $payment->group->name }}</a></div>
+        <div class=" mb-2"> <span class="font-semibold" >{{$author_text}} created  payment</span><a x-show="{{$groupShow ?? 'false' }}"> in {{ $payment->group->name }}</a></div>
 
 
 
