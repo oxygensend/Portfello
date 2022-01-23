@@ -37,6 +37,12 @@ class UsersInGroupController extends Controller {
 
     }
 
+    public function update(Group $group, $user_id)
+    {
+        Group::find($group->id)->update(['user_id'=>$user_id]);
+        return redirect(route('groups.edit', $group))->with('success', 'Admin has been changed');
+    }
+
     public function destroy(Group $group, $user_id)
     {
         DB::table('group_user')->where('group_user.group_id','=',$group->id)->where('group_user.user_id','=',$user_id)->delete();

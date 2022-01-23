@@ -3,7 +3,7 @@
         <a href="{{ route('groups.show', $group) }}">{{$group->name}}</a>
     </x-slot>
     <div class="w-full h-full ">
-        @admin($group)
+
         <div x-data class="absolute  top-16 md:top-28 right-8 md:right-16 "
              @click="window.location.href='{{route('groups.edit', ['group'=>$group ]) }}'">
             <img class="w-10 h-10"
@@ -11,7 +11,7 @@
                  alt=""
                  @click="window.location.href='{{route('groups.edit', ['group'=>$group ]) }}'">
         </div>
-        @endadmin
+
 
         <div x-data>
 

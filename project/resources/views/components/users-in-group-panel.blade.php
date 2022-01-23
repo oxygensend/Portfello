@@ -48,6 +48,14 @@
                                                                                       onclick="return confirm('Are you sure you want to remove this user from group?')"
                                                                                       data-toggle="tooltip" title="Delete">&#xE872;</i></button>
                                     </form>
+                                    <script src="https://code.iconify.design/2/2.1.1/iconify.min.js"></script>
+                                    <form method="POST" action="{{route('groups.add-user.update', [$group,$user->id])}}" >
+                                        @csrf
+                                        @method('PATCH')
+                                        <button class="update" ><i class="iconify text-yellow-600" data-icon="mdi:crown" data-width="24" data-height="24"
+                                                                                      onclick="return confirm('Are you sure you want grant admin role to this user?')"
+                                                                                       title="Update"></i></button>
+                                    </form>
                                 @endif
                                 @endadmin
                                 @elseadmin($group)
