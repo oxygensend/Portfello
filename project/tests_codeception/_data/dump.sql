@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.27, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.26, for Linux (x86_64)
 --
 -- Host: 127.0.0.1    Database: test
 -- ------------------------------------------------------
@@ -33,7 +33,7 @@ CREATE TABLE `expenses` (
   KEY `expenses_user_id_foreign` (`user_id`),
   CONSTRAINT `expenses_group_id_foreign` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE,
   CONSTRAINT `expenses_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,6 +42,7 @@ CREATE TABLE `expenses` (
 
 LOCK TABLES `expenses` WRITE;
 /*!40000 ALTER TABLE `expenses` DISABLE KEYS */;
+INSERT INTO `expenses` VALUES (1,'2022-01-22 17:22:36','2022-01-22 17:22:36',1,1),(2,'2022-01-22 17:22:37','2022-01-22 17:22:37',1,2),(3,'2022-01-22 17:22:37','2022-01-22 17:22:37',1,3);
 /*!40000 ALTER TABLE `expenses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -65,7 +66,7 @@ CREATE TABLE `expenses_histories` (
   PRIMARY KEY (`id`),
   KEY `expenses_histories_expense_id_foreign` (`expense_id`),
   CONSTRAINT `expenses_histories_expense_id_foreign` FOREIGN KEY (`expense_id`) REFERENCES `expenses` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -74,6 +75,7 @@ CREATE TABLE `expenses_histories` (
 
 LOCK TABLES `expenses_histories` WRITE;
 /*!40000 ALTER TABLE `expenses_histories` DISABLE KEYS */;
+INSERT INTO `expenses_histories` VALUES (1,NULL,NULL,1,1,10,NULL,'bar',1),(2,NULL,NULL,2,1,20,NULL,'pizza',1),(3,NULL,NULL,3,1,50,NULL,'rynek',1);
 /*!40000 ALTER TABLE `expenses_histories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -94,7 +96,7 @@ CREATE TABLE `expenses_user` (
   KEY `expenses_user_expenses_history_id_foreign` (`expenses_history_id`),
   CONSTRAINT `expenses_user_expenses_history_id_foreign` FOREIGN KEY (`expenses_history_id`) REFERENCES `expenses_histories` (`id`) ON DELETE CASCADE,
   CONSTRAINT `expenses_user_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -103,6 +105,7 @@ CREATE TABLE `expenses_user` (
 
 LOCK TABLES `expenses_user` WRITE;
 /*!40000 ALTER TABLE `expenses_user` DISABLE KEYS */;
+INSERT INTO `expenses_user` VALUES (1,5,2,1),(2,5,3,1),(3,15,1,2),(4,3,3,2),(5,20,1,3),(6,13,2,3),(7,9,4,3);
 /*!40000 ALTER TABLE `expenses_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -153,7 +156,7 @@ CREATE TABLE `group_user` (
   KEY `group_user_group_id_foreign` (`group_id`),
   CONSTRAINT `group_user_group_id_foreign` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE,
   CONSTRAINT `group_user_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -162,6 +165,7 @@ CREATE TABLE `group_user` (
 
 LOCK TABLES `group_user` WRITE;
 /*!40000 ALTER TABLE `group_user` DISABLE KEYS */;
+INSERT INTO `group_user` VALUES (1,1,1,NULL,NULL),(2,2,1,NULL,NULL),(3,3,1,NULL,NULL);
 /*!40000 ALTER TABLE `group_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -182,7 +186,7 @@ CREATE TABLE `groups` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -191,6 +195,7 @@ CREATE TABLE `groups` (
 
 LOCK TABLES `groups` WRITE;
 /*!40000 ALTER TABLE `groups` DISABLE KEYS */;
+INSERT INTO `groups` VALUES (1,'Wolf LLC','/images/default_group.png',1,'qui-assumenda-ex-autem-sed',0,'2022-01-22 17:22:36','2022-01-22 17:22:36'),(2,'Mante-Renner','/images/default_group.png',1,'eligendi-quisquam-quia-ut-qui-vero',0,'2022-01-22 17:22:36','2022-01-22 17:22:36'),(3,'Breitenberg-McDermott','/images/default_group.png',1,'distinctio-vel-ipsum-alias-occaecati-accusamus',0,'2022-01-22 17:22:36','2022-01-22 17:22:36'),(4,'Murazik and Sons','/images/default_group.png',1,'aut-et-et-reprehenderit-cumque',0,'2022-01-22 17:22:36','2022-01-22 17:22:36'),(5,'O\'Conner, Mueller and Monahan','/images/default_group.png',1,'doloribus-ipsa-harum-et-aut',0,'2022-01-22 17:22:36','2022-01-22 17:22:36'),(6,'Dare-Lesch','/images/default_group.png',1,'deleniti-unde-provident-et-occaecati-repellendus',0,'2022-01-22 17:22:36','2022-01-22 17:22:36'),(7,'Fay-Kiehn','/images/default_group.png',1,'porro-fugit-est-qui-placeat-aspernatur-ipsum',0,'2022-01-22 17:22:36','2022-01-22 17:22:36'),(8,'Sipes, Yost and Prosacco','/images/default_group.png',1,'beatae-dolores-hic-aut-distinctio',0,'2022-01-22 17:22:36','2022-01-22 17:22:36');
 /*!40000 ALTER TABLE `groups` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -320,7 +325,6 @@ CREATE TABLE `payments` (
   `user_2_id` bigint unsigned NOT NULL,
   `group_id` bigint unsigned NOT NULL,
   `amount` decimal(8,2) NOT NULL DEFAULT '0.00',
-  `item` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `payments_user_1_id_foreign` (`user_1_id`),
   KEY `payments_user_2_id_foreign` (`user_2_id`),
@@ -392,7 +396,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_name_unique` (`name`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -401,7 +405,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Roberto Huels','test@test.com','2022-01-22 22:22:42','$2y$10$6fLAQc7oUqWSF3XwqqoLWOHOn3VoMSw4B8uA56jNI2.4CgV.dc9zG','mTkMqcLg7H','2022-01-22 22:22:42','2022-01-22 22:22:42','/images/default_avatar.jpg'),(2,'test2','test2@test.com','2022-01-22 22:22:42','$2y$10$3De1kpu73FvZLd4DQx8U1uuI2shRC12zC70GZ.1pQaJCw1B5pu/96','cchYzn0XzV','2022-01-22 22:22:42','2022-01-22 22:22:42','/images/default_avatar.jpg'),(3,'Szymon Berdzik','test5@test.com','2022-01-22 22:22:42','$2y$10$BZoindr7/iT7Iq2ZKg8gW.EQyJOC.5/suiJOQQjpYmQcCBctrHmAC','4yHzskYyoX','2022-01-22 22:22:42','2022-01-22 22:22:42','/images/default_avatar.jpg'),(4,'Daniel Definski','test3@test.com','2022-01-22 22:22:42','$2y$10$4IVL52MLV1Kis5olrCCpLeP.0HoeF7mfoD4LcylE18wWBzD03LOKO','PtKnJs7kon','2022-01-22 22:22:42','2022-01-22 22:22:42','/images/default_avatar.jpg'),(5,'Jakub Machalica','test4@test.com','2022-01-22 22:22:42','$2y$10$QwadISPzax.pPJhmcQgSFONk0s5gzHhRJ1tjU.ARDPxmbzlpT4awy','1FAfKbS3QA','2022-01-22 22:22:42','2022-01-22 22:22:42','/images/default_avatar.jpg');
+INSERT INTO `users` VALUES (1,'Garnet Jenkins IV','test@test.com','2022-01-22 17:22:36','$2y$10$hY8GLrUqTrBelYeQnBDYw.sQZHXFrXOCv0dCrbbpX2GTnokXZp7XS','5aeYQ19FFN','2022-01-22 17:22:36','2022-01-22 17:22:36','/images/default_avatar.jpg'),(2,'Szymon Berdzik','test2@test.com','2022-01-22 17:22:36','$2y$10$onpcTkorqo.pDljg6.rvpuZKGcibyFEwT4ULMJdvW1MTFLwBDuyEm','sHQlkLXYvI','2022-01-22 17:22:36','2022-01-22 17:22:36','/images/default_avatar.jpg'),(3,'Daniel Definski','test3@test.com','2022-01-22 17:22:36','$2y$10$6hHFwuRUAjRGWN2Kuoeb1u7LYCKT6KX99JpsQM6vPMEWmEdlVr6zK','znkQJRlFaJ','2022-01-22 17:22:36','2022-01-22 17:22:36','/images/default_avatar.jpg'),(4,'Jakub Machalica','test4@test.com','2022-01-22 17:22:36','$2y$10$TZ6lTbS//PedVmuttYgc..gJYp1QrgX4cTbO540C0/ap.dZIg1BV6','gShdddTBGr','2022-01-22 17:22:36','2022-01-22 17:22:36','/images/default_avatar.jpg');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -414,4 +418,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-22 23:22:42
+-- Dump completed on 2022-01-22 18:22:39

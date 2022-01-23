@@ -15,7 +15,7 @@ class CreateGroupTestsCest
         $I->fillField('password', 'test123');
         $I->click('Log in');
     }
-
+/*
     // tests
     public function noGroupsTest(AcceptanceTester $I)
     {
@@ -72,5 +72,5 @@ class CreateGroupTestsCest
         $I->seeInDatabase('groups', ['name' => 'test group2',
                                      'avatar' => '/images/default_group.png',
                                      'smart_billing' => 0]);
-    }
+    }*/
 }

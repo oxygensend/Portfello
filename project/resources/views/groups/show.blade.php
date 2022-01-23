@@ -23,10 +23,10 @@
                              href="{{route('groups.show', $group)}}"
                              vertical='space-y-10'
                              :group="$group"
-                             balance="true"
-                             group_show="false"
+                             :balance="true"
                 >
                 </x-group-box>
+
 
                 <div class="grow  w-full">
                     <div class="items-center justify-center overflow-auto h-full w-full flex ">
@@ -37,7 +37,7 @@
                             @forelse ($expenses_history as $expense_history)
 
 
-                                <x-expense-box group_show="false" :expense="$expense_history"
+                                <x-expense-box :expense="$expense_history"
                                                @click="window.location.href='{{route('groups.expenses.show', ['group'=>$group ,'expense'=>$expense_history] ) }}'"></x-expense-box>
                             @empty
                                 <h2 class="text-xl font-semibold"> No expenses have been created yet</h2>
@@ -55,8 +55,6 @@
                     <x-slot name="link" class="font-bold" href="{{ route('groups.expenses.create', $group)}}"> Add
                         expense
                     </x-slot>
-
-
                 </x-floating-button>
 
             </div>

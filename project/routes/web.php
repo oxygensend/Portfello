@@ -15,22 +15,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::get('/', function () {
     return view('home');
 });
 
 Route::middleware(['auth','PreventBackHistory'])->group(function () {
-    Route::get('/payment/{group}/{user}','App\Http\Controllers\PaymentController@getItemsList');
 
     Route::get('/', function () {return redirect('/dashboard');});
 
     Route::resource('groups', GroupController::class)->parameters(['groups'=>'group:slug']);
     Route::resource('groups.add-user', \App\Http\Controllers\UsersInGroupController::class);
     Route::resource('groups.expenses', App\Http\Controllers\GroupExpenseController::class);
-
-    Route::resource('groups.pay', \App\Http\Controllers\PaymentController::class);
-
-
 
     Route::post('/invites/accept/{invite}','App\Http\Controllers\InvitesController@accept')->name('invites.accept');
     Route::delete('/invites/delete/{invite}', 'App\Http\Controllers\InvitesController@delete')->name('invites.delete');
@@ -55,8 +51,4 @@ Route::middleware(['auth','PreventBackHistory'])->group(function () {
 
 
 
-
 require __DIR__.'/auth.php';
-
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

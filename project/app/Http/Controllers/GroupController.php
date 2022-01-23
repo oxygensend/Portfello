@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -38,7 +37,7 @@ class GroupController extends Controller {
             request()->avatar->move(storage_path('app/public/group_avatars/'),$fileNameToStore);
             $imagePath = 'storage/group_avatars/'.$fileNameToStore;
         }else{
-            $imagePath = '/images/default_group.png';
+            $imagePath = '/images/default_avatar.jpg';
         }
 
         $group = Group::create([
@@ -56,14 +55,13 @@ class GroupController extends Controller {
     public function show(Group $group)
     {
 
-        $expenses_history= Group::find($group->id)->expenses_history()->orderBy('created_at','desc')->get();
-
+        $expenses_history= Group::find($group->id)->expenses_history;
         return view('groups.show', ['group' => $group,'expenses_history' =>$expenses_history]);
     }
 
     public function edit(Group $group)
     {
-        return view('groups.edit')->withGroup($group)->withUsers($group->users);
+        return view('groups.edit')->withGroup($group);
     }
 
     public function update(Group $group)
