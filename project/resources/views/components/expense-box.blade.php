@@ -22,7 +22,7 @@
         </div>
     @endif
 
-    @php
+   @php
         $actual_user=Auth::user();
         $isCreator= $expense->user ==$actual_user;
 
@@ -37,8 +37,18 @@
          $creator=$expense->user->name;
             if( $actual_user->isIncluded($expense)){
                $right_uppertext="You owe ";
-               $right_lowertext=abs($actual_user->owes($expense));
+
+
+               $right_lowertext=abs($actual_user->owes($expense)[0]);
+               if(!empty($actual_user->owes($expense)[1]))
+                   $right_lowertext=$right_lowertext.' '.$actual_user->owes($expense)[1];
+
+
+
         }
+
+
+
             else{
                 $right_uppertext=null;
                    $right_lowertext= "Not included";
