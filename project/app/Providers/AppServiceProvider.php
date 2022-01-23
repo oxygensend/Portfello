@@ -38,12 +38,24 @@ class AppServiceProvider extends ServiceProvider
             return false;
         });
 
+
+
         Blade::if('admin', function ($group) {
             return request()->user()->can('admin', $group);
         });
+
         Blade::if('elseadmin', function ($group) {
             return !request()->user()->can('admin', $group);
         });
+
+        Blade::if('expense_creator', function ($expense) {
+            return request()->user()==$expense->user &&  $expense->isLatest == true && $expense->action !=3;
+        });
+
+        Gate::define('expense_creator', function ($user,$expense) {
+            return $user==$expense->user &&  $expense->isLatest == true && $expense->action !=3;
+        });
+
         Model::unguard();
     }
 }

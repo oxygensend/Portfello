@@ -10,6 +10,7 @@ use App\Models\Group;
 use App\Rules\SelectedUsers;
 use App\Rules\SelectedUsersAuthor;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use App\Models\User;
 
@@ -107,6 +108,7 @@ class GroupExpenseController extends Controller
 
     public function edit(Group $group, ExpensesHistory $expense)
     {
+        Gate::authorize('expense_creator', $expense);
         return view('expenses.edit ')->with(['expense' => $expense])->withGroup($group);
     }
 
