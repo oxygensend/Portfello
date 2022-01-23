@@ -11,7 +11,7 @@ class AddingUserTestCest {
         $I->fillField('password', 'test123');
         $I->click('Log in');
 
-/*
+
         // create group
         $I->amOnPage('/groups');
         $I->click('Create');
@@ -135,7 +135,7 @@ class AddingUserTestCest {
         $I->see('Request has been already sent to this user');
 
 
-*/
+
     }
     //TODO only admin can see add user Delete and edit buttons
 

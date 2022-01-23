@@ -13,7 +13,7 @@
                          :group="$group"
             />
 
-        @emptygrab
+        @empty
             <h2 class="text-xl font-semibold">Nie należysz jeszcze do żadnej grupy. </h2>
         @endforelse
 
