@@ -10,8 +10,8 @@ class ExpensesInGroupTestsCest
         $I->fillField('password', 'test123');
         $I->click('Log in');
 
-
-        $I->amOnPage('groups/create');
+        $I->amOnPage('/groups');
+        $I->click('Create');
         $I->fillField('name', 'test group');
         $I->click('Create');
         $I->haveInDatabase('group_user', ['user_id' => 2, 'group_id' => 1]);

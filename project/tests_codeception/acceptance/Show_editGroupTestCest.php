@@ -10,11 +10,10 @@ class Show_editGroupTestCest
         $I->seeCurrentUrlEquals('/login');
         $I->fillField('email', 'test@test.com');
         $I->fillField('password', 'test123');
-        $I->click('Log in');
 
         //creating group
-
-        $I->amOnPage('groups/create');
+        $I->click('Log in');
+        $I->amOnPage('/groups/create');
         $I->fillField('name', 'test group');
         $I->click('Create');
         $I->haveInDatabase('group_user', ['user_id' => 2, 'group_id' => 1]);

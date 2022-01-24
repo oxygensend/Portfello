@@ -100,28 +100,7 @@ return $groups->filter( function ($group, $key){
 
     }
 
-    public function userContribution(ExpensesHistory $expense_history){
 
-        $result= \DB::table('expenses_user')->where('user_id','=',$this->id)->where('expenses_history_id','=',$expense_history->id)->select('user_contribution')->get()->first();
-        return $result;
-
-    }
-    public function balanceInGroup(){}
-
-//    public function balancePaymentInGroup(Group $group){
-//
-//
-// $plus=$this->expenses()->where('group_id','=',$group->id)->join('expenses_histories','expenses_histories.expense_id','=','expenses.id')->where('expenses_histories.isLatest','=',1)->where('expenses_histories.action','!=',3)->select('amount')->sum('amount');
-//
-//
-//
-//
-//    $minus= $this->expenses()->where('group_id','=',$group->id)->join('expenses_histories','expenses_histories.expense_id','=','expenses.id')->where('expenses_histories.isLatest','=',1)->join('expenses_user','expenses_histories.id','=','expenses_user.expenses_history_id')->where('expenses_user.user_id','=',$this->id)->sum('user_contribution');
-//
-//return $plus-$minus;
-//
-//
-//    }
 
     private function  combineArrays($a1, $a2, $a3) : Collection {
         $sums = array();
@@ -245,14 +224,6 @@ return $users;
 
 
 
-public function getItemDebtWittUser( Group $group ,User $user ){
-
-
-
-}
-
-
-
     public function getGroupBalance(Group $group)
     {
 
@@ -267,8 +238,8 @@ public function getItemDebtWittUser( Group $group ,User $user ){
         })->sum('amount');
 
 
-        $payments_recived = $this->payments_recived()->where('group_id',$group->id)->sum('amount');
-        $payments_executed = $this->payments_executed()->where('group_id',$group->id)->sum('amount');
+        $payments_recived = $this->payments_recived()->where('group_id',$group->id)->where('item', null)->sum('amount');
+        $payments_executed = $this->payments_executed()->where('group_id',$group->id)->where('item', null)->sum('amount');
 
         $contribution = DB::table('expenses_user')
             ->where('expenses_user.user_id', $this->id)
@@ -295,8 +266,8 @@ public function getItemDebtWittUser( Group $group ,User $user ){
             $q->where('item', null);
         })->sum('amount');
 
-        $payments_recived = $this->payments_recived()->sum('amount');
-        $payments_executed = $this->payments_executed()->sum('amount');
+        $payments_recived = $this->payments_recived()->where('item', null)->sum('amount');
+        $payments_executed = $this->payments_executed()->where('item', null)->sum('amount');
 
         $contribution = DB::table('expenses_user')
             ->where('expenses_user.user_id', $this->id)
@@ -453,15 +424,7 @@ public function getItemDebtWittUser( Group $group ,User $user ){
             ->where('isLatest', true)
             ->value('user_contribution');
     }
-  public function CurrnetExpenseswithGroup()
-    {
-        return $this->hasManyThrough(ExpensesHistory::class, Expense::class,
-            '',
-            '',
-            'id',
-            'id',
-        )->join('groups','groups.id','=','expenses.group_id');
-    }
+
     public function expenses_history()
     {
         return $this->hasManyThrough(ExpensesHistory::class, Expense::class,
@@ -470,13 +433,6 @@ public function getItemDebtWittUser( Group $group ,User $user ){
             'id',
             'id',
         );
-    }
-    public function getExpenseString(Expense $expense){
-//
-//        $result= DB::table('users')->join('expenses_user', 'expenses_user.user_id', '=','users.id')->where('expenses_user.expenses_id','=',$expense->id)->get();
-//        ddd($result);
-
-        return 10;
     }
 
 

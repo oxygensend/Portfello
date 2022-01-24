@@ -9,6 +9,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
+use function PHPUnit\Framework\isEmpty;
 
 
 class GroupController extends Controller {
@@ -71,6 +72,7 @@ usort($merged, function($a,$b){
     return  $tmp2 - $tmp1;
 });
 
+        auth()->user()->whomOwe($group);
         return view('groups.show', ['group' => $group, 'expenses_payments'=>$merged]);
     }
 
