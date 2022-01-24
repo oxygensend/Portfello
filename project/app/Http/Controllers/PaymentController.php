@@ -46,16 +46,16 @@ class PaymentController extends Controller
 
         $user = auth()->user();
 
-//        ddd(\request());
+
             $attributes = request()->validate([
                 'select_user' => 'required:in:' . $user->whomOwe($group),
-                'item' => 'nullable',
-                'how_much' => 'required|numeric'
+                'item_select' => 'nullable',
+                'how_much' => 'required|numeric|min:0.01'
             ]);
 
 
             $user2 = User::find($attributes['select_user']);
-            if($attributes['how_much'] > abs($user->getBalanceWithUser($user2, $group)) && ($attributes['item']??null) == null){
+            if($attributes['how_much'] > abs($user->getBalanceWithUser($user2, $group)) && ($attributes['item_select']??null) == null){
                 throw ValidationException::withMessages(['how_much'=>'Too large payment amount']);
             }
 
@@ -64,13 +64,13 @@ class PaymentController extends Controller
         Payment::create([
             'user_1_id' => auth()->user()->id,
             'user_2_id' => $attributes['select_user'],
-            'item' => ($attributes['item'] ?? null),
+            'item' => ($attributes['item_select'] ?? null),
             'amount' => $attributes['how_much'],
             'group_id' => $group->id
         ]);
 
 
-        return redirect(route('groups.show', $group))->with('success','transfer ok');
+        return redirect(route('groups.show', $group))->with('success','Payment done');
 
     }
 }

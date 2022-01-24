@@ -314,8 +314,8 @@ public function getItemDebtWittUser( Group $group ,User $user ){
 
     public function getBalanceWithUser(User $user, Group $group){
         if($user->is(auth()->user())  ) return 0;
-        $payments_recived = $this->payments_recived()->where('group_id',$group->id)->where('user_1_id', $user->id)->sum('amount');
-        $payments_executed = $this->payments_executed()->where('group_id',$group->id)->where('user_2_id', $user->id)->sum('amount');
+        $payments_recived = $this->payments_recived()->where('group_id',$group->id)->where('user_1_id', $user->id) ->where('item', null)->sum('amount');
+        $payments_executed = $this->payments_executed()->where('group_id',$group->id)->where('user_2_id', $user->id) ->where('item', null)->sum('amount');
         $user_contribution = DB::table('expenses_user')
             ->where('expenses_user.user_id', $user->id)
             ->join('expenses_histories', 'expenses_user.expenses_history_id',
@@ -373,10 +373,11 @@ public function getItemDebtWittUser( Group $group ,User $user ){
 
         $payments_recived = $this->payments_recived()->where('item','!=',null)
             ->where('group_id', $group->id)
-            ->where('user_1_id',$user->id)
+            ->where('user_1_id',$user->id)->groupBy('item')->selectRaw(' item,  sum(amount) as amount ')
             ->pluck('amount', 'item')->toArray();
         $payments_executed = $this->payments_executed()->where('item','!=',null)
-            ->where('user_1_id',$this->id)
+            ->where('group_id',$group->id)
+            ->where('user_2_id',$user->id) ->groupBy('item')->selectRaw(' item,  sum(amount) as amount ')
             ->pluck('amount', 'item')->toArray();
 
         $sums = array();
@@ -404,8 +405,8 @@ public function getItemDebtWittUser( Group $group ,User $user ){
             ->groupBy('item')->selectRaw(' item, sum(amount) as amount , sum(user_contribution) as user_contribution, sum(amount-user_contribution) as balance ')
             ->pluck('balance', 'item')->toArray();
 
-        $payments_recived = $this->payments_recived()->where('item','!=',null)->pluck('amount', 'item')->toArray();
-        $payments_executed = $this->payments_executed()->where('item','!=',null)->pluck('amount', 'item')->toArray();
+        $payments_recived = $this->payments_recived()->where('item','!=',null)->groupBy('item')->selectRaw(' item,  sum(amount) as amount ')->pluck('amount', 'item')->toArray();
+        $payments_executed = $this->payments_executed()->where('item','!=',null)->groupBy('item')->selectRaw(' item,  sum(amount) as amount ')->pluck('amount', 'item')->toArray();
 
         return($this->combineArrays($contribution, $payments_executed, $payments_recived));
 
@@ -429,11 +430,11 @@ public function getItemDebtWittUser( Group $group ,User $user ){
 
         $payments_recived = $this->payments_recived()
                 ->where('item','!=',null)
-                ->where('group_id', $group->id)
+                ->where('group_id', $group->id)->groupBy('item')->selectRaw(' item,  sum(amount) as amount ')
                 ->pluck('amount', 'item')->toArray();
         $payments_executed = $this->payments_executed()
             ->where('item','!=',null)
-            ->where('group_id', $group->id)
+            ->where('group_id', $group->id)->groupBy('item')->selectRaw(' item,  sum(amount) as amount ')
             ->pluck('amount', 'item')->toArray();
 
 

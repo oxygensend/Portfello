@@ -3,10 +3,11 @@
 
             <div class="sm:max-w-lg">
                 <h1 class="text-4xl font font-extrabold tracking-tight text-gray-900 sm:text-6xl">
-                Portfello podziel sie...
+                Portfello
                 </h1>
                 <p class="mt-4 text-xl text-gray-500">
-                    Często zapominasz, że ktoś jest Ci winny pięniądze? Od dziś już nie zapomnisz, zarejestruj się i przetestuj Portfello.</p>
+                    Do you often forget that someone owes you money? Register today and let us deal with it for you.
+                </p>
             </div>
             <div>
                 <div class="mt-10">

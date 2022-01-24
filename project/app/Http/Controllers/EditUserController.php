@@ -53,7 +53,7 @@ class EditUserController extends Controller{
         try {
         request()->validate([
             'current_password' => 'required',
-            'new_password' => 'required|same:repeated_new_password|min:7',
+            'new_password' => 'required|same:repeated_new_password|min:8',
             'repeated_new_password' => 'required',
         ]);
         }
