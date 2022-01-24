@@ -1227,10 +1227,6 @@ select {
   --tw-bg-opacity: 1;
   background-color: rgb(238 242 255 / var(--tw-bg-opacity));
 }
-.bg-amount_color {
-  --tw-bg-opacity: 1;
-  background-color: rgb(61 68 243 / var(--tw-bg-opacity));
-}
 .fill-current {
   fill: currentColor;
 }

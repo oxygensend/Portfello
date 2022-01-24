@@ -130,7 +130,7 @@
                             <x-action-button name="Deactivate account"
                                              action="{{route('deactivate')}}"
                                              method='DELETE'
-                                             class="bg-red-600 hover:bg-red-800"
+                                             class="bg-red-500 hover:bg-red-800"
                                              onclick="return confirm('Are you sure you want to deactivate you account?')"
 
                             />
@@ -158,12 +158,12 @@
                                         <x-action-button name="Accept"
                                                          id="#accept"
 
-                                                         action="{{ route('invites.accept', $invite->id) }}" class="bg-green-600 hover:bg-green-800 flex-1 mr-2 ml-2"
+                                                         action="{{ route('invites.accept', $invite->id) }}" class="bg-green-500 hover:bg-green-800 flex-1 mr-2 ml-2"
                                         />
 
 
                                         <x-action-button name="Discard"
-                                                         action="{{ route('invites.delete', $invite->id)}}" class="bg-red-600 hover:bg-red-800 flex-1 mr-2 ml-2"
+                                                         action="{{ route('invites.delete', $invite->id)}}" class="bg-red-500 hover:bg-red-800 flex-1 mr-2 ml-2"
                                                          method='DELETE'
                                         />
                                     </div>

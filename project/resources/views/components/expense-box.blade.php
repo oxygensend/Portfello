@@ -4,10 +4,10 @@
 <div class="flex justify-start flex-col  border-gray-200 py-2 px-4 rounded-xl">
     @if(Auth::user()->name ==$expense->user->name)
         <div class=" mb-2"><span class="font-semibold">You </span>{{$expense->getStringAction()  }} expense <a
-                x-show="{{$groupShow}}"> in {{ $expense->group->name }}</a></div>
+                x-show="{{$groupShow}}"> in <strong>{{ $expense->group->name }}</strong></a></div>
     @else
         <div class=" mb-2"><span class="font-semibold">{{$expense->user->name}}</span> {{$expense->getStringAction()  }}
-            expense <a x-show="{{$groupShow}}"> in {{ $expense->group->name }}</a></div>
+            expense <a x-show="{{$groupShow}}"> in <strong>{{ $expense->group->name }}</strong></a></div>
     @endif
     <div {{ $attributes->merge(['class' => 'flex flex-row space-x-8 items-center bg-sidebar_main_color opacity-90 py-3 px-4 rounded-md text-white' ] ) }} >
 
