@@ -38,8 +38,8 @@ class ExpensesInGroupTestsCest
         $I->click('#button_select_confirm');
         $I->seeCurrentUrlEquals('/groups/1');
         $I->see('You added expense in test group');
-        $I->see('You paid 10 You get back 5 ');
-        $I->see('Your balance: 5');
+        $I->see('You paid 10 $ You get back 5 $');
+        $I->see('Your balance: 5 $');
         $I->seeInDatabase('expenses',['user_id'=> '1', 'group_id' => '1']);
         $I->seeInDatabase('expenses_histories',[
             'expense_id'=>1,

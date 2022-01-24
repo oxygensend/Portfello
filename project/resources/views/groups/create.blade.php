@@ -31,15 +31,7 @@
         <x-error name="avatar"/>
 
 
-        <div class="mt-4">
-            <x-label for="smart_billing" :value="__('Smart billing')" />
 
-            <x-input id="smart_billing" class="p-2 border border-gray-400 rounded"
-                            type="checkbox"
-                            name="smart_billing"
-                            value="1"
-                             />
-        </div>
 
         <div class="mt-4 ">
            <x-button class="mt-4 h-full text-center">

@@ -24,7 +24,7 @@ $receiver_text=$payment_receiver->name;
 
     if($item == null)
 {
-  $value_text= $amount;
+  $value_text= $amount . ' $';
 
 
 }else{

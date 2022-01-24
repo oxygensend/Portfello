@@ -10,34 +10,11 @@ class HistoryTestCest
         $I->fillField('password', 'test123');
         $I->click('Log in');
 
-        $I->amOnPage('/groups');
-        $I->click('Create');
+        //creating group
+        $I->amOnPage('/groups/create');
         $I->fillField('name', 'test group');
         $I->click('Create');
-        $I->see('test group');
-        $I->click('test group');
-        $I->amOnPage('/groups/1');
-
-        $I->amOnPage('/groups/1/edit');
-        $I->click('Add user');
-        $I->fillField('username', 'test2');
-        $I->click('#add');
-
-        $I->amOnPage('/logout');
-        $I->amOnPage('/login');
-        $I->fillField('email', 'test2@test.com');
-        $I->fillField('password', 'test123');
-        $I->click('Log in');
-        $I->amOnPage('/edit-user');
-        $I->see('Do you want to join the test group group?');
-        $I->click('Accept');
-
-        $I->amOnPage('/logout');
-        $I->seeCurrentUrlEquals('/');
-        $I->click('Log in');
-        $I->fillField('email', 'test@test.com');
-        $I->fillField('password', 'test123');
-        $I->click('Log in');
+        $I->haveInDatabase('group_user', ['user_id' => 2, 'group_id' => 1]);
 
 
 
@@ -54,7 +31,7 @@ class HistoryTestCest
         $I->seeCurrentUrlEquals('/history');
 
         $I->see('Your history');
-        $I->see('No expenses have been created yet');
+        $I->see('No expenses or payments been created yet');
     }
 
 

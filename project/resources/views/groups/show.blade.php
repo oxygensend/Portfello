@@ -67,13 +67,13 @@ $balance_items=auth()->user()->getItemBalanceWithUser($user, $group);
 
                         @if($balance_money !=0 )
 
-                            <li>You {{ ($balance_money >0 ? "are owed " :'owe ').  abs($balance_money )}}  </li>
+                            <li>You {{ ($balance_money >0 ? "are owed " :'owe ').  abs($balance_money ) .' $'}}  </li>
                             @endif
 
 
                                 @foreach( $balance_items as $item =>$amount)
                                 @if($amount != 0)
-                                    <li>You {{ ($amount >0 ? "are owed " :'owe ') . abs($amount). " " .$item }}  </li>
+                                    <li>You {{ ($amount >0 ? "are owed " :'owe ') . abs($amount). " " .$item   }}  </li>
                                 @endif
                                 @endforeach
 

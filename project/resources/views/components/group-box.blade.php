@@ -9,7 +9,7 @@ $user_balance=  Auth::user()->getGroupBalance( $group);
     <div  class="columns-1 flex flex-col space-y-4 {{ isset($vertical) ? " items-center":'' }} ">
         <a  class="text-2xl font-bold " {{ $attributes }}>{{ $group->name ?? '' }}</a>
 
-        <p x-show={{$balance}} class="text-xl">Your balance:  {{$user_balance}} </p>
+        <p x-show={{$balance}} class="text-xl">Your balance:  {{$user_balance . ' $'}} </p>
 
         @if($balance && $user_balance!=0 && isset($vertical) )
         <x-button class="text-center">

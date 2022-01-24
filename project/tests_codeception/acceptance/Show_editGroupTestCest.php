@@ -53,10 +53,9 @@ class Show_editGroupTestCest
 
         $I->see("Change name");
         $I->see("Change avatar");
-        $I->see("Start using smart billing");
         $I->see("Add user");
 
-        $I->seeInDatabase('groups', ['id'=>1, 'name' => 'test group', 'smart_billing'=>0]);
+        $I->seeInDatabase('groups', ['id'=>1, 'name' => 'test group']);
         $name=$I->grabFromDatabase('users','name',['id'=>1]);
         $I->see('Name Avatar Action');
         $I->see('1 '. $name);
@@ -68,11 +67,10 @@ class Show_editGroupTestCest
         $I->seeInField('name','test group');
 
         $I->fillField('name', 'new test');
-        $I->checkOption('#smart_billing');
         $I->click('Update');
         $I->seeCurrentUrlEquals('/groups/1');
         $I->see('new test');
-        $I->seeInDatabase('groups', ['id'=>1, 'name' => 'new test', 'smart_billing'=>1]);
+        $I->seeInDatabase('groups', ['id'=>1, 'name' => 'new test', ]);
     }
 
     public function EditGroupValidationTest(AcceptanceTester $I){

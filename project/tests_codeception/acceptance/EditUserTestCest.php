@@ -87,7 +87,7 @@ class EditUserTestCest
         $I->fillField('new_password','pass1');
         $I->fillField('repeated_new_password','pass1');
         $I->click('Change Password');
-        $I->see('The new password must be at least 7 characters.');
+        $I->see('The new password must be at least 8 characters.');
         $I->fillField('current_password','wrong_password');
         $I->fillField('new_password','password');
         $I->fillField('repeated_new_password','password');

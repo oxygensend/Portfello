@@ -50,7 +50,6 @@ class CreateGroupTestsCest
         $I->wantTo('Test creating new group');
         $I->amOnPage('/groups/create');
         $I->fillField('name', 'test group');
-        $I->checkOption('#smart_billing');
         $I->click('Create');
         $I->see('Group has been created');
 
@@ -60,7 +59,7 @@ class CreateGroupTestsCest
         $I->see('test group');
         $I->seeInDatabase('groups', ['name' => 'test group',
                                      'avatar' => "/images/default_group.png",
-                                     'smart_billing' => 1]);
+                                     ]);
         $I->amOnPage('/groups/create');
         $I->fillField('name', 'test group2');
         $I->click('Create');
@@ -71,6 +70,6 @@ class CreateGroupTestsCest
         $I->see('test group');
         $I->seeInDatabase('groups', ['name' => 'test group2',
                                      'avatar' => '/images/default_group.png',
-                                     'smart_billing' => 0]);
+                                     ]);
     }
 }

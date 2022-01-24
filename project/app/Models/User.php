@@ -133,7 +133,7 @@ return $groups->filter( function ($group, $key){
             return   $amount." " . $expense_history->item ;
         }else{
 
-            return  $amount;
+            return  $amount . ' $';
         }
     }
 

@@ -19,7 +19,6 @@ class CreateGroupsTable extends Migration
             $table->string('avatar');
             $table->foreignId('user_id');
             $table->string('slug');
-            $table->boolean('smart_billing')->default(false);
             $table->timestamps();
         });
     }

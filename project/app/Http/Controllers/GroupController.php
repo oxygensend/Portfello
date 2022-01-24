@@ -31,7 +31,6 @@ class GroupController extends Controller {
         $attributes = request()->validate([
             'name' => 'required',
             'avatar' => 'image|mimes:jpg,png|max:2048',
-            'smart_billing' => 'boolean',
         ]);
 
         if (!empty(request()->avatar)){
@@ -47,7 +46,6 @@ class GroupController extends Controller {
             'name' => $attributes['name'],
             'user_id' => auth()->user()->id,
             'avatar' => $imagePath,
-            'smart_billing' => $attributes['smart_billing'] ?? 0
         ]);
 
 
@@ -86,7 +84,6 @@ usort($merged, function($a,$b){
         $attributes = request()->validate([
             'name' => 'required',
             'avatar' => 'image|mimes:jpg,png|max:2048',
-            'smart_billing' => 'boolean',
         ]);
 
         if(request()->file('avatar')) {
@@ -99,7 +96,6 @@ usort($merged, function($a,$b){
             $group->avatar = $imagePath;
         }
         $group->name = $attributes['name'];
-        $group->smart_billing = $attributes['smart_billing'] ?? 0;
 
         $group->save();
         return redirect(route('groups.show', $group))->with('success', 'Group has been edited');
