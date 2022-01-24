@@ -65,19 +65,19 @@ $balance_items=auth()->user()->getItemBalanceWithUser($user, $group);
                             </div>
                             <ul class="mt-2 text-lg" id="user_list{{$user->id}}" style="display:none;">
 
-                        @if($balance_money !=0)
+                        @if($balance_money !=0 )
 
                             <li>You {{ ($balance_money >0 ? "are owed " :'owe ').  abs($balance_money )}}  </li>
                             @endif
-                            @if(sizeof($balance_items) != 0)
+
 
                                 @foreach( $balance_items as $item =>$amount)
-
+                                @if($amount != 0)
                                     <li>You {{ ($amount >0 ? "are owed " :'owe ') . abs($amount). " " .$item }}  </li>
-
+                                @endif
                                 @endforeach
 
-                            @endif
+
                             </ul>
                         </div>
 
