@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.27, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.28, for Linux (x86_64)
 --
 -- Host: 127.0.0.1    Database: test
 -- ------------------------------------------------------
@@ -178,7 +178,6 @@ CREATE TABLE `groups` (
   `avatar` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `user_id` bigint unsigned NOT NULL,
   `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `smart_billing` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -362,7 +361,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_name_unique` (`name`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -371,7 +370,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Shania O\'Hara','test@test.com','2022-01-23 13:27:15','$2y$10$5mzGny..rAcdw9yhUdOfHOBHrpB./FiksRdK6loELVszvqBLjV1KC','FDmSfUEN6U','2022-01-23 13:27:15','2022-01-23 13:27:15','/images/default_avatar.jpg'),(2,'test2','test2@test.com','2022-01-23 13:27:15','$2y$10$FUt9f6T0QpOFSyANbiI8f.7niNGK/sjbSLpl43GQlkGfW.893P1ty','LLlsLZ0S6b','2022-01-23 13:27:15','2022-01-23 13:27:15','/images/default_avatar.jpg'),(3,'Szymon Berdzik','test5@test.com','2022-01-23 13:27:15','$2y$10$coBRMXtWwl5wVUG633h5se7AaDAmD4TQ9mGatfKUvGiNFi8kvIp1i','krQjv4kwuU','2022-01-23 13:27:15','2022-01-23 13:27:15','/images/default_avatar.jpg'),(4,'Daniel Definski','test3@test.com','2022-01-23 13:27:15','$2y$10$m1i8.upKKDlQMCWZAy7UauGVMXkGE88zggNjUNPGBq78bPJinIngW','RVygmMyyJ2','2022-01-23 13:27:15','2022-01-23 13:27:15','/images/default_avatar.jpg'),(5,'Jakub Machalica','test4@test.com','2022-01-23 13:27:15','$2y$10$zrZ2H6o1ee.r1Igo1sxiWeOyjZJWP0wWDxOvpxiomf3zG1sxH3ROO','3fPV37tqXC','2022-01-23 13:27:15','2022-01-23 13:27:15','/images/default_avatar.jpg');
+INSERT INTO `users` VALUES (1,'Prof. Alycia Keeling','test@test.com','2022-02-18 11:40:43','$2y$10$Sl3YKWCiXevsjaxuGgUgFOCJwjCJ90rsho4bSCeAzhCMTvreJToJG','qaOGzbqOoP','2022-02-18 11:40:43','2022-02-18 11:40:43','/images/default_avatar.jpg'),(2,'test2','test2@test.com','2022-02-18 11:40:43','$2y$10$txSdop8eazlbyu7YwcvMsOZ1D0Ez8tXgwZ.gkvSf4EEJaFNpt8CJC','Z0wsnDfA0o','2022-02-18 11:40:43','2022-02-18 11:40:43','/images/default_avatar.jpg'),(3,'Szymon Berdzik','test5@test.com','2022-02-18 11:40:43','$2y$10$aDoG6P5caS8mVqYAH0L2QOEGBKcPspmaeYrlGzcOXiqPPX.6WDdHa','X5SkIJmZna','2022-02-18 11:40:43','2022-02-18 11:40:43','/images/default_avatar.jpg'),(4,'Daniel Definski','test3@test.com','2022-02-18 11:40:43','$2y$10$8s5HooYj4YqEQothEzzjeOf1.13ZL9Pez6W4H7qOqWAyPaTdSjie6','KNbXN9wJqM','2022-02-18 11:40:43','2022-02-18 11:40:43','/images/default_avatar.jpg'),(5,'Jakub Machalica','test4@test.com','2022-02-18 11:40:43','$2y$10$eMcYsbhZuxQ243hNX6L.dOFF8YeEqMQNvbtFv2rNf3U0/FTuriffm','GI6HHdoeay','2022-02-18 11:40:43','2022-02-18 11:40:43','/images/default_avatar.jpg'),(6,'Tomasz Kurcaba','test6@test.com','2022-02-18 11:40:43','$2y$10$rX1Qf9trf084RIsA6PMmveERzzqpJ6j6ypwjnryGUXRdxom7EC5Cy','CeP9W5HEOg','2022-02-18 11:40:43','2022-02-18 11:40:43','/images/default_avatar.jpg');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -384,4 +383,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-23 14:27:15
+-- Dump completed on 2022-02-18 12:40:43

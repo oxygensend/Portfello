@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="4o58qvQ6ap9lSNhjKSBsgF2awuUiqNw1iT6r91Zz">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <title>Portfello</title>
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+
+        <!-- Styles -->
+        <link rel="stylesheet" href="http://localhost:8888/css/app.css">
+
+        <!-- Scripts -->
+        <script src="http://localhost:8888/js/app.js" defer></script>
+        <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+        <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+        <script
+            src="https://code.jquery.com/jquery-3.6.0.js"
+            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+            crossorigin="anonymous"></script>
+        <script>
+
+            // Enable pusher logging - don't include this in production
+            Pusher.logToConsole = true;
+//TODO schowac ten klucz
+            var pusher = new Pusher('7245db5073bc3fafcd25', {
+                cluster: 'eu'
+            });
+
+
+        </script>
+    </head>
+    <body class="font-sans antialiased ">
+        <div class="h-screen bg-gray-100">
+            <div class="relative  md:flex flex-row h-screen ">
+               <!-- mobile menu bar -->
+    <div class="bg-sidebar_main_color text-gray-100 flex justify-between md:hidden">
+        <!-- logo -->
+        <a href="#" class="block p-4 text-white font-bold"> </a>
+
+        <!-- mobile menu button -->
+        <button class="mobile-menu-button p-4 focus:outline-none focus:bg-gray-700">
+            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+    </div>
+
+
+<!-- sidebar -->
+    <div class="sidebar h-full left-0 top-0 md:min-h-screen	 bg-sidebar_main_color text-blue-100 w-64 space-y-6 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out">
+<div class ="sidebar-content justify-between h-full flex flex-col	" >
+        <!-- logo -->
+
+    <div class="py-7 px-2">
+    <div class="sidebar-upper_box">
+            <a href="#" class="text-white flex items-center space-x-2 px-4">
+                <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                </svg>
+                <span class="text-2xl font-extrabold">Portfello</span>
+            </a>
+
+            <!-- nav -->
+            <nav class="mt-7">
+                <a class="block py-2.5 px-4 rounded transition duration-200 hover:text-white  hover:bg-amount_color" href="http://localhost:8888/dashboard">
+    Dashboard
+</a>
+
+                <a class="block py-2.5 px-4 rounded transition duration-200 hover:text-white  hover:bg-amount_color" href="http://localhost:8888/groups">
+    Groups
+</a>
+
+                <a class="block py-2.5 px-4 rounded transition duration-200 hover:text-white  hover:bg-amount_color" href="http://localhost:8888/history">
+    History
+</a>
+
+                <a class="block py-2.5 px-4 rounded transition duration-200 hover:text-white  hover:bg-amount_color" href="http://localhost:8888/logout">
+    Log out
+</a>
+
+
+
+
+            </nav>
+        </div>
+</div>
+
+<div class=" flex  bg-gray-800 h-32 items-center ">
+    <div class="py-7 px-2">
+    <div  class="flex items-center " >
+            <div class="w-16 h-16 box relative">
+    <img alt="" class="w-full h-full object-center object-cover rounded-lg" src="/images/default_avatar.jpg">
+
+    <div id="lovejs" class="absolute  bg-red-500 w-5 h-5 rounded-xl text-center  flex items-center justify-center top-0 right-0"
+                                     style="top: -5px; right: -5px;">
+                        <p>0</p>
+                    </div>
+
+</div>
+
+            <div class="flex flex-col ml-4   ">
+                <p class="text">Shania O&#039;Hara</p>
+                <a   href="http://localhost:8888/edit-user" class="text-xs	">View profile</a>
+            </div>
+
+        </div>
+</div>
+
+
+
+    <script>
+                $('#lovejs').hide();
+                var channel = pusher.subscribe('invites-sent');
+        channel.bind('invites-status', function(data) {
+            var invites_n = data['invites_n'];
+            var user = data['user_id'];
+            if(invites_n && user === 1){
+
+                $('#lovejs').show();
+                $('#lovejs').text(invites_n);
+
+            }
+        });
+    </script>
+
+</div>
+
+    </div>
+
+
+</div>
+                <div class="w-full h-full flex flex-col">
+                    <div class="w-full bg-white h-20 flex justify-start items-center ">
+                 <h2 class=" margin_main_x text-3xl tracking-wide font-bold text"><a href="http://localhost:8888/groups/1">test group</a></h2>
+
+                    </div>
+
+                    <div class="overflow-auto padding_main_xy	flex w-full h-full">
+  <main class="h-full w-full">
+                            <div class="flex justify-center items-center w-full h-full">
+        <div x-data="{ show: false }"
+             class="border border-gray-200  rounded-xl h-max	pt-6 pb-16 px-6  w-full  sm:w-8/12 md:w-5/12 min-w-[350px]">
+
+            <form method="post" action="http://localhost:8888/groups/1/expenses">
+                <input type="hidden" name="_token" value="4o58qvQ6ap9lSNhjKSBsgF2awuUiqNw1iT6r91Zz">                <div x-data="{ show_item:false}" class="flex flex-col   ">
+
+                    <div>
+                        <label class="block font-medium text-sm text-gray-700" for="description">
+    Description
+</label>
+                        <input  class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="description" type="text" name="description" autofocus="autofocus">
+
+                    </div>
+
+                    <div>
+                        <label class="block font-medium text-sm text-gray-700" for="option">
+    How
+</label>
+                        <select id="how" name="how"
+                                @change='event.target.value == "item" ? show_item = true : show_item = false'>
+                            <option name="money" value="money">Money</option>
+                            <option name="item" value="item">Item</option>
+                        </select>
+
+                    </div>
+
+                    <div class="py-1" >
+
+            <div x-show="show_item">
+                <label class="block font-medium text-sm text-gray-700" for="item">
+    What kind of item
+</label>
+
+                <input  class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="item" type="text" name="item" autofocus="autofocus">
+            </div>
+                        <div>
+                <label class="block font-medium text-sm text-gray-700" for="how_much">
+    How much
+</label>
+
+                <input  class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="how_much" type="number" name="how_much" autofocus="autofocus">
+            </div>
+            <p class="text-red-500 text-xs mt-1 mr-2 ml-2"> The how much field is required.</p>
+
+
+
+</div>
+
+
+                    <div class="flex  items-center mt-10">
+                        <button type="submit"
+       class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-amount_color  active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150  font-medium font-bold" type="button" id="button_select" x-on:click="show = ! show">
+         Select users
+</button>
+                    </div>
+
+
+
+                    <div x-show="show" class="fixed inset-0  w-screen h-screen flex justify-center items-center 	">
+
+                        <div class="absolute inset-0 bg-neutral-300 opacity-70 "></div>
+                        <div
+                            class="w-4/12 rounded-lg h-5/6 bg-white z-50 flex flex-col items-center justify-between   p-10  space-y-6">
+
+                            <div class="w-full min-h-0 text_and_checkboxes flex flex-col space-y-10 ">
+
+                                <div class="text-2xl flex-none	font-semibold text-center">Select users</div>
+
+                                <div
+                                    class="w-full 	 flex-auto overflow-y-auto flex flex-col  justify-center items-center space-y-4 scroll-pt-2 ">
+
+                                    <div class="flex w-full justify-between items-center  "><label class="block font-medium text-sm text-gray-700 text-lg font-bold" for="all">
+    All users
+</label>
+
+                                        <input  class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block ml-4" id="all" type="checkbox" name="all" checked="checked"></div>
+
+
+                                                                            <div class="flex w-full justify-between items-center  "><label class="block font-medium text-sm text-gray-700 text-lg" for="Shania O&#039;Hara1">
+    Shania O&#039;Hara
+</label>
+
+    <input  class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block ml-4 user_checkbox" id="0" type="checkbox" value="1" name="selected_users[]" checked="checked"></div>
+
+                                                                                <div class="flex w-full justify-between items-center  "><label class="block font-medium text-sm text-gray-700 text-lg" for="test22">
+    test2
+</label>
+
+    <input  class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block ml-4 user_checkbox" id="1" type="checkbox" value="2" name="selected_users[]" checked="checked"></div>
+
+
+                                </div>
+
+
+                            </div>
+                            <div>
+
+                                <button type="submit"
+       class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-amount_color  active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150  text-2xl font-bold" type="button" x-data="open" id="button_select_confirm" @click="show= ! show">
+         <span class="text-xl">Confirm</span>
+</button>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+                    <script>
+                        document.getElementById("button_select").addEventListener("click", function (event) {
+                            event.preventDefault()
+                        });
+                        document.getElementById("button_select_confirm").addEventListener("click", function (event) {
+                            event.preventDefault()
+                        });
+//TODO
+                        n_of_checkboxes=2;
+                        n_of_checked=n_of_checkboxes;
+
+
+                        var user_checkboxes=document.getElementsByClassName("user_checkbox");
+
+
+                       all_checkbox= document.getElementById("all");
+                        all_checkbox.addEventListener("click", function (event) {
+
+
+                            for (const checkbox of user_checkboxes) {
+                                checkbox.checked= all_checkbox.checked;
+                            }
+                            n_of_checked=n_of_checkboxes;
+                        });
+
+                        for (const checkbox of user_checkboxes) {
+                            checkbox.addEventListener('click',function (event){
+                                if(checkbox.checked){
+
+                                    if(n_of_checked<n_of_checkboxes)n_of_checked+=1;
+                                }else{
+
+                                    if(n_of_checked>0) n_of_checked-=1;
+
+                                }
+
+                                all_checkbox.checked=(n_of_checked== n_of_checkboxes);
+                            });
+                        }
+
+
+
+
+
+
+                    </script>
+
+
+                    <div id="user_confirm" class="flex  items-center mt-10">
+                        <button type="submit"
+       class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-amount_color  active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150   font-bold" type="submit">
+         Confirm
+</button>
+                    </div>
+
+                </div>
+
+
+        </form>
+    </div>
+    </div>
+    </div>
+                        </main>
+</div>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+            <!-- Page Heading -->
+
+
+
+
+
+
+            <!-- Page Content -->
+
+
+
+        </div>
+
+    </body>
+</html>
+

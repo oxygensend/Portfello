@@ -95,7 +95,6 @@ class GroupExpenseController extends Controller
         foreach ($minus as $m)
             $m->amount = $m->amount * -1;
         $result = $plus->merge($minus);
-        //TODO nie dziala helpppp
         return $result->sortBy('updated_at', SORT_REGULAR, TRUE);
     }
 

@@ -60,15 +60,15 @@ class GroupController extends Controller {
 
 
 
-$payments=auth()->user()->getPaymentHistoryInGroup($group );
+        $payments=auth()->user()->getPaymentHistoryInGroup($group );
 
-$merged=array_merge($expenses_history->all(), $payments->all());
+        $merged=array_merge($expenses_history->all(), $payments->all());
 
-usort($merged, function($a,$b){
-    $tmp1 = strtotime($a['created_at']);
-    $tmp2 = strtotime($b['created_at']);
-    return  $tmp2 - $tmp1;
-});
+        usort($merged, function($a,$b){
+            $tmp1 = strtotime($a['created_at']);
+            $tmp2 = strtotime($b['created_at']);
+            return  $tmp2 - $tmp1;
+        });
 
         auth()->user()->whomOwe($group);
         return view('groups.show', ['group' => $group, 'expenses_payments'=>$merged]);
