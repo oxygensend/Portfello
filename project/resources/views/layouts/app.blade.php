@@ -26,9 +26,10 @@
             // Enable pusher logging - don't include this in production
             Pusher.logToConsole = true;
 //TODO schowac ten klucz
-            var pusher = new Pusher('7245db5073bc3fafcd25', {
+            var pusher = new Pusher('{{ env('MIX_PUSHER_APP_KEY') }}', {
                 cluster: 'eu'
             });
+
 
 
         </script>
