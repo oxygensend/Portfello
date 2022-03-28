@@ -1,12 +1,12 @@
 # Portfello 
 
-## Application for monitoring expenses based on splitwase https://splitwase.com
+## Application for monitoring expenses based on splitwase https://splitwise.com
 
 It is a uni-project for subject Programming in PHP contributed with:
 - Szymon Berdzik (oxygensend)
 - Jakub Machalica (jmachalica)
-- Tomasz Kurcaba
-- Daniel Defiński
+- Tomasz Kurcaba (TKurcaba)
+- Daniel Defiński (DDefinski)
 
 ## App requirements
 
