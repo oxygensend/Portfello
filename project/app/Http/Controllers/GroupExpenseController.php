@@ -9,6 +9,7 @@ use App\Models\ExpensesHistory;
 use App\Models\Group;
 use App\Rules\SelectedUsers;
 use App\Rules\SelectedUsersAuthor;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
@@ -21,9 +22,7 @@ class GroupExpenseController extends Controller
 
     public function index(Group $group)
     {
-        $user_expenses = auth()->user()->expenses;
-        $user_expenses->where('group_id', '=', $group->id);
-        ddd($user_expenses);
+        $user_expenses = auth()->user()->expenses()->where('group_id', '=', $group->id);
         return view('expenses.index', ['result' => $user_expenses])->withGroup($group);
     }
 
@@ -31,47 +30,28 @@ class GroupExpenseController extends Controller
     public function create(Group $group)
     {
         $new_id = auth()->user()->id;
-        return view('expenses.create')->withGroup($group)->withUsers($group->users->where('id', '!=', $new_id));
+        return view('expenses.create')->withGroup($group)->withUsers($group->users()->where('id', '!=', $new_id));
     }
 
 
     public function store(StoreExpenseRequest $request, Group $group)
     {
 
-        $attributes = request()->validate([
-            'description' => 'required',
-            'selected_users' => 'required',
-            'item' => 'nullable',
-            'how_much' => 'required | numeric|min:0.1',
-
-        ]);
-
-
-
-//        ddd('dumping this one', $request);
-        $user = auth()->user();
-        $selected_users = $request->selected_users;
         $expense = Expense::create([
                 'group_id' => $group->id,
-                'user_id' => $user->id,
+                'user_id' => Auth::id(),
             ]
         );
         $expense_history = ExpensesHistory::create([
             'expense_id' => $expense->id,
             'action' => 1, // 1 - add 2 - update 3 - delete
-            'amount' => $attributes['how_much'],
-            'item' => $attributes['item'],
-            'title' => $attributes['description'],
+            'amount' => $request->get('how_much'),
+            'item' => $request->get('item'),
+            'title' => $request->get('description'),
         ]);
 
-        foreach ($attributes['selected_users'] as $user) {
-            DB::table('expenses_user')->insert([
-                'user_id' => $user,
-                'expenses_history_id' => $expense_history->id,
-                'user_contribution' => round($expense_history->amount / count($attributes['selected_users']), 2),
-            ]);
-
-
+        foreach ($request->get('selected_users') as $user) {
+           Auth::user()->insertExpenseRelation($expense_history, $request->get('selected_users'));
 
         }
         $expenses_history= Group::find($group->id)->expenses_history;

@@ -24,7 +24,10 @@ class StoreExpenseRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'description' => 'required',
+            'selected_users' => 'required',
+            'item' => 'nullable',
+            'how_much' => 'required | numeric|min:0.1',
         ];
     }
 }
