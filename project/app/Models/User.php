@@ -93,15 +93,7 @@ class User extends Authenticatable implements MustVerifyEmail {
         return $this->hasMany(Invites::class);
     }
 
-    public function insertExpenseRelation(ExpensesHistory $expense_history, $users)
-    {
 
-        DB::table('expenses_user')->insert([
-            'user_id' => $this->id,
-            'expenses_history_id' => $expense_history->id,
-            'user_contribution' => round($expense_history->amount / count($users), 2),
-        ]);
-    }
 
     public function isIncluded(ExpensesHistory $expense_history)
     {

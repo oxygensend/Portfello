@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\SetSessionMessage;
 use App\Events\InvitesStatus;
+use App\Http\Requests\UserExistRequest;
 use App\Models\Group;
 use App\Models\Invites;
 use App\Models\User;
@@ -14,23 +16,18 @@ use Illuminate\Validation\ValidationException;
 class UsersInGroupController extends Controller {
 
 
-    public function store(Group $group)
+    public function store(Group $group, UserExistRequest $request, SetSessionMessage $setSessionMessage)
     {
-
         try {
-            $attributes = request()->validate([
+            $user = DB::table('users')->where('name', $request->get('username'))->first();
 
-                'username' => ['required', Rule::exists('users', 'name')],
-            ]);
         } catch (ValidationException $e) {
             return redirect(route('groups.edit', $group))->with(['show' => 'true'])->withErrors($e->errors());
         }
 
-
-        $user = DB::table('users')->where('name', request('username'))->first();
         $msg = '';
         $session = '';
-        $this->_checkConditions($msg, $session, $group, $user);
+        $setSessionMessage->execute($msg, $session, $group, $user);
 
         event(new InvitesStatus($user));
         return redirect(route('groups.edit', $group))->with($session, $msg);
@@ -39,34 +36,15 @@ class UsersInGroupController extends Controller {
 
     public function update(Group $group, $user_id)
     {
-        Group::find($group->id)->update(['user_id'=>$user_id]);
+        Group::find($group->id)->update(['user_id' => $user_id]);
         return redirect(route('groups.edit', $group))->with('success', 'Admin has been changed');
     }
 
     public function destroy(Group $group, $user_id)
     {
-        DB::table('group_user')->where('group_user.group_id','=',$group->id)->where('group_user.user_id','=',$user_id)->delete();
+        DB::table('group_user')->where('group_user.group_id', '=', $group->id)->where('group_user.user_id', '=', $user_id)->delete();
         return redirect(route('groups.edit', $group))->with('success', 'User has been deleted');
     }
 
-    public function _checkConditions(&$msg, &$session, Group $group, $user)
-    {
-        if ($group->users->contains($user->id)) {
-            $session = 'fail';
-            $msg = 'User ' . $user->name . ' is already in group';
 
-        } else if (DB::table('invites')->where('user_id', $user->id)->where('group_id',$group->id)->count()) {
-            $session = 'fail';
-            $msg = 'Request has been already sent to this user.';
-        } else {
-            $session = 'success';
-            $msg = 'Request has been sent to ' . $user->name;
-            Invites::create([
-                'user_id' => $user->id,
-                'group_id' => $group->id,
-                'text' => 'Do you want to join the ' . $group->name . ' group?',
-            ]);
-
-        }
-    }
 }

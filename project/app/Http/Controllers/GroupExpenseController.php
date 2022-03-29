@@ -9,6 +9,7 @@ use App\Models\ExpensesHistory;
 use App\Models\Group;
 use App\Rules\SelectedUsers;
 use App\Rules\SelectedUsersAuthor;
+use App\Services\GroupExpenseService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -17,8 +18,7 @@ use App\Models\User;
 
 use Nette\Schema\ValidationException;
 
-class GroupExpenseController extends Controller
-{
+class GroupExpenseController extends Controller {
 
     public function index(Group $group)
     {
@@ -34,7 +34,7 @@ class GroupExpenseController extends Controller
     }
 
 
-    public function store(StoreExpenseRequest $request, Group $group)
+    public function store(StoreExpenseRequest $request, Group $group, GroupExpenseService $service)
     {
 
         $expense = Expense::create([
@@ -50,33 +50,12 @@ class GroupExpenseController extends Controller
             'title' => $request->get('description'),
         ]);
 
-        foreach ($request->get('selected_users') as $user) {
-           Auth::user()->insertExpenseRelation($expense_history, $request->get('selected_users'));
+        $service->insertExpenseRelation($expense_history, $request->get('selected_users'));
 
-        }
-        $expenses_history= Group::find($group->id)->expenses_history;
-        return redirect(route('groups.show', ['group' => $group,'expenses_history' =>$expenses_history]));
+        $expenses_history = Group::find($group->id)->expenses_history;
+        return redirect(route('groups.show', ['group' => $group, 'expenses_history' => $expenses_history]));
     }
 
-    private function my_join(Group $group)
-    {
-
-        $plus = DB::table('expenses')->where('group_id', $group->id)
-            ->join('expenses_user', 'expenses.id', '=', 'expenses_user.expenses_id')
-            ->join('users', 'expenses_user.user_2_id', '=', 'users.id')
-            ->where('expenses_user.user_1_id', '=', auth()->user()->id)
-            ->orderBy('expenses.updated_at', 'desc')->get();
-        $minus = DB::table('expenses')->where('group_id', $group->id)
-            ->join('expenses_user', 'expenses.id', '=', 'expenses_user.expenses_id')
-            ->join('users', 'expenses_user.user_1_id', '=', 'users.id')
-            ->where('expenses_user.user_2_id', '=', auth()->user()->id)
-            ->orderBy('expenses.updated_at', 'desc')
-            ->get();
-        foreach ($minus as $m)
-            $m->amount = $m->amount * -1;
-        $result = $plus->merge($minus);
-        return $result->sortBy('updated_at', SORT_REGULAR, TRUE);
-    }
 
     public function show(Group $group, ExpensesHistory $expense)
     {
@@ -91,125 +70,63 @@ class GroupExpenseController extends Controller
     }
 
 
-    public function update(UpdateExpenseRequest $request, Group $group, ExpensesHistory $expense)
+    public function update(UpdateExpenseRequest $request, Group $group, ExpensesHistory $expense, GroupExpenseService $service)
     {
-
-
-
-        $attributes = request()->validate([
-            'title' => 'required',
-            'selected_users' => ['required', new SelectedUsers() , new SelectedUsersAuthor()] ,
-            'item' => 'nullable',
-            'how_much' => 'required | numeric|min:0.1',
-        ]);
-
 
         $expense->title = $request->title;
         $expense->item = $request->item;
         $expense->amount = $request->how_much;
+        $attributes_changed = $expense->isDirty();
 
+        $previous_users = $expense->users();
+        $users_changed = $service->checkUserChange($previous_users, $request->get('selected_users'));
 
-
-        $attributes_changed =  $expense->isDirty();
-
-        $previous_users = $expense->users() ;
-        $previous_users_ids=[];
-
-        foreach(       $previous_users as $user){
-            array_push($previous_users_ids, $user->id);
-        }
-
-
-        $new_users_ids=array_map('intval',$attributes['selected_users']);
-
-
-        if (sizeof($previous_users_ids) == sizeof($new_users_ids) ){
-
-            $diff = array_diff($previous_users_ids, $new_users_ids);
-            if (sizeof($diff) == 0) $users_changed = false;
-            else $users_changed = true;
-        } else {
-            $users_changed = true;
-        }
-        $old_expense = ExpensesHistory::find($expense->id);
+        $old_expense = ExpensesHistory::findOrFail($expense->id);
 
         if ($users_changed || $attributes_changed) {
-
 
             $old_expense->isLatest = false;
             $old_expense->save();
 
             $expense_history_new = ExpensesHistory::create([
-
                 'expense_id' => $old_expense->expense_id,
                 'action' => 2, // 1 - add 2 - update 3 - delete
                 'amount' => $expense->amount,
                 'item' => $expense->item,
-                'title' =>$expense->title
+                'title' => $expense->title,
             ]);
 
-
-            foreach ($attributes['selected_users'] as $user) {
-                DB::table('expenses_user')->insert([
-                    'user_id' => $user,
-                    'expenses_history_id' => $expense_history_new->id,
-                    'user_contribution' => round($expense_history_new->amount / count($attributes['selected_users']), 2),
-                ]);
-
-            }
-
+            $service->insertExpenseRelation($expense_history_new, $request->get('selected_users'));
 
         } else {
-
-//redirect back
-            //todo - shouldnt be changed
 
             return redirect(route('groups.expenses.show', ['group' => $group, 'expense' => $old_expense]));
 
         }
 
-
         return redirect(route('groups.show', ['group' => $group]));
-
 
     }
 
 
-    public function destroy(Group $group,ExpensesHistory $expense)
+    public function destroy(Group $group, ExpensesHistory $expense, GroupExpenseService $service)
     {
-        if($expense->isLatest == true && $expense->action ==3){
-
-            return redirect(route('groups.expenses.show', ['group' => $group ,'expense'=>$expense]));
-
+        if ($expense->isLatest == true && $expense->action == 3) {
+            return redirect(route('groups.expenses.show', ['group' => $group, 'expense' => $expense]));
         }
-
-
 
         $expense_history_new = ExpensesHistory::create([
             'expense_id' => $expense->expense_id,
             'action' => 3, // 1 - add 2 - update 3 - delete
             'amount' => $expense->amount,
             'item' => $expense->item,
-            'title' =>$expense->title
+            'title' => $expense->title,
         ]);
 
-        $expense->isLatest=false;
-        $expense->save();
-        $users= $expense->users() ;
-
-        foreach ($users as  $user) {
-            DB::table('expenses_user')->insert([
-                'user_id' => $user->id,
-                'expenses_history_id' => $expense_history_new->id,
-                'user_contribution' => round($expense_history_new->amount / count($users), 2),
-            ]);
-
-        }
+        $expense->update(['isLatest' => false]);
+        $service->insertExpenseRelation($expense_history_new, $expense->users()->pluck('id')->toArray());
 
         return redirect(route('groups.show', ['group' => $group]));
-
-
-
 
     }
 }

@@ -31,7 +31,7 @@ class PaymentController extends Controller {
 
 
         $items = \Auth::user()->getItemBalanceWithUser($user, $group);
-//todo
+
         $filtered = [];
         foreach ($items as $key => $value) {
             if ($value < 0) $filtered[$key] = $value;

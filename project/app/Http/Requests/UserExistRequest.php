@@ -3,9 +3,10 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class UpdateGroupRequest extends FormRequest
-{
+class UserExistRequest extends FormRequest {
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -13,7 +14,7 @@ class UpdateGroupRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +25,9 @@ class UpdateGroupRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+
+            'username' => ['required', Rule::exists('users', 'name')],
+
         ];
     }
 }
