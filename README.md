@@ -8,6 +8,8 @@ It is a uni-project for subject Programming in PHP contributed with:
 - Tomasz Kurcaba (TKurcaba)
 - Daniel Defiński (DDefinski)
 
+Project was forked from bitbucket 
+
 ## App requirements
 
 - The website allows users to register via e-mail and password, and has e-mail verification.
@@ -35,7 +37,7 @@ It is a uni-project for subject Programming in PHP contributed with:
 - Docker
 
 # Deployment
- You can test app at heroku server: ... sooon
+ You can test app at heroku server: https://portfello.herokuapp.com
 
 # Run locally
 
