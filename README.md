@@ -37,7 +37,7 @@ Project was forked from bitbucket
 - Docker
 
 # Deployment
- You can test app at heroku server: https://portfello.herokuapp.com
+ You can test app at heroku server: https://portfello.herokuapp.com DBhost is not the fastest, be patient
 
 # Run locally
 
