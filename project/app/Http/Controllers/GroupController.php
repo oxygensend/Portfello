@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GroupRequest;
 use App\Models\Group;
 use App\Models\Payment;
+use App\Services\GroupService;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
@@ -26,52 +28,34 @@ class GroupController extends Controller {
     }
 
 
-    public function store(Request $request)
+    public function store(GroupRequest $request, GroupService $service)
     {
-        $attributes = request()->validate([
-            'name' => 'required',
-            'avatar' => 'image|mimes:jpg,png|max:2048',
-        ]);
 
-        if (!empty(request()->avatar)){
-            $fileExtension = request()->file('avatar')->getClientOriginalExtension();
-            $fileNameToStore = time().'.'.$fileExtension;
-            request()->avatar->move(storage_path('app/public/group_avatars/'),$fileNameToStore);
-            $imagePath = 'storage/group_avatars/'.$fileNameToStore;
-        }else{
+        if (!empty($request->avatar)) {
+            $imagePath = $service->getImage($request);
+        } else {
             $imagePath = '/images/default_group.png';
         }
 
         $group = Group::create([
-            'name' => $attributes['name'],
+            'name' => $request->get('name'),
             'user_id' => auth()->user()->id,
             'avatar' => $imagePath,
         ]);
-
-
         $group->users()->attach(auth()->user()->id);
+
         return redirect(route('groups.index'))->with('success', 'Group has been created');
     }
 
-    public function show(Group $group)
+    public function show(Group $group, GroupService $service)
     {
         Gate::authorize('member', $group);
-        $expenses_history= Group::find($group->id)->expenses_history()->orderBy('created_at','desc')->get();
+        $expenses_history = Group::find($group->id)->expenses_history()->orderBy('created_at', 'desc')->get();
+        $payments = auth()->user()->getPaymentHistoryInGroup($group);
 
+        $merged = $service->mergeArrays($expenses_history, $payments);
 
-
-        $payments=auth()->user()->getPaymentHistoryInGroup($group );
-
-        $merged=array_merge($expenses_history->all(), $payments->all());
-
-        usort($merged, function($a,$b){
-            $tmp1 = strtotime($a['created_at']);
-            $tmp2 = strtotime($b['created_at']);
-            return  $tmp2 - $tmp1;
-        });
-
-        auth()->user()->whomOwe($group);
-        return view('groups.show', ['group' => $group, 'expenses_payments'=>$merged]);
+        return view('groups.show', ['group' => $group, 'expenses_payments' => $merged]);
     }
 
     public function edit(Group $group)
@@ -79,25 +63,20 @@ class GroupController extends Controller {
         return view('groups.edit')->withGroup($group)->withUsers($group->users);
     }
 
-    public function update(Group $group)
+    public function update(Group $group, GroupRequest $request, GroupService $service)
     {
-        $attributes = request()->validate([
-            'name' => 'required',
-            'avatar' => 'image|mimes:jpg,png|max:2048',
-        ]);
 
-        if(request()->file('avatar')) {
-            $fileName = time() . '.' . request()->file('avatar')->getClientOriginalExtension();
-            request()->avatar->move(storage_path('app/public/group_avatars/'), $fileName);
-            $imagePath = '/storage/group_avatars/' . $fileName;
+        if ($request->file('avatar')) {
 
+            $imagePath = $service->getImage($request);
             File::delete($group->avatar);
 
             $group->avatar = $imagePath;
         }
-        $group->name = $attributes['name'];
 
+        $group->name = $request->get('name');
         $group->save();
+
         return redirect(route('groups.show', $group))->with('success', 'Group has been edited');
 
     }

@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ChangeAvatarRequest;
+use App\Http\Requests\ChangeEmailRequest;
+use App\Http\Requests\ChangePasswordRequest;
+use App\Http\Requests\ChangeUsernameRequest;
 use App\Models\Group;
 use App\Models\Invites;
 use App\Models\User;
+use App\Services\EditUserService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -12,135 +17,89 @@ use \Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\File;
 
 
+class EditUserController extends Controller {
 
-class EditUserController extends Controller{
-
-    public function index(){
-
-        $invites = DB::table('invites')->where('user_id',Auth::user()->id)->get();
-        DB::table('invites')->where('user_id', auth()->user()->id)
-            ->where('displayed', False)->update(['displayed'=>True]);
-
-        return view('edit-user', ['invites' => $invites,'user' => Auth::user()]);
-
-    }
-
-    public function ChangeUsername()
+    public function index()
     {
-        $user = Auth::user();
 
+        $invites = DB::table('invites')->where('user_id', Auth::user()->id)->get();
+        DB::table('invites')->where('user_id', auth()->user()->id)
+            ->where('displayed', false)->update(['displayed' => true]);
+
+        return view('edit-user', ['invites' => $invites, 'user' => Auth::user()]);
+
+    }
+
+    public function ChangeUsername(ChangeUsernameRequest $request)
+    {
         try {
-        request()->validate([
-            'name' => 'required|unique:users',
-        ]);
-        }
-        catch(ValidationException $e){
+            Auth::user()->update(['name' => $request->name]);
+        } catch (ValidationException $e) {
             return redirect('/edit-user')->with(['show' => 'true'])->withErrors($e->errors());
         }
 
-        $user->name = request()->name;
-
-        $user->save();
-
-        return redirect('/edit-user')->with('success',"Username changed successfully!" );
+        return redirect('/edit-user')->with('success', "Username changed successfully!");
     }
 
-    public function ChangePassword(){
+    public function ChangePassword(ChangePasswordRequest $request)
+    {
 
-        $user = Auth::user();
 
-        $userPassword = $user->password;
+        $userPassword = Auth::user()->password;
         try {
-        request()->validate([
-            'current_password' => 'required',
-            'new_password' => 'required|same:repeated_new_password|min:8',
-            'repeated_new_password' => 'required',
-        ]);
-        }
-        catch(ValidationException $e){
-            return redirect('/edit-user')->with(['show' => 'true'])->withErrors($e->errors());
-        }
-
-        if(!Hash::check(request()->current_password,$userPassword)){
-            return redirect('/edit-user')->with(['show' => 'true'])->withErrors(['current_password'=>'Wrong current password.']);
-        }
-
-        $user->password = Hash::make(request()->new_password);
-
-        $user->save();
-
-        return redirect('/edit-user')->with('success',"Password changed successfully!" );
-    }
-
-    public function ChangeAvatar(){
-
-        $user = Auth::user();
-
-        try {
-            request()->validate([
-                'image' => 'required|image|mimes:jpg,png|max:2048',
-            ]);
-        }
-        catch(ValidationException $e){
-            return redirect('/edit-user')->with(['show' => 'true'])->withErrors($e->errors());
-        }
-
-        $fileName =  time() . '.' . request()->file('image')->getClientOriginalExtension();
-        request()->image->move(storage_path('app/public/user_avatars/'),$fileName);
-        $imagePath = '/storage/user_avatars/'.$fileName;
-
-        File::delete($user->avatar);
-
-        $user->avatar = $imagePath;
-
-        $user->save();
-
-        return redirect('/edit-user')->with('success',"Avatar changed successfully!" );
-    }
-
-    public function ChangeEmail(){
-
-        $user = Auth::user();
-
-        try {
-            request()->validate([
-                'email' => 'required|string|email|max:255|unique:users|same:repeated_new_email',
-                'repeated_new_email' => 'required',
-            ]);
-        }
-        catch(ValidationException $e){
-            return redirect('/edit-user')->with(['show' => 'true'])->withErrors($e->errors());
-        }
-
-        $user->email = request()->email;
-
-        $user->save();
-
-        return redirect('/edit-user')->with('success',"Email changed successfully!" );
-    }
-
-
-    public function deleteAccount(){
-
-        foreach (\auth()->user()->groups as $group){
-            if($group->admin->id == auth()->user()->id){
-                $new_admin=DB::table('group_user')->where('group_id', $group->id)
-                    ->where('user_id','!=',auth()->user()->id)
-                    ->orderBy('created_at')->first();
-                if($new_admin == null)
-                    Group::find($group->id)->delete();
-                else
-                    Group::find($group->id)->update(['user_id'=>$new_admin->user_id]);
-
+            if (!Hash::check($request->current_password, $userPassword)) {
+                return redirect('/edit-user')->with(['show' => 'true'])->withErrors(['current_password' => 'Wrong current password.']);
             }
 
+            Auth::user()->update(['password' => Hash::make($request->new_password)]);
+
+        } catch (ValidationException $e) {
+            return redirect('/edit-user')->with(['show' => 'true'])->withErrors($e->errors());
         }
 
 
-        DB::table('users')->where('id', \auth()->user()->id)->delete();
-       return redirect('/');
+        return redirect('/edit-user')->with('success', "Password changed successfully!");
     }
 
+    public function ChangeAvatar(ChangeAvatarRequest $request, EditUserService $service)
+    {
+
+        try {
+
+            Auth::user()->update(['avatar' => $service->getImage($request)]);
+
+        } catch (\Exception $e) {
+            return redirect('/edit-user')->with(['show' => 'true'])->withErrors($e->errors());
+        }
+
+
+        return redirect('/edit-user')->with('success', "Avatar changed successfully!");
+    }
+
+    public function ChangeEmail(ChangeEmailRequest $request)
+    {
+
+        try {
+
+            Auth::user()->update(['email' => $request->email]);
+
+        } catch (ValidationException $e) {
+            return redirect('/edit-user')->with(['show' => 'true'])->withErrors($e->errors());
+        }
+
+
+        return redirect('/edit-user')->with('success', "Email changed successfully!");
+    }
+
+
+    public function deleteAccount(EditUserService $service)
+    {
+
+       $service->deleteAccount();
+
+        DB::table('users')->where('id', \auth()->user()->id)->delete();
+        return redirect('/');
+    }
 
 
 }

@@ -12,19 +12,20 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 
-class InvitesStatus implements ShouldBroadcast{
+class InvitesStatus implements ShouldBroadcast {
 
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
 
     public $invites_n;
     public $user_id;
+
     public function __construct($user)
     {
 
         $this->invites_n = DB::table('invites')
             ->where('user_id', $user->id)
-            ->where('displayed',False)->count();
+            ->where('displayed', false)->count();
         $this->user_id = $user->id;
     }
 
@@ -37,7 +38,6 @@ class InvitesStatus implements ShouldBroadcast{
     {
         return 'invites-status';
     }
-
 
 
 }

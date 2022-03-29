@@ -5,9 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Group extends Model
-{
+class Group extends Model {
+
     use HasFactory;
+
     public function users()
     {
         return $this->belongsToMany(
@@ -23,9 +24,10 @@ class Group extends Model
         return $this->hasMany(Expense::class);
     }
 
-    public function payments(){
+    public function payments()
+    {
 
-            return $this->hasMany(Payment::class);
+        return $this->hasMany(Payment::class);
 
     }
 
@@ -33,16 +35,18 @@ class Group extends Model
     public function expenses_history()
     {
         return $this->hasManyThrough(ExpensesHistory::class, Expense::class,
-        '',
-        '',
-        'id',
-        'id',
+            '',
+            '',
+            'id',
+            'id',
         );
     }
 
-    public function invites(){
+    public function invites()
+    {
         return $this->hasMany(Invites::class);
     }
+
     public function admin()
     {
         return $this->belongsTo(User::class, 'user_id');

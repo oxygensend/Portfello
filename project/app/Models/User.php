@@ -11,8 +11,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable implements MustVerifyEmail
-{
+class User extends Authenticatable implements MustVerifyEmail {
+
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
@@ -24,7 +24,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
-        'avatar'
+        'avatar',
     ];
 
     /**
@@ -45,6 +45,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
     public function groups()
     {
         return $this->belongsToMany(
@@ -58,11 +59,11 @@ class User extends Authenticatable implements MustVerifyEmail
     //TODO -> database functions or some query chaining
     public function active_groups()
     {
-$groups =$this->groups;
+        $groups = $this->groups;
 
-return $groups->filter( function ($group, $key){
-    return $this->getGroupBalance($group) !=0;
-});
+        return $groups->filter(function ($group, $key) {
+            return $this->getGroupBalance($group) != 0;
+        });
     }
 
 
@@ -76,23 +77,29 @@ return $groups->filter( function ($group, $key){
         );
     }
 
-    public function payments_executed(){
+    public function payments_executed()
+    {
         return $this->hasMany(Payment::class, 'user_1_id');
     }
-    public function payments_recived(){
+
+    public function payments_recived()
+    {
         return $this->hasMany(Payment::class, 'user_2_id');
     }
-    public function invites(){
+
+    public function invites()
+    {
 
         return $this->hasMany(Invites::class);
     }
 
-    public function isIncluded(ExpensesHistory $expense_history){
-        $id=DB::table('expenses_histories')->join('expenses_user','expenses_user.expenses_history_id','=','expenses_histories.id')
-            ->where('expenses_user.expenses_history_id','=',$expense_history->id)->get('user_id')->toArray();
+    public function isIncluded(ExpensesHistory $expense_history)
+    {
+        $id = DB::table('expenses_histories')->join('expenses_user', 'expenses_user.expenses_history_id', '=', 'expenses_histories.id')
+            ->where('expenses_user.expenses_history_id', '=', $expense_history->id)->get('user_id')->toArray();
 
-        foreach($id as $i){
-            if($i->user_id==$this->id)
+        foreach ($id as $i) {
+            if ($i->user_id == $this->id)
                 return true;
         }
 
@@ -101,8 +108,8 @@ return $groups->filter( function ($group, $key){
     }
 
 
-
-    private function  combineArrays($a1, $a2, $a3) : Collection {
+    private function combineArrays($a1, $a2, $a3): Collection
+    {
         $sums = array();
         foreach (array_keys($a1 + $a2 + $a3) as $key) {
             $sums[$key] = @($a1[$key] + $a2[$key] - $a3[$key]);
@@ -112,70 +119,78 @@ return $groups->filter( function ($group, $key){
 
     }
 
-    public function owes(ExpensesHistory $expense_history){
+    public function owes(ExpensesHistory $expense_history)
+    {
 
 
-        $amount=$this->contributonInExpense($expense_history);
+        $amount = $this->contributonInExpense($expense_history);
 
-                if(!is_null($expense_history->item )){
-                    return   [$amount, $expense_history->item];
-                }else{
+        if (!is_null($expense_history->item)) {
+            return [$amount, $expense_history->item];
+        } else {
 
-                    return  [$amount,null];
-                }
+            return [$amount, null];
+        }
 
     }
 
-    public function getBack(ExpensesHistory $expense_history){
+    public function getBack(ExpensesHistory $expense_history)
+    {
 
-       $amount=$expense_history->amount - $this->contributonInExpense($expense_history);
-        if(!is_null($expense_history->item )){
-            return   $amount." " . $expense_history->item ;
-        }else{
+        $amount = $expense_history->amount - $this->contributonInExpense($expense_history);
+        if (!is_null($expense_history->item)) {
+            return $amount . " " . $expense_history->item;
+        } else {
 
-            return  $amount . ' $';
+            return $amount . ' $';
         }
     }
 
-    public function getPaymentHistoryInGroup(Group $group){
+    public function getPaymentHistoryInGroup(Group $group)
+    {
 
-       $ids=  $this->paymentHistoryInGroup($group)->get();
-
-
-  $ids= array_map( function($value){
-  return $value->id;
-
-  } , $ids->toArray() );
+        $ids = $this->paymentHistoryInGroup($group)->get();
 
 
- return Payment::findMany( $ids);
-
-
-    }
-    public function getPaymentHistory(){
-
-        $ids=  $this->paymentHistory()->get();
-
-        $ids= array_map( function($value){
+        $ids = array_map(function ($value) {
             return $value->id;
 
-        } , $ids->toArray() );
+        }, $ids->toArray());
 
 
-        return Payment::findMany( $ids);
+        return Payment::findMany($ids);
+
 
     }
 
-    public function paymentHistoryInGroup(Group $group){
+    public function getPaymentHistory()
+    {
 
-    return $this->paymentHistory()->where('payments.group_id',$group->id );
+        $ids = $this->paymentHistory()->get();
+
+        $ids = array_map(function ($value) {
+            return $value->id;
+
+        }, $ids->toArray());
+
+
+        return Payment::findMany($ids);
 
     }
-    public function paymentHistory(){
 
-        $user=auth()->user();
+    public function paymentHistoryInGroup(Group $group)
+    {
 
-      return  $payments = DB::table('payments')->join('groups','payments.group_id','=','groups.id')->join('group_user', 'group_user.group_id','=','groups.id')->where('group_user.user_id','=',$user->id)->select('payments.*');
+        return $this->paymentHistory()->where('payments.group_id', $group->id);
+
+    }
+
+    public function paymentHistory()
+    {
+
+        $user = auth()->user();
+
+        return $payments = DB::table('payments')->join('groups', 'payments.group_id', '=', 'groups.id')->join('group_user', 'group_user.group_id', '=', 'groups.id')->where('group_user.user_id', '=', $user->id)->select('payments.*');
 //how to convert query to models?? TODO
 
 
@@ -185,61 +200,58 @@ return $groups->filter( function ($group, $key){
     public function whomOwe(Group $group)
     {
 
-        $whomOweMoney=[];
-        $whomOweItems=[];
+        $whomOweMoney = [];
+        $whomOweItems = [];
 
-        forEach($group->users as $user){
+        foreach ($group->users as $user) {
 
-            if($user->is(auth()->user())  ) continue;
+            if ($user->is(auth()->user())) continue;
 
 
-
-                $balance = $this->getBalanceWithUser($user, $group);
+            $balance = $this->getBalanceWithUser($user, $group);
 //            ddd([$user, $balance]);
 
 
-                if($balance < 0 ) $whomOweMoney[$user->id] = 1;
+            if ($balance < 0) $whomOweMoney[$user->id] = 1;
 
-                $balance_array = $this->getItemBalanceWithUser($user,$group);
+            $balance_array = $this->getItemBalanceWithUser($user, $group);
 
 
-                foreach($balance_array as $balance_item){
-                    if($balance_item <0 ){
-                        $whomOweItems[$user->id]=1;
-                        break;
-                    }
-
+            foreach ($balance_array as $balance_item) {
+                if ($balance_item < 0) {
+                    $whomOweItems[$user->id] = 1;
+                    break;
                 }
 
+            }
+
+        }
+
+        $users_union = $whomOweItems + $whomOweMoney;
+
+
+        $users = User::whereIn('id', array_keys($users_union))->get();
+        return $users;
+
     }
-
-        $users_union= $whomOweItems + $whomOweMoney;
-
-
-       $users= User::whereIn('id',array_keys($users_union) )->get();
-return $users;
-
-    }
-
-
 
 
     public function getGroupBalance(Group $group)
     {
 
 
-        $amount = ExpensesHistory::whereHas('expense', function($q) use ($group) {
+        $amount = ExpensesHistory::whereHas('expense', function ($q) use ($group) {
             $q->where('user_id', $this->id);
             $q->where('group_id', $group->id);
             $q->where('isLatest', 1);
             $q->where('item', null);
-            $q->where('action', '!=','3');
+            $q->where('action', '!=', '3');
 
         })->sum('amount');
 
 
-        $payments_recived = $this->payments_recived()->where('group_id',$group->id)->where('item', null)->sum('amount');
-        $payments_executed = $this->payments_executed()->where('group_id',$group->id)->where('item', null)->sum('amount');
+        $payments_recived = $this->payments_recived()->where('group_id', $group->id)->where('item', null)->sum('amount');
+        $payments_executed = $this->payments_executed()->where('group_id', $group->id)->where('item', null)->sum('amount');
 
         $contribution = DB::table('expenses_user')
             ->where('expenses_user.user_id', $this->id)
@@ -253,7 +265,7 @@ return $users;
             ->where('item', null)
             ->sum('user_contribution');
 
-        return($amount - $contribution - $payments_recived + $payments_executed);
+        return ($amount - $contribution - $payments_recived + $payments_executed);
 
     }
 
@@ -262,7 +274,7 @@ return $users;
         $amount = ExpensesHistory::whereHas('expense', function ($q) {
             $q->where('user_id', $this->id);
             $q->where('isLatest', 1);
-            $q->where('action', '!=','3');
+            $q->where('action', '!=', '3');
             $q->where('item', null);
         })->sum('amount');
 
@@ -279,52 +291,54 @@ return $users;
             ->where('expenses_histories.isLatest', true)
             ->where('item', null)
             ->sum('user_contribution');
-        return($amount-$contribution - $payments_recived + $payments_executed);
+        return ($amount - $contribution - $payments_recived + $payments_executed);
 
     }
 
-    public function getBalanceWithUser(User $user, Group $group){
-        if($user->is(auth()->user())  ) return 0;
-        $payments_recived = $this->payments_recived()->where('group_id',$group->id)->where('user_1_id', $user->id) ->where('item', null)->sum('amount');
-        $payments_executed = $this->payments_executed()->where('group_id',$group->id)->where('user_2_id', $user->id) ->where('item', null)->sum('amount');
+    public function getBalanceWithUser(User $user, Group $group)
+    {
+        if ($user->is(auth()->user())) return 0;
+        $payments_recived = $this->payments_recived()->where('group_id', $group->id)->where('user_1_id', $user->id)->where('item', null)->sum('amount');
+        $payments_executed = $this->payments_executed()->where('group_id', $group->id)->where('user_2_id', $user->id)->where('item', null)->sum('amount');
         $user_contribution = DB::table('expenses_user')
             ->where('expenses_user.user_id', $user->id)
             ->join('expenses_histories', 'expenses_user.expenses_history_id',
                 '=', 'expenses_histories.id')
             ->join('expenses', 'expenses_histories.expense_id',
-                '=', 'expenses.id')->where('expenses.group_id',$group->id)
+                '=', 'expenses.id')->where('expenses.group_id', $group->id)
             ->where('expenses_histories.action', '!=', 3)
             ->where('expenses_histories.isLatest', true)
             ->where('expenses.user_id', $this->id)
             ->where('item', null)
             ->sum('user_contribution');
         $my_contribution = DB::table('expenses_user')
-            ->where('expenses_user.user_id',$this->id)
+            ->where('expenses_user.user_id', $this->id)
             ->join('expenses_histories', 'expenses_user.expenses_history_id',
                 '=', 'expenses_histories.id')
             ->join('expenses', 'expenses_histories.expense_id',
-                '=', 'expenses.id')->where('expenses.group_id',$group->id)
+                '=', 'expenses.id')->where('expenses.group_id', $group->id)
             ->where('expenses.user_id', $user->id)
             ->where('expenses_histories.action', '!=', 3)
             ->where('expenses_histories.isLatest', true)
             ->where('item', null)
             ->sum('user_contribution');
-        return($user_contribution - $my_contribution -$payments_recived + $payments_executed);
+        return ($user_contribution - $my_contribution - $payments_recived + $payments_executed);
     }
 
-    public function getItemBalanceWithUser(User $user, Group $group){
-        if($user->is(auth()->user())  ) return [];
+    public function getItemBalanceWithUser(User $user, Group $group)
+    {
+        if ($user->is(auth()->user())) return [];
         $user_contribution = DB::table('expenses_user')
             ->where('expenses_user.user_id', $user->id)
             ->join('expenses_histories', 'expenses_user.expenses_history_id',
                 '=', 'expenses_histories.id')
             ->join('expenses', 'expenses_histories.expense_id',
-                '=', 'expenses.id')->where('expenses.group_id',$group->id)
+                '=', 'expenses.id')->where('expenses.group_id', $group->id)
             ->where('expenses.user_id', $this->id)
             ->where('expenses_histories.action', '!=', 3)
             ->where('expenses_histories.isLatest', true)
-            ->where('item','!=', null)
-            ->select('expenses_histories.item', 'expenses_user.user_contribution','expenses_histories.amount')
+            ->where('item', '!=', null)
+            ->select('expenses_histories.item', 'expenses_user.user_contribution', 'expenses_histories.amount')
             ->groupBy('item')->selectRaw(' item,  sum(user_contribution) as user_contribution ')
             ->pluck('user_contribution', 'item')->toArray();
 
@@ -333,22 +347,22 @@ return $users;
             ->join('expenses_histories', 'expenses_user.expenses_history_id',
                 '=', 'expenses_histories.id')
             ->join('expenses', 'expenses_histories.expense_id',
-                '=', 'expenses.id')->where('expenses.group_id',$group->id)
+                '=', 'expenses.id')->where('expenses.group_id', $group->id)
             ->where('expenses.user_id', $user->id)
             ->where('expenses_histories.action', '!=', 3)
             ->where('expenses_histories.isLatest', true)
-            ->where('item','!=', null)
-            ->select('expenses_histories.item', 'expenses_user.user_contribution','expenses_histories.amount')
+            ->where('item', '!=', null)
+            ->select('expenses_histories.item', 'expenses_user.user_contribution', 'expenses_histories.amount')
             ->groupBy('item')->selectRaw(' item, sum(user_contribution) as user_contribution')
             ->pluck('user_contribution', 'item')->toArray();
 
-        $payments_recived = $this->payments_recived()->where('item','!=',null)
+        $payments_recived = $this->payments_recived()->where('item', '!=', null)
             ->where('group_id', $group->id)
-            ->where('user_1_id',$user->id)->groupBy('item')->selectRaw(' item,  sum(amount) as amount ')
+            ->where('user_1_id', $user->id)->groupBy('item')->selectRaw(' item,  sum(amount) as amount ')
             ->pluck('amount', 'item')->toArray();
-        $payments_executed = $this->payments_executed()->where('item','!=',null)
-            ->where('group_id',$group->id)
-            ->where('user_2_id',$user->id) ->groupBy('item')->selectRaw(' item,  sum(amount) as amount ')
+        $payments_executed = $this->payments_executed()->where('item', '!=', null)
+            ->where('group_id', $group->id)
+            ->where('user_2_id', $user->id)->groupBy('item')->selectRaw(' item,  sum(amount) as amount ')
             ->pluck('amount', 'item')->toArray();
 
         $sums = array();
@@ -356,7 +370,7 @@ return $users;
             $sums[$key] = @($user_contribution[$key] - $my_contribution[$key] - $payments_recived[$key] + $payments_executed[$key]);
         }
 
-        return($sums);
+        return ($sums);
 
     }
 
@@ -371,19 +385,20 @@ return $users;
                 '=', 'expenses.id')
             ->where('expenses_histories.action', '!=', 3)
             ->where('expenses_histories.isLatest', true)
-            ->where('item','!=', null)
-            ->select('expenses_histories.item', 'expenses_user.user_contribution','expenses_histories.amount')
+            ->where('item', '!=', null)
+            ->select('expenses_histories.item', 'expenses_user.user_contribution', 'expenses_histories.amount')
             ->groupBy('item')->selectRaw(' item, sum(amount) as amount , sum(user_contribution) as user_contribution, sum(amount-user_contribution) as balance ')
             ->pluck('balance', 'item')->toArray();
 
-        $payments_recived = $this->payments_recived()->where('item','!=',null)->groupBy('item')->selectRaw(' item,  sum(amount) as amount ')->pluck('amount', 'item')->toArray();
-        $payments_executed = $this->payments_executed()->where('item','!=',null)->groupBy('item')->selectRaw(' item,  sum(amount) as amount ')->pluck('amount', 'item')->toArray();
+        $payments_recived = $this->payments_recived()->where('item', '!=', null)->groupBy('item')->selectRaw(' item,  sum(amount) as amount ')->pluck('amount', 'item')->toArray();
+        $payments_executed = $this->payments_executed()->where('item', '!=', null)->groupBy('item')->selectRaw(' item,  sum(amount) as amount ')->pluck('amount', 'item')->toArray();
 
-        return($this->combineArrays($contribution, $payments_executed, $payments_recived));
+        return ($this->combineArrays($contribution, $payments_executed, $payments_recived));
 
     }
 
-    public function getGroupItemBalance($group){
+    public function getGroupItemBalance($group)
+    {
 
         $contribution = DB::table('expenses_user')
             ->where('expenses_user.user_id', $this->id)
@@ -394,32 +409,33 @@ return $users;
             ->where('expenses.group_id', $group->id)
             ->where('expenses_histories.action', '!=', 3)
             ->where('expenses_histories.isLatest', true)
-            ->where('item','!=', null)
-            ->select('expenses_histories.item', 'expenses_user.user_contribution','expenses_histories.amount')
+            ->where('item', '!=', null)
+            ->select('expenses_histories.item', 'expenses_user.user_contribution', 'expenses_histories.amount')
             ->groupBy('item')->selectRaw(' item, sum(amount) as amount , sum(user_contribution) as user_contribution, sum(amount-user_contribution) as balance ')
             ->pluck('balance', 'item')->toArray();
 
         $payments_recived = $this->payments_recived()
-                ->where('item','!=',null)
-                ->where('group_id', $group->id)->groupBy('item')->selectRaw(' item,  sum(amount) as amount ')
-                ->pluck('amount', 'item')->toArray();
+            ->where('item', '!=', null)
+            ->where('group_id', $group->id)->groupBy('item')->selectRaw(' item,  sum(amount) as amount ')
+            ->pluck('amount', 'item')->toArray();
         $payments_executed = $this->payments_executed()
-            ->where('item','!=',null)
+            ->where('item', '!=', null)
             ->where('group_id', $group->id)->groupBy('item')->selectRaw(' item,  sum(amount) as amount ')
             ->pluck('amount', 'item')->toArray();
 
 
-        return($this->combineArrays($contribution, $payments_executed, $payments_recived));
+        return ($this->combineArrays($contribution, $payments_executed, $payments_recived));
 
     }
 
-    public function contributonInExpense(ExpensesHistory $expense){
+    public function contributonInExpense(ExpensesHistory $expense)
+    {
 
         return DB::table('expenses_user')
             ->where('expenses_user.user_id', $this->id)
             ->join('expenses_histories', 'expenses_user.expenses_history_id',
                 '=', 'expenses_histories.id')
-            ->where('expense_id',$expense->id)
+            ->where('expense_id', $expense->id)
             ->where('action', '!=', 3)
             ->where('isLatest', true)
             ->value('user_contribution');
@@ -434,8 +450,6 @@ return $users;
             'id',
         );
     }
-
-
 
 
 }
