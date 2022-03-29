@@ -35,7 +35,7 @@ It is a uni-project for subject Programming in PHP contributed with:
 - Docker
 
 # Deployment
- You can test app at heroku server: ... sooon
+ You can test app at heroku server: https://portfello.herokuapp.com
 
 # Run locally
 
