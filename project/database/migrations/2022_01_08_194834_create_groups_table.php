@@ -18,7 +18,6 @@ class CreateGroupsTable extends Migration
             $table->string('name');
             $table->string('avatar');
             $table->foreignId('user_id');
-            $table->string('slug');
             $table->timestamps();
         });
     }
